@@ -27,7 +27,10 @@ const Login = () => {
     e.preventDefault();
     try {
       setIsLoginLoading(true);
-      if (!email || !password) return toast.error("Please Enter Your Email and Password");
+      if (!email || !password) {
+        setIsLoginLoading(false);
+        return toast.error("Please Enter Your Email and Password");
+      }
       await dispatch(loginAction(email, password));
       setIsLoginLoading(false);
     } catch (error) {
