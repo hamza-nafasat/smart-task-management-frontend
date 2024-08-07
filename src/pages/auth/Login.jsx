@@ -78,7 +78,7 @@ const Login = () => {
               id="email"
               name={"email"}
               value={email}
-              change={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder={"Enter Email Address"}
             />
             <div className="relative mt-4 md:mt-6">
@@ -88,7 +88,7 @@ const Login = () => {
                 id="password"
                 name={"password"}
                 value={password}
-                change={(e) => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder={"Enter Password"}
               />
               <div className="absolute right-5 bottom-[20%] cursor-pointer" onClick={handlePasswordActive}>

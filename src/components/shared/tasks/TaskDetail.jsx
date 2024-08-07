@@ -1,4 +1,3 @@
-import React from "react";
 import EditIcon from "../../../assets/svgs/tasks/EditIcon";
 import AlertIcon from "../../../assets/svgs/tasks/AlertIcon";
 import TimeIcon from "../../../assets/svgs/tasks/TimeIcon";
@@ -19,9 +18,7 @@ const TaskDetail = () => {
             <div className="cursor-pointer">
               <EditIcon />
             </div>
-            <p className="bg-[#ff9500] p-3 rounded-[10px] text-white">
-              In Progress
-            </p>
+            <p className="bg-[#ff9500] p-3 rounded-[10px] text-white">In Progress</p>
           </div>
         </div>
         <div className="mt-4 md:mt-5 bg-[#f8f8f8cc] rounded-[10px] px-4 xl:px-6 py-6 xl:py-8">
@@ -37,15 +34,12 @@ const TaskDetail = () => {
           </div>
           <div className="grid md:grid-cols-12 gap-4 xl:gap-8 mt-3">
             <div className="col-span-7">
-              <h2 className="text-lg xl:text-2xl font-semibold">
-                Mobile App UI Design
-              </h2>
+              <h2 className="text-lg xl:text-2xl font-semibold">Mobile App UI Design</h2>
               <p className="mt-4 text-xs text-[#00000080]">Description</p>
               <p className="mt-2 text-xs">
-                Create a design system for a hero section in 2 different
-                variants. Create a simple presentation with these components. a
-                design system for a hero section in 2 different variants. Create
-                a simple presentation with these components.
+                Create a design system for a hero section in 2 different variants. Create a simple
+                presentation with these components. a design system for a hero section in 2 different
+                variants. Create a simple presentation with these components.
               </p>
               <div className="flex flex-col gap-3 mt-4 md:mt-6">
                 <div className="flex items-center">
@@ -53,18 +47,14 @@ const TaskDetail = () => {
                     <div className="w-3 h-3 bg-[#ff9500] rounded-full"></div>
                     <div className="text-xs">Project</div>
                   </div>
-                  <div className="text-xs font-semibold text-[#ff9500]">
-                    Mobile AppDevelopment
-                  </div>
+                  <div className="text-xs font-semibold text-[#ff9500]">Mobile AppDevelopment</div>
                 </div>
                 <div className="flex items-center">
                   <div className="flex items-center gap-[6px] basis-[20%]">
                     <WatchIcon />
                     <div className="text-xs">Due Date</div>
                   </div>
-                  <div className="text-xs font-semibold text-primary">
-                    5 March 2024
-                  </div>
+                  <div className="text-xs font-semibold text-primary">5 March 2024</div>
                 </div>
                 <div className="flex items-center">
                   <div className="flex items-center gap-[6px] basis-[20%]">
@@ -73,31 +63,19 @@ const TaskDetail = () => {
                   </div>
                   <div className="flex flex-wrap items-center gap-1">
                     <div className="flex items-center gap-1 bg-primary px-1 py-[6px] rounded-md">
-                      <img
-                        src={dp}
-                        alt="profile image"
-                        className="w-6 h-6 rounded-full object-cover"
-                      />
-                      <p className="text-[10px] font-semibold text-white">
-                        Muhammad Zain
-                      </p>
+                      <img src={dp} alt="profile image" className="w-6 h-6 rounded-full object-cover" />
+                      <p className="text-[10px] font-semibold text-white">Muhammad Zain</p>
                     </div>
                     <div className="flex items-center gap-1 bg-primary px-1 py-[6px] rounded-md">
-                      <img
-                        src={dp}
-                        alt="profile image"
-                        className="w-6 h-6 rounded-full object-cover"
-                      />
-                      <p className="text-[10px] font-semibold text-white">
-                        Muhammad Zain
-                      </p>
+                      <img src={dp} alt="profile image" className="w-6 h-6 rounded-full object-cover" />
+                      <p className="text-[10px] font-semibold text-white">Muhammad Zain</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="col-span-5">
-                <TaskAttachments />
+              <TaskAttachments />
             </div>
           </div>
           {/* divider */}

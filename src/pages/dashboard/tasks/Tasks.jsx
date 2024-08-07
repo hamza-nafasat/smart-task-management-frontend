@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import TaskColumn from "../../../components/shared/tasks/TaskColumn";
-import TaskCard from "../../../components/shared/tasks/TaskCard";
 import Modal from "../../../components/shared/modal/Modal";
 import AddTask from "../../../components/shared/tasks/addTask/AddTask";
-import InprogressCard from "../../../components/shared/tasks/InprogressCard";
 import FinishedCard from "../../../components/shared/tasks/FinishedCard";
+import InprogressCard from "../../../components/shared/tasks/InprogressCard";
 import ScheduleCard from "../../../components/shared/tasks/ScheduleCard";
+import TaskColumn from "../../../components/shared/tasks/TaskColumn";
 
 const Tasks = () => {
   const [isModal, setIsModal] = useState(false);
@@ -17,8 +16,9 @@ const Tasks = () => {
   const handleCloseModal = () => {
     setIsModal(false);
   };
+
   return (
-    <>
+    <React.Fragment>
       <div className="grid lg:grid-cols-3 p-4 md:p-5 gap-4 md:gap-5 relative z-10 h-screen">
         <TaskColumn click={handleOpenModal} title="In Progress">
           <InprogressCard />
@@ -41,7 +41,7 @@ const Tasks = () => {
           <AddTask />
         </Modal>
       )}
-    </>
+    </React.Fragment>
   );
 };
 

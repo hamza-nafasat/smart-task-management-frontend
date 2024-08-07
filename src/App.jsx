@@ -1,6 +1,14 @@
-import react, { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
-import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Loader } from "./components/shared/loader/Loader";
+import usePersistRoute from "./hooks/usePersistRoute";
+import { getMyProfileAction } from "./redux/actions/usersActions";
+import { clearUserError, clearUserMessage } from "./redux/slices/usersSlices";
+import ProtectedRoute from "./utils/ProtectedRoute";
+
 const Login = lazy(() => import("./pages/auth/Login"));
 const Home = lazy(() => import("./pages/dashboard/home/Home"));
 const Dashboard = lazy(() => import("./pages/dashboard/index"));
@@ -14,15 +22,11 @@ const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const Users = lazy(() => import("./pages/dashboard/users/Users"));
 const AddUser = lazy(() => import("./pages/dashboard/users/AddUser"));
 const EditUser = lazy(() => import("./pages/dashboard/users/EditUser"));
-import { Loader } from "./components/shared/loader/Loader";
-import toast, { Toaster } from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
-import { clearUserError, clearUserMessage } from "./redux/slices/usersSlices";
-import { getMyProfileAction } from "./redux/actions/usersActions";
 
 function App() {
   const dispatch = useDispatch();
-  const { user, message, error } = useSelector((state) => state.users);
+  // const location = useLocation();
+  const { message, error } = useSelector((state) => state.users);
 
   useEffect(() => {
     dispatch(getMyProfileAction());
@@ -38,27 +42,40 @@ function App() {
       dispatch(clearUserError());
     }
   }, [dispatch, error, message]);
+
+  // use own hook for redirecting user to his page when he refresh
+  usePersistRoute();
   return (
-    <Router>
-      <Suspense fallback={<Loader />}>
-        <Routes>
+    <Suspense fallback={<Loader />}>
+      <Routes>
+        {/* Routes for non-logged-in users */}
+        <Route element={<ProtectedRoute onLoginPage={true} />}>
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
+        </Route>
+
+        {/* Routes for logged-in users */}
+        <Route element={<ProtectedRoute onLoginPage={false} />}>
           <Route path="/dashboard" element={<Dashboard />}>
+            <Route index element={<Home />} />
             <Route path="notifications" element={<Notifications />} />
-            <Route path="task-details" element={<DetailPage />} />
+            <Route path="tasks" element={<Tasks />} />
+            <Route path="tasks/:taskId" element={<DetailPage />} />
             <Route path="profile" element={<Profile />} />
             <Route path="change-password" element={<ChangePassword />} />
             <Route path="users" element={<Users />} />
             <Route path="add-user" element={<AddUser />} />
-            <Route path="edit-user" element={<EditUser />} />
+            <Route path="edit-user/:userId" element={<EditUser />} />
           </Route>
-        </Routes>
-      </Suspense>
+        </Route>
+
+        {/* Fallback route */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
       <Toaster position="top-right" reverseOrder={false} />
-    </Router>
+    </Suspense>
   );
 }
 

@@ -1,29 +1,24 @@
-import React from "react";
-import profileImg from "../../../assets/images/tasks/dp.png";
+/* eslint-disable react/prop-types */
 import Button from "../button/Button";
 import { IoMdMale } from "react-icons/io";
 import { IoMdFemale } from "react-icons/io";
 import { FaStar } from "react-icons/fa";
-import { users2 } from "../../../data/data";
 import { Link } from "react-router-dom";
 
-const UserCard = () => {
-  return users2.map((user, i) => (
-    <div class="md:col-span-6 lg:col-span-4 bg-[#f8f8f8cc] rounded-lg" key={i}>
-      <div class="relative p-4">
-        <div class="absolute -top-[40px] left-1/2 transform -translate-x-1/2">
+const UserCard = ({ user }) => {
+  return (
+    <div className="md:col-span-6 lg:col-span-4 bg-[#f8f8f8cc] rounded-lg">
+      <div className="relative p-4">
+        <div className="absolute -top-[40px] left-1/2 transform -translate-x-1/2">
           <img
             alt="profile pic"
-            src={user.profilePicture}
-            class="w-20 h-20 relative overflow-hidden rounded-full object-cover"
+            src={user?.image?.url}
+            className="w-20 h-20 relative overflow-hidden rounded-full object-cover"
           />
         </div>
-        <div class="mt-[2.5rem] flex items-center justify-center gap-1">
-          <h3 className="text-base md:text-md text-gray-800 font-medium text-center">
-            {user.userName}
-          </h3>
-          •
-          {user.gender === "male" ? (
+        <div className="mt-[2.5rem] flex items-center justify-center gap-1">
+          <h3 className="text-base md:text-md text-gray-800 font-medium text-center">{user?.username}</h3>•
+          {user?.gender === "male" ? (
             <IoMdMale fontSize={20} color="rgb(23, 162, 184)" />
           ) : (
             <IoMdFemale fontSize={20} color="#ec53ab" />
@@ -31,57 +26,47 @@ const UserCard = () => {
         </div>
         <div className="mt-2 flex justify-center items-center gap-1">
           <FaStar fontSize={20} color="#FFA534" />
-          <p className="text-xs text-gray-700">(ratings {user.ratings})</p>
+          <p className="text-xs text-gray-700">(ratings {user?.ratings || 5})</p>
         </div>
         <div className="mt-3 flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-500 font-light">Name</p>
-            <p className="text-base text-primary">{user.name}</p>
+            <p className="text-base text-gray-500 font-light">Name</p>
+            <p className="text-sm text-primary">{user?.name}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500 font-light text-end">
-              Position
-            </p>
-            <p className="text-base text-primary text-end">{user.position}</p>
-          </div>
-        </div>
-        <div className="mt-3 flex items-center justify-between">
-          <div>
-            <p className="text-sm text-gray-500 font-light">Email</p>
-            <p className="text-base text-primary">{user.email}</p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-500 font-light text-end">
-              In Progress Tasks
-            </p>
-            <p className="text-base text-primary text-end">
-              {user.inProgressTasks}
-            </p>
+            <p className="text-base text-gray-500 font-light text-end">Position</p>
+            <p className="text-sm text-primary text-end">{user?.position}</p>
           </div>
         </div>
         <div className="mt-3 flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-500 font-light">Completed Tasks</p>
-            <p className="text-base text-primary">{user.completedTasks}</p>
+            <p className="text-base text-gray-500 font-light">Email</p>
+            <p className="text-sm text-primary">{user?.email}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500 font-light text-end">
-              Scheduled Tasks
-            </p>
-            <p className="text-base text-primary text-end">
-              {user.scheduledTasks}
-            </p>
+            <p className="text-base text-gray-500 font-light text-end">In Progress Tasks</p>
+            <p className="text-sm text-primary text-end">{user?.inProgressTasks}</p>
+          </div>
+        </div>
+        <div className="mt-3 flex items-center justify-between">
+          <div>
+            <p className="text-base text-gray-500 font-light">Completed Tasks</p>
+            <p className="text-sm text-primary">{user?.completedTasks}</p>
+          </div>
+          <div>
+            <p className="text-base text-gray-500 font-light text-end">Scheduled Tasks</p>
+            <p className="text-sm text-primary text-end">{user?.scheduledTasks}</p>
           </div>
         </div>
         <div className="flex items-center justify-between gap-4 mt-3">
-          <Link to='/dashboard/edit-user' className="w-full">
+          <Link to="/dashboard/edit-user" className="w-full">
             <Button text="Edit" height="40px" />
           </Link>
           <Button text="Delete" height="40px" bg="#9d0707" />
         </div>
       </div>
     </div>
-  ));
+  );
 };
 
 export default UserCard;

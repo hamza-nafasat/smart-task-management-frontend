@@ -1,10 +1,34 @@
+<<<<<<< Updated upstream
 import { IoStar } from "react-icons/io5";
 import { MdCancel } from "react-icons/md";
 import { MdOutlineTaskAlt } from "react-icons/md";
+=======
+import { notificationsRows } from "../../../data/data";
+
+const headRows = [
+  {
+    accessorKey: "notificationType",
+    header: "Notification Type",
+  },
+  {
+    accessorKey: "message",
+    header: "Message",
+  },
+  {
+    accessorKey: "time",
+    header: "Time",
+  },
+  {
+    accessorKey: "url",
+    header: "URL",
+  },
+];
+>>>>>>> Stashed changes
 
 const Notifications = () => {
   return (
     <div className="h-[calc(100vh-0px)] p-4">
+<<<<<<< Updated upstream
       <div className="bg-[#eef2f56e] rounded-[10px] h-full p-4">
         <h2 className="text-md lg:text-xl font-semibold border-b border-[#00000010] pb-2">
           Notifications List
@@ -19,6 +43,30 @@ const Notifications = () => {
           <NotificationList iconType='comment' />
           <NotificationList iconType='task' />
         </div>
+=======
+      <div className="bg-[#eef2f56e] rounded-[10px] h-full">
+        <table className="w-full">
+          <thead>
+            <tr className="bg-white">
+              {headRows.map((td, i) => (
+                <td key={i} className="font-medium text-[#2a2a2a] border-b border-[#00000011] text-base p-4">
+                  {td.header}
+                </td>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {notificationsRows.map((row, i) => (
+              <tr key={i} className={`text-[#2a2a2a] ${i % 2 == 0 ? "bg-[#ffffff4f]" : ""}`}>
+                <td className="p-4 border-b border-[#00000011] text-sm">{row.notificationType}</td>
+                <td className="p-4 border-b border-[#00000011] text-sm">{row.message}</td>
+                <td className="p-4 border-b border-[#00000011] text-sm">{row.time}</td>
+                <td className="p-4 border-b border-[#00000011] text-sm">{row.url}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+>>>>>>> Stashed changes
       </div>
     </div>
   );

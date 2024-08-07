@@ -1,5 +1,8 @@
-import { customAxios } from "../../utils/customAxios";
+import { customAxios, customFormAxios } from "../../utils/customAxios";
 import {
+  allUsersFailure,
+  allUsersStart,
+  allUsersSuccess,
   changePasswordFailure,
   changePasswordStart,
   changePasswordSuccess,
@@ -10,12 +13,16 @@ import {
   forgetPasswordStart,
   forgetPasswordSuccess,
   getMyProfileStart,
+  getMyProfileSuccess,
   loginFailure,
   loginStart,
   loginSuccess,
   logoutFailure,
   logoutStart,
   logoutSuccess,
+  registerFailure,
+  registerStart,
+  registerSuccess,
   resetPasswordFailure,
   resetPasswordStart,
   resetPasswordSuccess,
@@ -23,6 +30,20 @@ import {
   updateProfileStart,
   updateProfileSuccess,
 } from "../slices/usersSlices";
+
+// add user action
+// ---------------
+const addUserAction = (formData) => async (dispatch) => {
+  try {
+    dispatch(registerStart());
+    const response = await customFormAxios.post("/users/create", formData);
+    console.log("success while register", response);
+    dispatch(registerSuccess(response.data));
+  } catch (error) {
+    console.log("error while register", error);
+    dispatch(registerFailure(error?.response?.data?.message || "Some Error Occurred While Register"));
+  }
+};
 
 // user login action
 // -----------------
@@ -66,6 +87,20 @@ const firstLoginAction = () => async (dispatch) => {
   }
 };
 
+// get all users action
+// -----------------
+const getAllUsersAction = () => async (dispatch) => {
+  try {
+    dispatch(allUsersStart());
+    const response = await customAxios.get("/users/all-users");
+    console.log("success while get all users", response);
+    dispatch(allUsersSuccess(response.data));
+  } catch (error) {
+    console.log("error while get all users", error);
+    dispatch(allUsersFailure(error?.response?.data?.message || "Some Error Occurred While Get All Users"));
+  }
+};
+
 // forget password action
 // -----------------
 const forgetPasswordAction = (email) => async (dispatch) => {
@@ -84,10 +119,10 @@ const forgetPasswordAction = (email) => async (dispatch) => {
 
 // reset password action
 // -----------------
-const resetPasswordAction = (password, token) => async (dispatch) => {
+const resetPasswordAction = (newPassword, resetToken) => async (dispatch) => {
   try {
     dispatch(resetPasswordStart());
-    const response = await customAxios.put(`/users/reset-password/${token}`, { password });
+    const response = await customAxios.put(`/users/reset-password/${resetToken}`, { newPassword });
     console.log("success while reset password", response);
     dispatch(resetPasswordSuccess(response.data));
   } catch (error) {
@@ -105,6 +140,7 @@ const getMyProfileAction = () => async (dispatch) => {
     dispatch(getMyProfileStart());
     const response = await customAxios.get("/users/my-profile");
     console.log("success while get my profile", response);
+    dispatch(getMyProfileSuccess(response.data));
   } catch (error) {
     console.log("error while get my profile", error);
   }
@@ -147,8 +183,10 @@ export {
   firstLoginAction,
   forgetPasswordAction,
   getMyProfileAction,
+  getAllUsersAction,
   loginAction,
   logoutAction,
   resetPasswordAction,
   updateProfileAction,
+  addUserAction,
 };

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import Input from "../../../components/auth/Input";
 import profileImg from "../../../assets/images/tasks/dp.png";
@@ -10,14 +11,18 @@ const Profile = () => {
   const [imgSrc, setImgSrc] = useState("");
   const [isFormEdited, setIsFormEdited] = useState(false);
   const [formFields, setFormFields] = useState({
-    name: "Asif",
-    userName: "asif",
-    role: "user",
-    email: "asif@gmail.com",
-    position: "Web Developer",
-    gender: "male",
+    name: "name",
+    userName: "username",
+    role: "role",
+    email: "email",
+    position: "position",
+    gender: "gender",
   });
 
+  // handlers
+  // ---------
+
+  const handleFormEdit = () => setIsFormEdited(!isFormEdited);
   const handleFormFields = (e) => {
     const { name, value } = e.target;
     setFormFields({
@@ -25,11 +30,6 @@ const Profile = () => {
       [name]: value,
     });
   };
-
-  const handleFormEdit = () => {
-    setIsFormEdited(!isFormEdited);
-  };
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -41,6 +41,13 @@ const Profile = () => {
     }
   };
 
+  const updateProfileHandler = async () => {
+    console.log(formFields);
+  };
+
+  // useEffect
+  // --------
+
   useEffect(() => {
     if (user) {
       setFormFields({
@@ -51,13 +58,14 @@ const Profile = () => {
         position: user.position,
         gender: user.gender,
       });
+      setImgSrc(user?.image?.url);
     }
   }, [user]);
   return (
     <div className="p-4 h-[calc(100vh-80px)]">
       <div className="p-4 lg:p-6 rounded-lg bg-[#eef2f56e]">
         <h2 className="text-md lg:text-xl font-semibold">My Profile</h2>
-        <form className="grid lg:grid-cols-12 gap-4 xl:gap-8 mt-4 lg:mt-6">
+        <form className="grid lg:grid-cols-12 gap-4 xl:gap-8 mt-4 lg:mt-6" onSubmit={updateProfileHandler}>
           <div className="lg:col-span-9">
             <div className="grid lg:grid-cols-12 gap-4">
               <div className="lg:col-span-6">
@@ -66,7 +74,7 @@ const Profile = () => {
                   type="text"
                   name="name"
                   value={formFields.name}
-                  change={handleFormFields}
+                  onChange={handleFormFields}
                   readOnly={!isFormEdited}
                 />
               </div>
@@ -76,7 +84,7 @@ const Profile = () => {
                   type="text"
                   name="userName"
                   value={formFields.userName}
-                  change={handleFormFields}
+                  onChange={handleFormFields}
                   readOnly={!isFormEdited}
                 />
               </div>
@@ -86,8 +94,8 @@ const Profile = () => {
                   type="text"
                   name="role"
                   value={formFields.role}
-                  change={handleFormFields}
-                  readOnly={!isFormEdited}
+                  onChange={handleFormFields}
+                  readOnly={true}
                 />
               </div>
               <div className="lg:col-span-6">
@@ -96,7 +104,7 @@ const Profile = () => {
                   type="email"
                   name="email"
                   value={formFields.email}
-                  change={handleFormFields}
+                  onChange={handleFormFields}
                   readOnly={!isFormEdited}
                 />
               </div>
@@ -106,8 +114,8 @@ const Profile = () => {
                   type="text"
                   name="position"
                   value={formFields.position}
-                  change={handleFormFields}
-                  readOnly={!isFormEdited}
+                  onChange={handleFormFields}
+                  readOnly={true}
                 />
               </div>
               <div className="lg:col-span-6">
@@ -116,7 +124,7 @@ const Profile = () => {
                   type="text"
                   name="gender"
                   value={formFields.gender}
-                  change={handleFormFields}
+                  onChange={handleFormFields}
                   readOnly={!isFormEdited}
                 />
               </div>

@@ -10,4 +10,12 @@ const customAxios = axios.create({
   withCredentials: true,
 });
 
-export { customAxios };
+const customFormAxios = axios.create({
+  baseURL: `${serverUrl}/api/v1`,
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
+  withCredentials: true,
+});
+
+export { customAxios, customFormAxios };

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit/react";
 
 const initialState = {
   user: null,
+  users: [],
   loading: false,
   error: null,
   message: null,
@@ -34,6 +35,19 @@ const userSlice = createSlice({
       state.message = action.payload.message;
     },
     loginFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // get all users
+    allUsersStart(state) {
+      state.loading = true;
+    },
+    allUsersSuccess(state, action) {
+      state.loading = false;
+      state.users = action.payload.data;
+    },
+    allUsersFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
     },
@@ -143,6 +157,10 @@ export const {
   registerStart,
   registerSuccess,
   registerFailure,
+
+  allUsersStart,
+  allUsersSuccess,
+  allUsersFailure,
 
   loginStart,
   loginFailure,
