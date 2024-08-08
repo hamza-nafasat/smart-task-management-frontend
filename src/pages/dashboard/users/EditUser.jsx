@@ -32,7 +32,7 @@ const EditUser = () => {
       }
     };
     return (
-      <div className="h-[calc(100vh-80px)] p-4">
+      <div className="p-4">
         <div className="p-4 lg:p-6 rounded-lg bg-[#eef2f56e]">
           <h2 className="text-md lg:text-xl font-semibold">Edit User</h2>
           <form className="grid lg:grid-cols-12 gap-4 xl:gap-8 mt-4 lg:mt-6">
@@ -44,7 +44,7 @@ const EditUser = () => {
                     type="text"
                     name="name"
                     value={formFields.name}
-                    change={handleFormFields}
+                    onChange={handleFormFields}
                   />
                 </div>
                 <div className="lg:col-span-6">
@@ -53,7 +53,7 @@ const EditUser = () => {
                     type="text"
                     name="userName"
                     value={formFields.userName}
-                    change={handleFormFields}
+                    onChange={handleFormFields}
                   />
                 </div>
                 <div className="lg:col-span-6">
@@ -62,7 +62,7 @@ const EditUser = () => {
                     type="email"
                     name="email"
                     value={formFields.email}
-                    change={handleFormFields}
+                    onChange={handleFormFields}
                   />
                 </div>
                 <div className="lg:col-span-6">
@@ -71,7 +71,7 @@ const EditUser = () => {
                     type="text"
                     name="position"
                     value={formFields.position}
-                    change={handleFormFields}
+                    onChange={handleFormFields}
                   />
                 </div>
                 <div className="lg:col-span-6">
@@ -80,7 +80,7 @@ const EditUser = () => {
                     type="text"
                     name="gender"
                     value={formFields.gender}
-                    change={handleFormFields}
+                    onChange={handleFormFields}
                   />
                 </div>
               </div>
@@ -95,8 +95,8 @@ const EditUser = () => {
             </div>
             <div className="lg:col-span-9 flex justify-end gap-4">
               <Button
-                height="50px"
-                width="150px"
+                height="h-[50px]"
+                width="w-full md:w-[150px]"
                 bg='#17A2B8'
                 text='Save User'
               ></Button>
@@ -111,7 +111,7 @@ export default EditUser
 
 const ChangeButton = ({ onChange }) => {
     return (
-      <button className="border border-primary rounded-lg cursor-pointer w-full mt-3 px-3 py-3 text-primary text-base font-medium relative">
+      <button className="border border-primary rounded-lg cursor-pointer w-full mt-3 px-3 py-3 text-primary text-sm md:text-base font-medium relative">
         Change
         <input
           type="file"

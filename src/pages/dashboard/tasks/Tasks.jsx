@@ -19,7 +19,7 @@ const Tasks = () => {
 
   return (
     <React.Fragment>
-      <div className="grid lg:grid-cols-3 p-4 md:p-5 gap-4 md:gap-5 relative z-10 h-screen">
+      <div className="grid lg:grid-cols-3 p-4 md:p-5 gap-4 md:gap-5 relative z-10 h-[250vh] lg:h-screen">
         <TaskColumn click={handleOpenModal} title="In Progress">
           <InprogressCard />
           <InprogressCard />

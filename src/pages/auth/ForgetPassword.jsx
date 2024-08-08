@@ -33,7 +33,7 @@ const ForgetPassword = () => {
               required
             />
             <div className="mt-6">
-              <Button disabled={isLoading} type="submit" text="Reset Password" radius="10px" />
+              <Button disabled={isLoading} type="submit" text="Reset Password" height='h-[50px]' radius="10px" />
             </div>
           </form>
         </div>

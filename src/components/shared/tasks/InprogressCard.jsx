@@ -1,10 +1,9 @@
 import React from "react";
-import UserIcon from "../../../assets/svgs/tasks/UserIcon";
-import ThreeDotsIcon from "../../../assets/svgs/tasks/ThreeDotsIcon";
-import CommentIcon from "../../../assets/svgs/tasks/CommentIcon";
-import AttachmentIcon from "../../../assets/svgs/tasks/AttachmentIcon";
-import CheckIcon from "../../../assets/svgs/tasks/CheckIcon";
 import { Link } from "react-router-dom";
+import AttachmentIcon from "../../../assets/svgs/tasks/AttachmentIcon";
+import CommentIcon from "../../../assets/svgs/tasks/CommentIcon";
+import ThreeDotsIcon from "../../../assets/svgs/tasks/ThreeDotsIcon";
+import UserIcon from "../../../assets/svgs/tasks/UserIcon";
 
 const days = [
   {

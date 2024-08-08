@@ -22,6 +22,7 @@ const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const Users = lazy(() => import("./pages/dashboard/users/Users"));
 const AddUser = lazy(() => import("./pages/dashboard/users/AddUser"));
 const EditUser = lazy(() => import("./pages/dashboard/users/EditUser"));
+const FirstLoginChangePassword = lazy(() => import("./pages/auth/FirstLoginChangePassword"));
 
 function App() {
   const dispatch = useDispatch();
@@ -60,6 +61,7 @@ function App() {
         <Route element={<ProtectedRoute onLoginPage={false} />}>
           <Route path="/dashboard" element={<Dashboard />}>
             <Route index element={<Home />} />
+          <Route path="first-login-change-password" element={<FirstLoginChangePassword />} />
             <Route path="notifications" element={<Notifications />} />
             <Route path="tasks" element={<Tasks />} />
             <Route path="tasks/:taskId" element={<DetailPage />} />

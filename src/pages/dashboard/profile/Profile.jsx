@@ -62,12 +62,12 @@ const Profile = () => {
     }
   }, [user]);
   return (
-    <div className="p-4 h-[calc(100vh-80px)]">
+    <div className="p-4">
       <div className="p-4 lg:p-6 rounded-lg bg-[#eef2f56e]">
         <h2 className="text-md lg:text-xl font-semibold">My Profile</h2>
-        <form className="grid lg:grid-cols-12 gap-4 xl:gap-8 mt-4 lg:mt-6" onSubmit={updateProfileHandler}>
+        <form className="grid grid-cols-1 lg:grid-cols-12 gap-4 xl:gap-8 mt-4 lg:mt-6" onSubmit={updateProfileHandler}>
           <div className="lg:col-span-9">
-            <div className="grid lg:grid-cols-12 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
               <div className="lg:col-span-6">
                 <Input
                   label="Name"
@@ -140,15 +140,15 @@ const Profile = () => {
           </div>
           <div className="lg:col-span-9 flex justify-end gap-4">
             <Button
-              height="50px"
-              width="150px"
+              height="h-[40px] md:h-[50px]"
+              width="w-full md:w-[150px]"
               bg={isFormEdited ? "#444444" : "#17A2B8"}
               text={isFormEdited ? "Cancel" : "Edit"}
               click={handleFormEdit}
             ></Button>
-            {isFormEdited && <Button type="submit" height="50px" width="150px" text="Update"></Button>}
-            <Link to="/dashboard/change-password">
-              <Button height="50px" width="200px" text="Change Password" />
+            {isFormEdited && <Button type="submit" height="h-[40px] md:h-[50px]" width="w-full md:w-[150px]" text="Update"></Button>}
+            <Link to="/dashboard/change-password" style={{display:'contents'}}>
+              <Button height="h-[40px] md:h-[50px]" width="w-full md:w-[200px]" text="Change Password" />
             </Link>
           </div>
         </form>

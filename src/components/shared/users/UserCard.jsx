@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const UserCard = ({ user }) => {
   return (
-    <div className="md:col-span-6 lg:col-span-4 bg-[#f8f8f8cc] rounded-lg">
+    <div className="lg:col-span-6 xl:col-span-4 bg-[#f8f8f8cc] rounded-lg">
       <div className="relative p-4">
         <div className="absolute -top-[40px] left-1/2 transform -translate-x-1/2">
           <img
@@ -30,39 +30,39 @@ const UserCard = ({ user }) => {
         </div>
         <div className="mt-3 flex items-center justify-between">
           <div>
-            <p className="text-base text-gray-500 font-light">Name</p>
-            <p className="text-sm text-primary">{user?.name}</p>
+            <p className="text-xs md:text-sm text-gray-500 font-light">Name</p>
+            <p className="text-sm md:text-base text-primary">{user?.name}</p>
           </div>
           <div>
-            <p className="text-base text-gray-500 font-light text-end">Position</p>
-            <p className="text-sm text-primary text-end">{user?.position}</p>
-          </div>
-        </div>
-        <div className="mt-3 flex items-center justify-between">
-          <div>
-            <p className="text-base text-gray-500 font-light">Email</p>
-            <p className="text-sm text-primary">{user?.email}</p>
-          </div>
-          <div>
-            <p className="text-base text-gray-500 font-light text-end">In Progress Tasks</p>
-            <p className="text-sm text-primary text-end">{user?.inProgressTasks}</p>
+            <p className="text-xs md:text-sm text-gray-500 font-light text-end">Position</p>
+            <p className="text-sm md:text-base text-primary text-end">{user?.position}</p>
           </div>
         </div>
         <div className="mt-3 flex items-center justify-between">
           <div>
-            <p className="text-base text-gray-500 font-light">Completed Tasks</p>
-            <p className="text-sm text-primary">{user?.completedTasks}</p>
+            <p className="text-xs md:text-sm text-gray-500 font-light">Email</p>
+            <p className="text-sm md:text-base text-primary">{user?.email}</p>
           </div>
           <div>
-            <p className="text-base text-gray-500 font-light text-end">Scheduled Tasks</p>
-            <p className="text-sm text-primary text-end">{user?.scheduledTasks}</p>
+            <p className="text-xs md:text-sm text-gray-500 font-light text-end">In Progress Tasks</p>
+            <p className="text-sm md:text-base text-primary text-end">{user?.inProgressTasks}</p>
+          </div>
+        </div>
+        <div className="mt-3 flex items-center justify-between">
+          <div>
+            <p className="text-xs md:text-sm text-gray-500 font-light">Completed Tasks</p>
+            <p className="text-sm md:text-base text-primary">{user?.completedTasks}</p>
+          </div>
+          <div>
+            <p className="text-xs md:text-sm text-gray-500 font-light text-end">Scheduled Tasks</p>
+            <p className="text-sm md:text-base text-primary text-end">{user?.scheduledTasks}</p>
           </div>
         </div>
         <div className="flex items-center justify-between gap-4 mt-3">
-          <Link to="/dashboard/edit-user" className="w-full">
-            <Button text="Edit" height="40px" />
+          <Link to="/dashboard/edit-user/jkjj" className="w-full">
+            <Button text="Edit" height="h-[40px]" />
           </Link>
-          <Button text="Delete" height="40px" bg="#9d0707" />
+          <Button text="Delete" height="h-[40px]" bg="#9d0707" />
         </div>
       </div>
     </div>

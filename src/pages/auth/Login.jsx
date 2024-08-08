@@ -94,7 +94,7 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder={"Enter Password"}
               />
-              <div className="absolute right-5 bottom-[20%] cursor-pointer" onClick={handlePasswordActive}>
+              <div className="absolute right-5 bottom-[23%] cursor-pointer" onClick={handlePasswordActive}>
                 {passwordIsActive ? (
                   <IoEye style={{ color: "#a6a6a6", width: "25px" }} />
                 ) : (
@@ -114,6 +114,7 @@ const Login = () => {
               radius="14px"
               size="20px"
               weight="500"
+              height='h-[50px]'
             />
           </form>
           <div className="mt-4 md:mt-[50px] flex justify-end items-end grow">

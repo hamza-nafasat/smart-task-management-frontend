@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Input from "../../components/auth/Input";
 import { IoEye, IoEyeOff } from "react-icons/io5";
+import Input from "../../components/auth/Input";
 import Button from "../../components/shared/button/Button";
 
-const ChangePassword = () => {
+const FirstLoginChangePassword = () => {
   return (
     <div className="p-4 h-screen">
       <div className=" p-4 lg:py-6 bg-[#eef2f56e] rounded-[10px]">
@@ -12,7 +12,6 @@ const ChangePassword = () => {
             Change Password
           </h2>
           <form className="w-full mt-4 lg:mt-6 pb-4">
-            <PasswordInput label="Old Password" name="oldPassword" />
             <PasswordInput label="New Password" name="newPassword" />
             <PasswordInput label="Confirm New Password" name="confirmNewPassword" />
             <div className="mt-6">
@@ -25,7 +24,7 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default FirstLoginChangePassword;
 
 const PasswordInput = ({ label, name }) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);

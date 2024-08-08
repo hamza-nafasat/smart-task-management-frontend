@@ -63,7 +63,7 @@ const Aside = () => {
       }`}
     >
       <div className="absolute right-[5px] cursor-pointer" onClick={handleNavOpen}>
-        <div className={`transition-all duration-500 ${isNavOpen ? "rotate-180" : "rotate-0"}`}>
+        <div className={`hidden md:block transition-all duration-500 ${isNavOpen ? "rotate-180" : "rotate-0"}`}>
           <IoIosArrowBack color="#ffffff" fontSize={20} />
         </div>
       </div>
@@ -71,7 +71,7 @@ const Aside = () => {
         <div className="w-full mb-5 xl:mb-12 flex flex-col items-center justify-center gap-1">
           <img src={logo} alt="logo" className="w-16" />
           <p
-            className={`text-white font-medium text-md transition-all duration-500 ${
+            className={`text-white font-medium text-base md:text-md transition-all duration-500 ${
               isNavOpen ? "opacity-100" : "opacity-0"
             }`}
           >
@@ -89,7 +89,7 @@ const Aside = () => {
                 {page.icon}
               </div>
               <p
-                className={`navbar-title text-base capitalize transition-opacity duration-500 ${
+                className={`navbar-title text-sm md:text-base capitalize transition-opacity duration-500 ${
                   page.title === url ? "text-[#ffffff]" : "text-[#000000]"
                 } ${isNavOpen ? "opacity-100 w-auto" : "opacity-0 w-0"}`}
               >
@@ -104,7 +104,7 @@ const Aside = () => {
           disabled={isLogoutLoading}
           click={logoutHandler}
           text={isNavOpen ? "Logout" : <IoIosLogOut fontSize={20} />}
-          height={isNavOpen ? "50px" : "40px"}
+          height={isNavOpen ? "h-[30px] md:h-[50px]" : "md:h-[40px] h-[30px]"}
         />
       </div>
     </div>

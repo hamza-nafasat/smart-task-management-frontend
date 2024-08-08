@@ -55,13 +55,13 @@ const Header = () => {
 
   return (
     <>
-      <div className="h-[80px] flex items-center justify-between px-4">
+      <div className="pt-6 md:pt-0 h-[80px] flex items-center justify-between px-4">
         <div className="flex flex-col">
-          <p className="text-xs text-white">{dateString}</p>
-          <p className="text-base text-white">{timeString}</p>
+          <p className="text-[8px] md:text-xs text-white">{dateString}</p>
+          <p className="text-[11px] md:text-base text-white">{timeString}</p>
         </div>
-        <h3 className="text-white text-lg md:text-3xl font-bold">Hey, John Doe!</h3>
-        <div className="flex items-center gap-4">
+        <h3 className="text-white text-md md:text-lg lg:text-3xl font-bold">Hey, John Doe!</h3>
+        <div className="flex items-center gap-1 md:gap-4">
           <div className="relative">
             <div className="absolute top-[-2px] right-[-3px] bg-red-700 w-3 h-3 rounded-full flex items-center justify-center text-[10px] font-semibold text-white">
               4
@@ -80,7 +80,7 @@ const Header = () => {
             </div>
           </div>
           <Link to="profile">
-            <img src={profileUrl || Profile} alt="" className="w-[40px] h-[40px] rounded-full object-cover" />
+            <img src={profileUrl || Profile} alt="" className="w-[30px] h-[30px] md:w-[40px] md:h-[40px] rounded-full object-cover" />
           </Link>
         </div>
       </div>
@@ -95,11 +95,11 @@ const FeedbackModal = ({ onclose }) => {
   const [selectedExpression, setSelectedExpression] = useState(null);
   return (
     <div
-      className="fixed inset-0 backdrop-blur-sm drop-shadow-2xl w-full py-4 flex items-center justify-center z-[999] transition-all duration-500"
+      className="fixed inset-0 backdrop-blur-sm drop-shadow-2xl w-full p-4 flex items-center justify-center z-[999] transition-all duration-500"
       onClick={onclose}
     >
       <div
-        className="p-4 bg-white rounded-md w-[220px] md:w-[400px] overflow-y-scroll scrollbar-0"
+        className="p-4 bg-white rounded-md w-full md:w-[400px] overflow-y-scroll scrollbar-0"
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-base font-semibold text-center">Leave a Feedback</h3>
@@ -119,7 +119,7 @@ const FeedbackModal = ({ onclose }) => {
             You selected: <span className="text-lg">{selectedExpression}</span>
           </div>
         )}
-        <Button text="Submit" height="40px" />
+        <Button text="Submit" height="h-[40px]" />
       </div>
     </div>
   );
