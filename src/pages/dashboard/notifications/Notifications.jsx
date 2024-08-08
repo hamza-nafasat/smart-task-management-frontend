@@ -5,7 +5,7 @@ import { MdOutlineTaskAlt } from "react-icons/md";
 
 const Notifications = () => {
   return (
-    <div className="h-[calc(100vh-0px)] p-4">
+    <div className="md:h-[calc(100vh-0px)] p-4">
       <div className="bg-[#eef2f56e] rounded-[10px] h-full p-4">
         <h2 className="text-md lg:text-xl font-semibold border-b border-[#00000010] pb-2">
           Notifications List

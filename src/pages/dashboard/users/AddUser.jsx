@@ -59,7 +59,7 @@ const AddUser = () => {
     return navigate("/dashboard/users");
   };
   return (
-    <div className="p-4">
+    <div className="md:h-screen p-4">
       <div className="p-4 lg:p-6 rounded-lg bg-[#eef2f56e]">
         <div className="flex justify-end">
           <Button text="Import Users" width="w-[130px] md:w-[150px]" height="h-[40px]" />

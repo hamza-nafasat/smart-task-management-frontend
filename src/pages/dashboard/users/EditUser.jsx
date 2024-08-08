@@ -95,7 +95,7 @@ const EditUser = () => {
     }
   }, [singleUser]);
   return (
-    <div className="p-4">
+    <div className="md:h-screen p-4">
       <div className="p-4 lg:p-6 rounded-lg bg-[#eef2f56e]">
         <h2 className="text-md lg:text-xl font-semibold">Edit User</h2>
         <form className="grid lg:grid-cols-12 gap-4 xl:gap-8 mt-4 lg:mt-6" onSubmit={submitHandler}>

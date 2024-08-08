@@ -62,7 +62,7 @@ const Profile = () => {
     }
   }, [user]);
   return (
-    <div className="p-4">
+    <div className="md:h-screen p-4">
       <div className="p-4 lg:p-6 rounded-lg bg-[#eef2f56e]">
         <h2 className="text-md lg:text-xl font-semibold">My Profile</h2>
         <form className="grid grid-cols-1 lg:grid-cols-12 gap-4 xl:gap-8 mt-4 lg:mt-6" onSubmit={updateProfileHandler}>

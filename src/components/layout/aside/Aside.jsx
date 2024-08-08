@@ -62,8 +62,15 @@ const Aside = () => {
         isNavOpen ? "w-[200px]" : "w-[55px]"
       }`}
     >
-      <div className="absolute right-[5px] cursor-pointer" onClick={handleNavOpen}>
-        <div className={`hidden md:block transition-all duration-500 ${isNavOpen ? "rotate-180" : "rotate-0"}`}>
+      <div
+        className="absolute right-[5px] cursor-pointer"
+        onClick={handleNavOpen}
+      >
+        <div
+          className={`hidden md:block transition-all duration-500 ${
+            isNavOpen ? "rotate-180" : "rotate-0"
+          }`}
+        >
           <IoIosArrowBack color="#ffffff" fontSize={20} />
         </div>
       </div>
@@ -79,18 +86,28 @@ const Aside = () => {
           </p>
         </div>
         <div
-          className={`flex flex-col justify-center gap-4 md:gap-5 ${
+          className={`flex flex-col justify-center gap-2 ${
             isNavOpen ? "items-start" : "items-center"
           }`}
         >
           {pages.map((page, i) => (
-            <Link key={i} to={page.link} className="flex items-center gap-2 w-full">
-              <div className="text-[20px]" style={{ color: page.title === url ? "#ffffff" : "#000000" }}>
+            <Link
+              key={i}
+              to={page.link}
+              className={`flex items-center w-full min-w-fit p-2 cursor-pointer transition-all duration-400 ${isNavOpen ? 'gap-2':'gap-[0]'} ${
+                page.title === url ? "bg-white rounded-md" : ""
+              }`}
+            >
+              <div
+                className={`text-[20px] ${
+                  page.title === url ? "text-primary" : "text-white"
+                }`}
+              >
                 {page.icon}
               </div>
               <p
                 className={`navbar-title text-sm md:text-base capitalize transition-opacity duration-500 ${
-                  page.title === url ? "text-[#ffffff]" : "text-[#000000]"
+                  page.title === url ? "text-primary" : "text-white"
                 } ${isNavOpen ? "opacity-100 w-auto" : "opacity-0 w-0"}`}
               >
                 {page.title}
