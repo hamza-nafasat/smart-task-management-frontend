@@ -39,7 +39,7 @@ const days = [
 const InprogressCard = () => {
   return (
     <Link
-      to="/dashboard/task-details"
+      to="/dashboard/tasks/id"
       className="bg-[#f8f8f8cc] rounded-[20px] p-4 lg:p-6 cursor-pointer"
     >
       {/* header */}

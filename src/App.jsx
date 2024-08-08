@@ -45,7 +45,7 @@ function App() {
   }, [dispatch, error, message]);
 
   // use own hook for redirecting user to his page when he refresh
-  usePersistRoute();
+  // usePersistRoute();
   return (
     <Suspense fallback={<Loader />}>
       <Routes>

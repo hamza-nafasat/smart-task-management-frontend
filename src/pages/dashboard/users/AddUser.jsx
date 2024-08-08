@@ -55,10 +55,17 @@ const AddUser = () => {
     <div className="p-4">
       <div className="p-4 lg:p-6 rounded-lg bg-[#eef2f56e]">
         <div className="flex justify-end">
-          <Button text="Import Users" width="w-[130px] md:w-[150px]" height="h-[40px]" />
+          <Button
+            text="Import Users"
+            width="w-[130px] md:w-[150px]"
+            height="h-[40px]"
+          />
         </div>
         <h2 className="text-md lg:text-xl font-semibold mt-3">Add User</h2>
-        <form className="grid lg:grid-cols-12 gap-4 xl:gap-8 mt-4 lg:mt-6" onSubmit={submitHandler}>
+        <form
+          className="grid lg:grid-cols-12 gap-4 xl:gap-8 mt-4 lg:mt-6"
+          onSubmit={submitHandler}
+        >
           <div className="lg:col-span-9">
             <div className="grid lg:grid-cols-12 gap-4">
               <div className="lg:col-span-6">
@@ -98,13 +105,16 @@ const AddUser = () => {
                 />
               </div>
               <div className="lg:col-span-6">
-                <Input
-                  label="Gender"
-                  type="text"
-                  name="gender"
-                  value={formFields.gender}
-                  onChange={handleFormFields}
-                />
+                <label className="text-[#000] text-sm md:text-base mb-2 block">
+                  Gender
+                </label>
+                <select
+                  name=""
+                  className="bg-[#f7fbfe] rounded-[10px] border text-sm md:text-base w-full h-[50px] md:h-[60px] focus:outline-none px-4"
+                >
+                  <option className="p-4 h-10" value="male">Male</option>
+                  <option className="p-4" value="female">Female</option>
+                </select>
               </div>
             </div>
           </div>
@@ -117,7 +127,13 @@ const AddUser = () => {
             <ChangeButton onChange={handleImageChange} />
           </div>
           <div className="lg:col-span-9 flex justify-end gap-4">
-            <Button type="submit" height="h-[50px]" width="w-full md:w-[150px]" bg="#17A2B8" text="Save User"></Button>
+            <Button
+              type="submit"
+              height="h-[50px]"
+              width="w-full md:w-[150px]"
+              bg="#17A2B8"
+              text="Save User"
+            ></Button>
           </div>
         </form>
       </div>
@@ -131,7 +147,11 @@ const ChangeButton = ({ onChange }) => {
   return (
     <button className="border border-primary rounded-lg cursor-pointer w-full mt-3 px-3 py-3 text-primary text-sm md:text-base font-medium relative">
       Change
-      <input type="file" className="absolute inset-0 cursor-pointer opacity-0" onChange={onChange} />
+      <input
+        type="file"
+        className="absolute inset-0 cursor-pointer opacity-0"
+        onChange={onChange}
+      />
     </button>
   );
 };
