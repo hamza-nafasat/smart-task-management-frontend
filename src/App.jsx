@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Loader } from "./components/shared/loader/Loader";
+import usePersistRoute from "./hooks/usePersistRoute";
 import { getMyProfileAction } from "./redux/actions/usersActions";
 import { clearUserError, clearUserMessage } from "./redux/slices/usersSlices";
 import ProtectedRoute from "./utils/ProtectedRoute";

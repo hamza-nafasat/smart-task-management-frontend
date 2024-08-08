@@ -140,9 +140,9 @@ const EditUser = () => {
               <div className="lg:col-span-6">
                 <label className="text-[#000] text-sm md:text-base mb-2 block">Gender</label>
                 <select
+                  name="gender"
                   value={formFields.gender}
                   onChange={handleFormFields}
-                  name=""
                   className="bg-[#f7fbfe] rounded-[10px] border text-sm md:text-base w-full h-[50px] md:h-[60px] focus:outline-none px-4"
                 >
                   <option className="p-4 h-10" value="male">
@@ -153,12 +153,12 @@ const EditUser = () => {
                   </option>
                 </select>
               </div>
-              {/* <div className="lg:col-span-6">
+              <div className="lg:col-span-6">
                 <label className="text-[#000] text-sm md:text-base mb-2 block">Role</label>
                 <select
                   value={formFields.role}
                   onChange={handleFormFields}
-                  name=""
+                  name="role"
                   className="bg-[#f7fbfe] rounded-[10px] border text-sm md:text-base w-full h-[50px] md:h-[60px] focus:outline-none px-4"
                 >
                   <option className="p-4 h-10" value="user">
@@ -168,7 +168,7 @@ const EditUser = () => {
                     Admin
                   </option>
                 </select>
-              </div> */}
+              </div>
             </div>
           </div>
           <div className="lg:col-span-3">

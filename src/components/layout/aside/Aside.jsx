@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { GrTask } from "react-icons/gr";
 import { IoIosArrowBack, IoIosLogOut } from "react-icons/io";
 import { IoNotificationsOutline } from "react-icons/io5";
@@ -9,7 +9,7 @@ import logo from "../../../assets/images/logo.png";
 import { logoutAction } from "../../../redux/actions/usersActions";
 import Button from "../../shared/button/Button";
 
-const pages = [
+let pages = [
   {
     title: "dashboard",
     link: "/dashboard",
@@ -31,11 +31,10 @@ const pages = [
     icon: <TbUserCheck />,
   },
 ];
-
 const Aside = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { message, error } = useSelector((state) => state.users);
+  const { message, error, user } = useSelector((state) => state.users);
   const [isLogoutLoading, setIsLogoutLoading] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(true);
   const location = useLocation();
@@ -56,20 +55,20 @@ const Aside = () => {
     }
   }, [dispatch, message, navigate]);
 
+  // conditionally change user
+  if (user.role !== "admin") {
+    pages = pages.map((page) => page.title !== "users" && { ...page });
+  }
+
   return (
     <div
       className={`p-4 rounded-t-md h-[calc(100vh-0px)] relative flex flex-col justify-between transition-all duration-500 ${
         isNavOpen ? "w-[200px]" : "w-[55px]"
       }`}
     >
-      <div
-        className="absolute right-[5px] cursor-pointer"
-        onClick={handleNavOpen}
-      >
+      <div className="absolute right-[5px] cursor-pointer" onClick={handleNavOpen}>
         <div
-          className={`hidden md:block transition-all duration-500 ${
-            isNavOpen ? "rotate-180" : "rotate-0"
-          }`}
+          className={`hidden md:block transition-all duration-500 ${isNavOpen ? "rotate-180" : "rotate-0"}`}
         >
           <IoIosArrowBack color="#ffffff" fontSize={20} />
         </div>
@@ -85,24 +84,16 @@ const Aside = () => {
             Smart Tasks
           </p>
         </div>
-        <div
-          className={`flex flex-col justify-center gap-2 ${
-            isNavOpen ? "items-start" : "items-center"
-          }`}
-        >
+        <div className={`flex flex-col justify-center gap-2 ${isNavOpen ? "items-start" : "items-center"}`}>
           {pages.map((page, i) => (
             <Link
               key={i}
               to={page.link}
-              className={`flex items-center w-full min-w-fit p-2 cursor-pointer transition-all duration-400 ${isNavOpen ? 'gap-2':'gap-[0]'} ${
-                page.title === url ? "bg-white rounded-md" : ""
-              }`}
+              className={`flex items-center w-full min-w-fit p-2 cursor-pointer transition-all duration-400 ${
+                isNavOpen ? "gap-2" : "gap-[0]"
+              } ${page.title === url ? "bg-white rounded-md" : ""}`}
             >
-              <div
-                className={`text-[20px] ${
-                  page.title === url ? "text-primary" : "text-white"
-                }`}
-              >
+              <div className={`text-[20px] ${page.title === url ? "text-primary" : "text-white"}`}>
                 {page.icon}
               </div>
               <p

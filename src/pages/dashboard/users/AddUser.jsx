@@ -23,11 +23,14 @@ const AddUser = () => {
 
   const handleFormFields = (e) => {
     const { name, value } = e.target;
-    setFormFields({
-      ...formFields,
-      [name]: value,
-    });
+    if (name && value) {
+      setFormFields({
+        ...formFields,
+        [name]: value,
+      });
+    }
   };
+  console.log("form field", formFields);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -50,7 +53,7 @@ const AddUser = () => {
     formData.append("username", formFields.userName);
     formData.append("email", formFields.email);
     formData.append("position", formFields.position);
-    formData.append("gender", "male");
+    formData.append("gender", formFields.gender);
     formData.append("file", image);
     formData.append("password", "12345678");
     await dispatch(addUserAction(formData));
@@ -112,6 +115,9 @@ const AddUser = () => {
                   onChange={handleFormFields}
                   className="bg-[#f7fbfe] rounded-[10px] border text-sm md:text-base w-full h-[50px] md:h-[60px] focus:outline-none px-4"
                 >
+                  <option className="p-4 h-10" value="#">
+                    Select gender
+                  </option>
                   <option className="p-4 h-10" value="male">
                     Male
                   </option>
