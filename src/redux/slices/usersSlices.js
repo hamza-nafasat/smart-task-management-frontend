@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit/react";
 const initialState = {
   user: null,
   users: [],
+  singleUser: null,
   loading: false,
   error: null,
   message: null,
@@ -21,6 +22,48 @@ const userSlice = createSlice({
       state.message = action.payload.message;
     },
     registerFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // get single user
+    getSingleUserStart(state) {
+      state.loading = true;
+    },
+    getSingleUserSuccess(state, action) {
+      state.loading = false;
+      state.singleUser = action.payload.data;
+      state.message = action.payload.message;
+    },
+    getSingleUserFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // edit user by admin
+    // -------------------
+    editUserByAdminStart(state) {
+      state.loading = true;
+    },
+    editUserByAdminSuccess(state, action) {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+    editUserByAdminFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // delete user by admin
+    // -------------------
+    deleteUserByAdminStart(state) {
+      state.loading = true;
+    },
+    deleteUserByAdminSuccess(state, action) {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+    deleteUserByAdminFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
     },
@@ -157,6 +200,18 @@ export const {
   registerStart,
   registerSuccess,
   registerFailure,
+
+  getSingleUserStart,
+  getSingleUserSuccess,
+  getSingleUserFailure,
+
+  editUserByAdminStart,
+  editUserByAdminSuccess,
+  editUserByAdminFailure,
+
+  deleteUserByAdminStart,
+  deleteUserByAdminSuccess,
+  deleteUserByAdminFailure,
 
   allUsersStart,
   allUsersSuccess,

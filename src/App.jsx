@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Loader } from "./components/shared/loader/Loader";
-import usePersistRoute from "./hooks/usePersistRoute";
 import { getMyProfileAction } from "./redux/actions/usersActions";
 import { clearUserError, clearUserMessage } from "./redux/slices/usersSlices";
 import ProtectedRoute from "./utils/ProtectedRoute";
@@ -61,7 +60,7 @@ function App() {
         <Route element={<ProtectedRoute onLoginPage={false} />}>
           <Route path="/dashboard" element={<Dashboard />}>
             <Route index element={<Home />} />
-          <Route path="first-login-change-password" element={<FirstLoginChangePassword />} />
+            <Route path="first-login-change-password" element={<FirstLoginChangePassword />} />
             <Route path="notifications" element={<Notifications />} />
             <Route path="tasks" element={<Tasks />} />
             <Route path="tasks/:taskId" element={<DetailPage />} />

@@ -11,6 +11,7 @@ const Users = () => {
   useEffect(() => {
     dispatch(getAllUsersAction());
   }, [dispatch]);
+
   return (
     <div className="md:h-screen p-4">
       <div className="bg-[#eef2f56e] rounded-[10px] h-full p-4 overflow-y-scroll scrollbar-0">

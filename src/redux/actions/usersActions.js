@@ -6,6 +6,12 @@ import {
   changePasswordFailure,
   changePasswordStart,
   changePasswordSuccess,
+  deleteUserByAdminFailure,
+  deleteUserByAdminStart,
+  deleteUserByAdminSuccess,
+  editUserByAdminFailure,
+  editUserByAdminStart,
+  editUserByAdminSuccess,
   firstLoginFailure,
   firstLoginStart,
   firstLoginSuccess,
@@ -14,6 +20,9 @@ import {
   forgetPasswordSuccess,
   getMyProfileStart,
   getMyProfileSuccess,
+  getSingleUserFailure,
+  getSingleUserStart,
+  getSingleUserSuccess,
   loginFailure,
   loginStart,
   loginSuccess,
@@ -42,6 +51,56 @@ const addUserAction = (formData) => async (dispatch) => {
   } catch (error) {
     console.log("error while register", error);
     dispatch(registerFailure(error?.response?.data?.message || "Some Error Occurred While Register"));
+  }
+};
+
+// edit user action by admin
+// -------------------
+const editUserByAdminAction = (id, formData) => async (dispatch) => {
+  try {
+    dispatch(editUserByAdminStart());
+    const response = await customFormAxios.put(`/users/single/${id}`, formData);
+    console.log("success while edit user by admin", response);
+    dispatch(editUserByAdminSuccess(response.data));
+  } catch (error) {
+    console.log("error while edit user by admin", error);
+    dispatch(
+      editUserByAdminFailure(error?.response?.data?.message || "Some Error Occurred While Edit User By Admin")
+    );
+  }
+};
+
+// get single user
+// ---------------
+const getSingleUserByAdminAction = (id) => async (dispatch) => {
+  try {
+    dispatch(getSingleUserStart());
+    const response = await customAxios.get(`/users/single/${id}`);
+    console.log("success while get single user", response);
+    dispatch(getSingleUserSuccess(response.data));
+  } catch (error) {
+    console.log("error while get single user", error);
+    dispatch(
+      getSingleUserFailure(error?.response?.data?.message || "Some Error Occurred While Get Single User")
+    );
+  }
+};
+
+// delete user by admin action
+// -------------------
+const deleteUserByAdminAction = (id) => async (dispatch) => {
+  try {
+    dispatch(deleteUserByAdminStart());
+    const response = await customAxios.delete(`/users/single/${id}`);
+    console.log("success while delete user by admin", response);
+    dispatch(deleteUserByAdminSuccess(response.data));
+  } catch (error) {
+    console.log("error while delete user by admin", error);
+    dispatch(
+      deleteUserByAdminFailure(
+        error?.response?.data?.message || "Some Error Occurred While Delete User By Admin"
+      )
+    );
   }
 };
 
@@ -189,4 +248,7 @@ export {
   resetPasswordAction,
   updateProfileAction,
   addUserAction,
+  editUserByAdminAction,
+  deleteUserByAdminAction,
+  getSingleUserByAdminAction,
 };

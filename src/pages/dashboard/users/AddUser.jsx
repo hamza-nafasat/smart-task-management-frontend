@@ -1,15 +1,18 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import Input from "../../../components/auth/Input";
-import profileImg from "../../../assets/images/tasks/dp.png";
+import profileImg from "../../../assets/images/profile.png";
 import Button from "../../../components/shared/button/Button";
-import { addUserAction } from "../../../redux/actions/usersActions";
+import { addUserAction, getAllUsersAction } from "../../../redux/actions/usersActions";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const AddUser = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [imgSrc, setImgSrc] = useState("");
   const [image, setImage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [formFields, setFormFields] = useState({
     name: "",
     userName: "",
@@ -39,6 +42,7 @@ const AddUser = () => {
   };
 
   const submitHandler = async (e) => {
+    setIsLoading(true);
     console.log("form field", formFields);
     e.preventDefault();
     const formData = new FormData();
@@ -46,26 +50,22 @@ const AddUser = () => {
     formData.append("username", formFields.userName);
     formData.append("email", formFields.email);
     formData.append("position", formFields.position);
-    formData.append("gender", formFields.gender);
+    formData.append("gender", "male");
     formData.append("file", image);
     formData.append("password", "12345678");
     await dispatch(addUserAction(formData));
+    await dispatch(getAllUsersAction());
+    setIsLoading(true);
+    return navigate("/dashboard/users");
   };
   return (
     <div className="p-4">
       <div className="p-4 lg:p-6 rounded-lg bg-[#eef2f56e]">
         <div className="flex justify-end">
-          <Button
-            text="Import Users"
-            width="w-[130px] md:w-[150px]"
-            height="h-[40px]"
-          />
+          <Button text="Import Users" width="w-[130px] md:w-[150px]" height="h-[40px]" />
         </div>
         <h2 className="text-md lg:text-xl font-semibold mt-3">Add User</h2>
-        <form
-          className="grid lg:grid-cols-12 gap-4 xl:gap-8 mt-4 lg:mt-6"
-          onSubmit={submitHandler}
-        >
+        <form className="grid lg:grid-cols-12 gap-4 xl:gap-8 mt-4 lg:mt-6" onSubmit={submitHandler}>
           <div className="lg:col-span-9">
             <div className="grid lg:grid-cols-12 gap-4">
               <div className="lg:col-span-6">
@@ -105,15 +105,19 @@ const AddUser = () => {
                 />
               </div>
               <div className="lg:col-span-6">
-                <label className="text-[#000] text-sm md:text-base mb-2 block">
-                  Gender
-                </label>
+                <label className="text-[#000] text-sm md:text-base mb-2 block">Gender</label>
                 <select
-                  name=""
+                  name="gender"
+                  value={formFields.gender}
+                  onChange={handleFormFields}
                   className="bg-[#f7fbfe] rounded-[10px] border text-sm md:text-base w-full h-[50px] md:h-[60px] focus:outline-none px-4"
                 >
-                  <option className="p-4 h-10" value="male">Male</option>
-                  <option className="p-4" value="female">Female</option>
+                  <option className="p-4 h-10" value="male">
+                    Male
+                  </option>
+                  <option className="p-4" value="female">
+                    Female
+                  </option>
                 </select>
               </div>
             </div>
@@ -128,6 +132,7 @@ const AddUser = () => {
           </div>
           <div className="lg:col-span-9 flex justify-end gap-4">
             <Button
+              disabled={isLoading}
               type="submit"
               height="h-[50px]"
               width="w-full md:w-[150px]"
@@ -147,11 +152,7 @@ const ChangeButton = ({ onChange }) => {
   return (
     <button className="border border-primary rounded-lg cursor-pointer w-full mt-3 px-3 py-3 text-primary text-sm md:text-base font-medium relative">
       Change
-      <input
-        type="file"
-        className="absolute inset-0 cursor-pointer opacity-0"
-        onChange={onChange}
-      />
+      <input type="file" className="absolute inset-0 cursor-pointer opacity-0" onChange={onChange} />
     </button>
   );
 };

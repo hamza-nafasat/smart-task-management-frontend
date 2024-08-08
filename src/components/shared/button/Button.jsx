@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import React from "react";
 
 const Button = ({
   type = "button",
@@ -28,7 +27,7 @@ const Button = ({
       style={style}
       className={`flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed ${
         width ? width : "w-full"
-      } ${height ? height : "h-50px md:h-[60px]"} ${size ? size: 'text-sm mdtext-md'}`}
+      } ${height ? height : "h-50px md:h-[60px]"} ${size ? size : "text-sm mdtext-md"}`}
       onChange={change}
       onClick={click}
       disabled={disabled}

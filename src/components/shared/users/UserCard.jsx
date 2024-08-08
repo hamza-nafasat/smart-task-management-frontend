@@ -4,8 +4,23 @@ import { IoMdMale } from "react-icons/io";
 import { IoMdFemale } from "react-icons/io";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { deleteUserByAdminAction, getAllUsersAction } from "../../../redux/actions/usersActions";
+import { useState } from "react";
 
 const UserCard = ({ user }) => {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+  const deleteHandler = async () => {
+    setLoading(true);
+    const userId = user?._id;
+    if (!userId) return toast.error("User id not found");
+    await dispatch(deleteUserByAdminAction(userId));
+    await dispatch(getAllUsersAction());
+    setLoading(false);
+  };
   return (
     <div className="lg:col-span-6 xl:col-span-4 bg-[#f8f8f8cc] rounded-lg">
       <div className="relative p-4">
@@ -59,10 +74,10 @@ const UserCard = ({ user }) => {
           </div>
         </div>
         <div className="flex items-center justify-between gap-4 mt-3">
-          <Link to="/dashboard/edit-user/jkjj" className="w-full">
+          <Link to={`/dashboard/edit-user/${user?._id}`} className="w-full">
             <Button text="Edit" height="h-[40px]" />
           </Link>
-          <Button text="Delete" height="h-[40px]" bg="#9d0707" />
+          <Button disabled={loading} click={deleteHandler} text="Delete" height="h-[40px]" bg="#9d0707" />
         </div>
       </div>
     </div>
