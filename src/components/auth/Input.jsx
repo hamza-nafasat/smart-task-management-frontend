@@ -2,7 +2,7 @@
 const Input = ({ label, error, ...rest }) => {
   return (
     <div className="mb-4">
-      <label className="text-[#000] text-sm md:text-base mb-2 block">{label}</label>
+      <label className="text-[#000] text-xs sm:text-sm md:text-base mb-2 block">{label}</label>
       <input
         {...rest}
         className={`bg-[#f7fbfe] border text-sm md:text-base ${

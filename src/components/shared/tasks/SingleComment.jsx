@@ -18,22 +18,22 @@ const SingleComment = () => {
         className="w-7 h-7 rounded-full object-cover border border-primary"
       />
       <div className="flex flex-col gap-4">
-        <h6 className="text-[13px] font-semibold text-[#333333]">Brooklyn</h6>
-        <p className="text-[13px] text-[#4f4f4f]">
+        <h6 className="text-[10px] md:text-[13px] font-semibold text-[#333333]">Brooklyn</h6>
+        <p className="text-[10px] md:text-[13px] text-[#4f4f4f]">
           we are 1 week away from launch! Thank you for every team member for
           their hard work. away from launch! Thank you for every team member for
           their hard work.
         </p>
         <div className="flex items-center gap-4">
-          <p className="text-xs text-[#828282]">2 hours ago</p>
+          <p className="text-[10px] md:text-xs text-[#828282]">2 hours ago</p>
           <p
-            className="text-xs text-primary cursor-pointer"
+            className="text-[10px] md:text-xs text-primary cursor-pointer"
             onClick={handleReplyActive}
           >
             Reply
           </p>
           <p
-            className="text-xs text-primary cursor-pointer"
+            className="text-[10px] md:text-xs text-primary cursor-pointer"
             onClick={handleReplyView}
           >
             View Replies (1)
@@ -64,17 +64,17 @@ const SingleComment = () => {
             className="w-7 h-7 rounded-full object-cover border border-primary"
           />
           <div className="flex flex-col gap-4 xl:basis-[70%]">
-            <h6 className="text-[13px] font-semibold text-[#333333]">
+            <h6 className="text-[10px] md:text-[13px] font-semibold text-[#333333]">
               Brooklyn
             </h6>
-            <p className="text-[13px] text-[#4f4f4f]">
+            <p className="text-[10px] md:text-[13px] text-[#4f4f4f]">
               we are 1 week away from launch! Thank you for every team member
               for their hard work. away from launch! Thank you for every team
               member for their hard work.
             </p>
             <div className="flex items-center gap-4">
-              <p className="text-xs text-[#828282]">2 hours ago</p>
-              <p className="text-xs text-primary cursor-pointer">Reply</p>
+              <p className="text-[10px] md:text-xs text-[#828282]">2 hours ago</p>
+              <p className="text-[10px] md:text-xs text-primary cursor-pointer">Reply</p>
             </div>
           </div>
         </div>

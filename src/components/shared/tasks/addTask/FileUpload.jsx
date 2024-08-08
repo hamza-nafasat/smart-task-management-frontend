@@ -77,7 +77,7 @@ const FileUpload = () => {
             className="hidden"
             id="file-upload"
           />
-          <label htmlFor="file-upload" className="cursor-pointer text-[#828282]">
+          <label htmlFor="file-upload" className="cursor-pointer text-xs sm:text-sm md:text-base text-[#828282]">
             <span className="text-primary font-bold">Choose a file</span> or drag it here
           </label>
         </div>

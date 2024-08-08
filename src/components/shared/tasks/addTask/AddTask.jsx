@@ -35,7 +35,7 @@ const AddTask = () => {
           <input
             name="taskName"
             type="text"
-            className="rounded-[10px] bg-[#00798c0d] h-[54px] focus:outline-none px-4 text-sm text-primary w-full mt-2"
+            className="rounded-[10px] bg-[#00798c0d] h-[45px] md:h-[54px] focus:outline-none px-4 text-sm text-primary w-full mt-2"
           />
         </div>
         <div className="my-4 xl:my-6">
@@ -53,7 +53,7 @@ const AddTask = () => {
           <input
             name="taskName"
             type="text"
-            className="rounded-[10px] bg-[#00798c0d] h-[54px] focus:outline-none px-4 text-sm text-primary w-full mt-2"
+            className="rounded-[10px] bg-[#00798c0d] h-[45px] md:h-[54px] focus:outline-none px-4 text-sm text-primary w-full mt-2"
           />
         </div>
         <div className="my-4 xl:my-6">
@@ -71,7 +71,7 @@ const AddTask = () => {
                 className="border-primary"
                 name="default"
               />
-              <span className="text-base font-medium text-primary">
+              <span className="text-[10px] sm:text-sm md:text-base font-medium text-primary">
                 Default
               </span>
             </div>
@@ -82,7 +82,7 @@ const AddTask = () => {
                 onChange={handleScheduleChange}
                 name="schedule"
               />
-              <span className="text-base font-medium text-primary relative group">
+              <span className="text-[10px] sm:text-sm md:text-base font-medium text-primary relative group">
                 Schedule
                 <span className="absolute left-0 bottom-full mb-2 w-[120px] p-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   Select this to schedule the task
@@ -91,11 +91,17 @@ const AddTask = () => {
             </div>
           </div>
         </div>
-        <div className={`flex items-center justify-between gap-2 my-4 xl:my-6 ${isDefault ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
+        <div
+          className={`flex flex-wrap items-center justify-between gap-2 my-4 xl:my-6 ${
+            isDefault ? "opacity-100" : "opacity-50 pointer-events-none"
+          }`}
+        >
           <div className="w-full">
             <div className="flex items-center gap-2">
               <DateIcon />
-              <h4 className="text-sm text-[#000000d4] font-medium">Date</h4>
+              <h4 className="text-[10px] sm:text-sm text-[#000000d4] font-medium">
+                Date
+              </h4>
             </div>
             <input
               type="date"
@@ -108,7 +114,9 @@ const AddTask = () => {
           <div className="w-full">
             <div className="flex items-center gap-1">
               <TimeIcon />
-              <h4 className="text-sm text-[#000000d4] font-medium">Time</h4>
+              <h4 className="text-[10px] sm:text-sm text-[#000000d4] font-medium">
+                Time
+              </h4>
             </div>
             <input
               type="time"
@@ -119,22 +127,39 @@ const AddTask = () => {
             />
           </div>
         </div>
-        <div className={`flex flex-wrap items-center justify-between gap-2 ${isSchedule ? 'opacity-100' : 'opacity-50 pointer-events-none cursor-not-allowed'}`}>
+        <div
+          className={`flex flex-wrap items-center justify-center md:justify-between gap-4 md:gap-2 ${
+            isSchedule
+              ? "opacity-100"
+              : "opacity-50 pointer-events-none cursor-not-allowed"
+          }`}
+        >
           {weeks.map((week) => (
             <div
               key={week}
               onClick={() => handleWeekClick(week)}
-              className={`flex items-center justify-center rounded-[3px] w-[40px] h-[65px] md:w-[77px] md:h-[93px] cursor-pointer ${activeWeek === week ? 'bg-primary text-white' : 'bg-[#17a2b829] text-black'}`}
+              className={`flex items-center justify-center rounded-[3px] w-[40px] h-[65px] md:w-[77px] md:h-[93px] cursor-pointer text-xs sm:text-sm md:text-base ${
+                activeWeek === week
+                  ? "bg-primary text-white"
+                  : "bg-[#17a2b829] text-black"
+              }`}
             >
               {week}
             </div>
           ))}
         </div>
         <div className="bg-white my-4 xl:my-6 rounded-lg p-4 xl:p-6">
-          <h3 className="text-base font-semibold text-[#333333]">Add Attachment</h3>
+          <h3 className="text-sm sm:text-base font-semibold text-[#333333]">
+            Add Attachment
+          </h3>
           <FileUpload />
         </div>
-        <button type="submit" className="bg-primary rounded-[10px] w-full h-[70px] font-semibold text-white text-base md:text-xl">Create Task</button>
+        <button
+          type="submit"
+          className="bg-primary rounded-[10px] w-full h-[50px] md:h-[70px] font-medium md:font-semibold text-white text-sm md:text-base md:text-xl"
+        >
+          Create Task
+        </button>
       </form>
     </div>
   );
@@ -144,7 +169,7 @@ export default AddTask;
 
 const Label = ({ title }) => {
   return (
-    <label className="text-sm text-[#00000099] font-medium w-full">
+    <label className="text-xs sm:text-sm text-[#00000099] font-medium w-full">
       {title}
     </label>
   );
