@@ -6,11 +6,9 @@ import Button from "../../components/shared/button/Button";
 import { changePasswordAction, getMyProfileAction } from "../../redux/actions/usersActions";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 const ChangePassword = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [isSubmitLoading, setIsSubmitIsLoading] = useState(false);
@@ -30,7 +28,6 @@ const ChangePassword = () => {
       setNewPassword("");
       setConfirmPassword("");
       setIsSubmitIsLoading(false);
-      return navigate("/dashboard/profile");
     } catch (error) {
       setIsSubmitIsLoading(false);
     }
