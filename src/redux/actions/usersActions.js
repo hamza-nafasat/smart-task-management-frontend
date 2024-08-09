@@ -14,7 +14,6 @@ import {
   editUserByAdminSuccess,
   firstLoginFailure,
   firstLoginStart,
-  firstLoginSuccess,
   forgetPasswordFailure,
   forgetPasswordStart,
   forgetPasswordSuccess,
@@ -139,7 +138,6 @@ const firstLoginAction = () => async (dispatch) => {
     dispatch(firstLoginStart());
     const response = await customAxios.get("/users/first-login");
     console.log("success while first login", response);
-    dispatch(firstLoginSuccess(response.data));
   } catch (error) {
     console.log("error while first login", error);
     dispatch(firstLoginFailure(error?.response?.data?.message || "Some Error Occurred While First Login"));
@@ -238,17 +236,17 @@ const changePasswordAction = (oldPassword, newPassword) => async (dispatch) => {
 };
 
 export {
+  addUserAction,
   changePasswordAction,
+  deleteUserByAdminAction,
+  editUserByAdminAction,
   firstLoginAction,
   forgetPasswordAction,
-  getMyProfileAction,
   getAllUsersAction,
+  getMyProfileAction,
+  getSingleUserByAdminAction,
   loginAction,
   logoutAction,
   resetPasswordAction,
   updateProfileAction,
-  addUserAction,
-  editUserByAdminAction,
-  deleteUserByAdminAction,
-  getSingleUserByAdminAction,
 };

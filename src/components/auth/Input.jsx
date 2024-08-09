@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 const Input = ({ label, error, ...rest }) => {
   return (
-    <div className="mb-4">
+    <div className="mb-3">
       <label className="text-[#000] text-xs sm:text-sm md:text-base mb-2 block">{label}</label>
       <input
         {...rest}

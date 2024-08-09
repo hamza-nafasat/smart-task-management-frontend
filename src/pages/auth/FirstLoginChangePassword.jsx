@@ -1,55 +1,136 @@
-import React, { useState } from "react";
-import { IoEye, IoEyeOff } from "react-icons/io5";
+/* eslint-disable react/prop-types */
+import { useState } from "react";
 import Input from "../../components/auth/Input";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 import Button from "../../components/shared/button/Button";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { changePasswordAction, firstLoginAction, getMyProfileAction } from "../../redux/actions/usersActions";
+import { useNavigate } from "react-router-dom";
 
-const FirstLoginChangePassword = () => {
+const ChangePassword = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.users);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [isSubmitLoading, setIsSubmitIsLoading] = useState(false);
+  const [skipIsLoading, setSkipIsLoading] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  if (user && !user.firstLogin) {
+    return navigate("/dashboard");
+  }
+
+  const submitHandler = async (e) => {
+    try {
+      e.preventDefault();
+      setIsSubmitIsLoading(true);
+      if (newPassword !== confirmPassword) return toast.error("Both passwords do not match");
+      await dispatch(changePasswordAction(oldPassword, newPassword));
+      await dispatch(firstLoginAction());
+      await dispatch(getMyProfileAction());
+      setOldPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+      setIsSubmitIsLoading(false);
+      return navigate("/dashboard");
+    } catch (error) {
+      setIsSubmitIsLoading(false);
+    }
+  };
+
+  const skipClickHandler = async () => {
+    setSkipIsLoading(true);
+    try {
+      await dispatch(firstLoginAction());
+      await dispatch(getMyProfileAction());
+      setSkipIsLoading(false);
+      return navigate("/dashboard");
+    } catch (error) {
+      setSkipIsLoading(false);
+    }
+  };
   return (
-    <div className="p-4 h-screen">
-      <div className=" p-4 lg:py-6 bg-[#eef2f56e] rounded-[10px]">
-        <div className="pt-4 lg:w-[50%] mx-auto">
+    <div className="p-2 h-screen">
+      <div className=" p-2 pb-10 lg:py-6 bg-[#eef2f56e] rounded-[10px]">
+        <div className="pt-2 lg:w-[50%] mx-auto">
           <h2 className="text-md lg:text-xl text-center font-semibold">
-            Change Password
+            Change Password on Your First Login
           </h2>
-          <form className="w-full mt-4 lg:mt-6 pb-4">
-            <PasswordInput label="New Password" name="newPassword" />
-            <PasswordInput label="Confirm New Password" name="confirmNewPassword" />
+          <form className="w-full mt-3 lg:mt-4 pb-2" onSubmit={submitHandler}>
+            <PasswordInput
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+              required
+              label="Old Password"
+              name="oldPassword"
+            />
+            <PasswordInput
+              required
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              label="New Password"
+              name="newPassword"
+            />
+            <PasswordInput
+              required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              label="Confirm New Password"
+              name="confirmNewPassword"
+            />
             <div className="mt-6">
-                <Button type="submit" text='Change Password' radius="10px" height='h-[50px]' />
+              <Button
+                disabled={isSubmitLoading}
+                type="submit"
+                text="Change Password"
+                radius="10px"
+                height="h-[50px]"
+              />
             </div>
           </form>
+          <div className="mt-2">
+            <Button
+              disabled={skipIsLoading}
+              click={skipClickHandler}
+              text="Skip This Step"
+              radius="10px"
+              height="h-[45px]"
+            />
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default FirstLoginChangePassword;
+export default ChangePassword;
 
-const PasswordInput = ({ label, name }) => {
-    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  
-    const togglePasswordVisibility = () => {
-      setIsPasswordVisible(!isPasswordVisible);
-    };
-  
-    return (
-      <div className="relative mt-4 md:mt-6">
-        <Input
-          label={label}
-          type={isPasswordVisible ? "text" : "password"}
-          name={name}
-        />
-        <div
-          className="absolute right-5 bottom-[20%] cursor-pointer"
-          onClick={togglePasswordVisibility}
-        >
-          {isPasswordVisible ? (
-            <IoEyeOff style={{ color: "#a6a6a6", width: "25px" }} />
-          ) : (
-            <IoEye style={{ color: "#a6a6a6", width: "25px" }} />
-          )}
-        </div>
-      </div>
-    );
+const PasswordInput = ({ label, name, value, onChange, required = false }) => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
   };
+
+  return (
+    <div className="relative mt-2 md:mt-2">
+      <Input
+        value={value}
+        onChange={onChange}
+        required={required}
+        label={label}
+        type={isPasswordVisible ? "text" : "password"}
+        name={name}
+      />
+      <div className="absolute right-5 bottom-[20%] cursor-pointer" onClick={togglePasswordVisibility}>
+        {isPasswordVisible ? (
+          <IoEyeOff style={{ color: "#a6a6a6", width: "25px" }} />
+        ) : (
+          <IoEye style={{ color: "#a6a6a6", width: "25px" }} />
+        )}
+      </div>
+    </div>
+  );
+};

@@ -1,10 +1,9 @@
 import { lazy, Suspense, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import { Loader } from "./components/shared/loader/Loader";
-import usePersistRoute from "./hooks/usePersistRoute";
 import { getMyProfileAction } from "./redux/actions/usersActions";
 import { clearUserError, clearUserMessage } from "./redux/slices/usersSlices";
 import ProtectedRoute from "./utils/ProtectedRoute";
@@ -25,9 +24,9 @@ const EditUser = lazy(() => import("./pages/dashboard/users/EditUser"));
 const FirstLoginChangePassword = lazy(() => import("./pages/auth/FirstLoginChangePassword"));
 
 function App() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const location = useLocation();
-  const { message, error } = useSelector((state) => state.users);
+  const { message, error, user } = useSelector((state) => state.users);
 
   useEffect(() => {
     dispatch(getMyProfileAction());
@@ -42,10 +41,11 @@ function App() {
       toast.error(error);
       dispatch(clearUserError());
     }
-  }, [dispatch, error, message]);
+    if (user && user?.firstLogin) {
+      return navigate("/dashboard/first-login-change-password");
+    }
+  }, [dispatch, error, message, navigate, user]);
 
-  // use own hook for redirecting user to his page when he refresh
-  // usePersistRoute();
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
