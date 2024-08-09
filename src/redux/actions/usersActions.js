@@ -227,6 +227,9 @@ const changePasswordAction = (oldPassword, newPassword) => async (dispatch) => {
     const response = await customAxios.put("/users/change-password", { oldPassword, newPassword });
     console.log("success while change password", response);
     dispatch(changePasswordSuccess(response.data));
+    if (response.data) {
+      await customAxios.get("/users/first-login");
+    }
   } catch (error) {
     console.log("error while change password", error);
     dispatch(
