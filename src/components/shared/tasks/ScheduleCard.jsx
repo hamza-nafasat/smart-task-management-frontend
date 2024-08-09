@@ -47,9 +47,9 @@ const ScheduleCard = () => {
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-[5px]">
           <UserIcon />
-          <p className="text-[10px] leading-none font-semibold text-[#707070] flex items-center gap-1">
+          <p className="text-[10px] leading-none font-medium md:font-semibold text-[#707070] flex items-center gap-1">
             Assigned By :
-            <span className="font-bold text-primary">Muhammad Zain</span>
+            <span className="font-semibold md:font-bold text-primary">Muhammad Zain</span>
           </p>
         </div>
         <div className="cursor-pointer">
@@ -58,15 +58,15 @@ const ScheduleCard = () => {
       </div>
       <div className="mt-2">
         <h2
-          className='text-[#000] text-[18px] font-semibold'>
+          className='text-[#000] text-base md:text-[18px] font-semibold'>
           Mobile App UI Design
         </h2>
-        <p className="mt-2 text-xs">
+        <p className="mt-2 text-[11px] sm:text-xs">
           Create a design system for a hero section in 2 different variants.
           Create a simple presentation with these components.
         </p>
         <div className="mt-3">
-          <h6 className="text-xs text-primary font-semibold">
+          <h6 className="text-[11px] sm:text-xs text-primary font-medium md:font-semibold">
             Task Will Start
           </h6>
           <div className="mt-3 flex items-center justify-between gap-2">
@@ -75,7 +75,7 @@ const ScheduleCard = () => {
               return (
                 <div
                   key={i}
-                  className={`w-8 h-11 rounded-[2px] text-[11px] flex items-center justify-center cursor-pointer ${
+                  className={`w-8 h-11 rounded-[2px] text-[10px] sm:text-[11px] flex items-center justify-center cursor-pointer ${
                     isDayActive
                       ? "bg-[#17a2b8] text-white"
                       : "bg-[#17a2b829] text-[#000]"

@@ -47,9 +47,9 @@ const FinishedCard = () => {
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-[5px]">
           <UserIcon />
-          <p className="text-[10px] leading-none font-semibold text-[#707070] flex items-center gap-1">
+          <p className="text-[10px] leading-none font-medium md:font-semibold text-[#707070] flex items-center gap-1">
             Assigned By :
-            <span className="font-bold text-primary">Muhammad Zain</span>
+            <span className="font-semibold md:font-bold text-primary">Muhammad Zain</span>
           </p>
         </div>
         <div className="cursor-pointer">
@@ -58,10 +58,10 @@ const FinishedCard = () => {
       </div>
       <div className="mt-2">
         <h2
-          className='line-through text-[#00000066] text-[18px] font-semibold'>
+          className='line-through text-[#00000066] text-base md:text-[18px] font-semibold'>
           Mobile App UI Design
         </h2>
-        <p className="mt-2 text-xs">
+        <p className="mt-2 text-[11px] sm:text-xs">
           Create a design system for a hero section in 2 different variants.
           Create a simple presentation with these components.
         </p>
@@ -69,11 +69,11 @@ const FinishedCard = () => {
           <div className="flex items-center justify-between mt-3">
             <div className="flex items-center gap-1">
               <CheckIcon />
-              <h6 className="text-xs text-[#40a737] font-semibold">
+              <h6 className="text-[11px] sm:text-xs text-[#40a737] font-medium md:font-semibold">
                 Finished 30 mins early
               </h6>
             </div>
-            <p className="text-[11px] text-white px-2 py-1 rounded-full bg-[#40a737]">
+            <p className="text-[10px] sm:text-[11px] text-white px-2 py-1 rounded-full bg-[#40a737]">
               Completed
             </p>
           </div>

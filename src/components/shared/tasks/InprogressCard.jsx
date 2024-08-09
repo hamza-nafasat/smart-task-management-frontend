@@ -46,9 +46,9 @@ const InprogressCard = () => {
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-[5px]">
           <UserIcon />
-          <p className="text-[10px] leading-none font-semibold text-[#707070] flex items-center gap-1">
+          <p className="text-[10px] leading-none font-medium md:font-semibold text-[#707070] flex items-center gap-1">
             Assigned By :
-            <span className="font-bold text-primary">Muhammad Zain</span>
+            <span className="font-semibold md:font-bold text-primary">Muhammad Zain</span>
           </p>
         </div>
         <div className="cursor-pointer">
@@ -57,17 +57,17 @@ const InprogressCard = () => {
       </div>
       <div className="mt-2">
         <h2
-          className='text-[18px] font-semibold text-[#000]'>
+          className='text-base md:text-[18px] font-semibold text-[#000]'>
           Mobile App UI Design
         </h2>
-        <p className="mt-2 text-xs">
+        <p className="mt-2 text-[11px] sm:text-xs">
           Create a design system for a hero section in 2 different variants.
           Create a simple presentation with these components.
         </p>
         <div>
           <div className="flex items-center justify-between mt-3">
-            <h6 className="text-xs text-primary font-semibold">Time Left</h6>
-            <p className="text-xs text-primary">1h 30m 45s</p>
+            <h6 className="text-[11px] sm:text-xs text-primary font-medium md:font-semibold">Time Left</h6>
+            <p className="text-[11px] sm:text-xs text-primary">1h 30m 45s</p>
           </div>
           <div className="mt-4 w-full h-[8px] rounded-[6px] bg-[#17a2b829] relative">
             <div
