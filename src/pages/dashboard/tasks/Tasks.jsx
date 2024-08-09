@@ -15,11 +15,8 @@ const Tasks = () => {
   const [isModal, setIsModal] = useState(false);
   const [activeTab, setActiveTab] = useState("In Progress");
 
-  console.log("tasks", tasks);
-
   const tabHandler = (tab) => {
     setActiveTab(tab);
-    console.log("tab", tab);
   };
 
   const handleOpenModal = () => {
@@ -105,15 +102,13 @@ const Tasks = () => {
       <div className="hidden md:block">
         <div className="grid lg:grid-cols-2 xl:grid-cols-3 p-4 lg:p-5 gap-4 lg:gap-5 relative z-10 h-[250vh] xl:h-screen">
           {activeTab === "In Progress" && (
-            <div className="animate-slideUp">
-              <TaskColumn click={handleOpenModal} title="In Progress">
-                {tasks?.map((task) => {
-                  if (task.status === "in-progress") {
-                    return <InprogressCard key={task._id} task={task} />;
-                  }
-                })}
-              </TaskColumn>
-            </div>
+            <TaskColumn click={handleOpenModal} title="In Progress">
+              {tasks?.map((task) => {
+                if (task.status === "in-progress") {
+                  return <InprogressCard key={task._id} task={task} />;
+                }
+              })}
+            </TaskColumn>
           )}
           <TaskColumn title="Finished">
             {tasks?.map((task) => {
