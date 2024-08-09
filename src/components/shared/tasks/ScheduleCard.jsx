@@ -38,7 +38,10 @@ const days = [
 
 const ScheduleCard = ({ task }) => {
   return (
-    <Link to="/dashboard/task-details" className="bg-[#f8f8f8cc] rounded-[20px] p-4 lg:p-6 cursor-pointer">
+    <Link
+      to={`/dashboard/tasks/${task?._id}`}
+      className="bg-[#f8f8f8cc] rounded-[20px] p-4 lg:p-6 cursor-pointer"
+    >
       {/* header */}
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-[5px]">

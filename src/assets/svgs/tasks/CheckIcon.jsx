@@ -13,9 +13,9 @@ const CheckIcon = () => {
           />
         </g>
         <defs>
-          <clipPathh id="clip0_33_464">
+          <clippathh id="clip0_33_464">
             <rect width="15" height="15" fill="white" transform="translate(0 0.5)" />
-          </clipPathh>
+          </clippathh>
         </defs>
       </svg>
     </>

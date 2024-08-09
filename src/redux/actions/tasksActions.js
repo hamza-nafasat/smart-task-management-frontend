@@ -1,4 +1,4 @@
-import { customAxios } from "../../utils/customAxios";
+import { customAxios, customFormAxios } from "../../utils/customAxios";
 import {
   createNewTaskFailure,
   createNewTaskStart,
@@ -22,7 +22,7 @@ import {
 const createNewTaskAction = (data) => async (dispatch) => {
   try {
     dispatch(createNewTaskStart());
-    const response = await customAxios.post("/tasks/create", data);
+    const response = await customFormAxios.post("/tasks/create", data);
     console.log("success while create new task", response);
     dispatch(createNewTaskSuccess(response.data));
   } catch (error) {
@@ -88,10 +88,10 @@ const deleteSingleTaskAction = (id) => async (dispatch) => {
 // get all tasks action
 // ----------------------
 
-const getAllTasksAction = (status) => async (dispatch) => {
+const getAllTasksAction = () => async (dispatch) => {
   try {
     dispatch(getAllTasksStart());
-    const response = await customAxios.get(`/tasks/all?status=${status}`);
+    const response = await customAxios.get(`/tasks/all`);
     console.log("success while get all tasks", response);
     dispatch(getAllTasksSuccess(response.data));
   } catch (error) {

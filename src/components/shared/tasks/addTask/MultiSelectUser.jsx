@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
 import Select from "react-select";
-import { users } from "../../../../data/data";
 import { components } from "react-select";
 import { IoClose } from "react-icons/io5";
+import { useSelector, useDispatch } from "react-redux";
+import { getAllUsersAction } from "../../../../redux/actions/usersActions";
 
-const MultiSelectUser = () => {
-  const [selectedUsers, setSelectedUsers] = useState([]);
+const MultiSelectUser = ({ selectedUsers, setSelectedUsers }) => {
+  const dispatch = useDispatch();
+  const { users, user: me } = useSelector((state) => state.users);
+  const [usersList, setUsersList] = useState([]);
 
-  const handleUserChange = (selectedUser) => {
-    setSelectedUsers(selectedUser);
+  const handleUserChange = (data) => {
+    // const selectedUserIds = data.map((user) => user.value);
+    setSelectedUsers(data);
   };
 
   const customStyles = {
@@ -46,11 +51,7 @@ const MultiSelectUser = () => {
 
   const MultiValueContainer = ({ children, ...props }) => (
     <components.MultiValueContainer {...props}>
-      <img
-        src={props.data.image}
-        alt={props.data.label}
-        className="w-6 h-6 rounded-full mr-1 object-cover"
-      />
+      <img src={props.data.image} alt={props.data.label} className="w-6 h-6 rounded-full mr-1 object-cover" />
       {children}
     </components.MultiValueContainer>
   );
@@ -61,10 +62,28 @@ const MultiSelectUser = () => {
     </components.MultiValueRemove>
   );
 
+  useEffect(() => {
+    if (users) {
+      let modifiedUsers = users?.map((user) => {
+        return {
+          value: user._id,
+          label: user?.name,
+          image: user?.image?.url,
+        };
+      });
+      modifiedUsers = modifiedUsers?.filter((user) => String(user?.value) != String(me?._id));
+      setUsersList(modifiedUsers);
+    }
+  }, [me._id, users]);
+
+  useEffect(() => {
+    dispatch(getAllUsersAction());
+  }, [dispatch]);
+
   return (
     <div className="mt-2">
       <Select
-        options={users}
+        options={usersList}
         value={selectedUsers}
         onChange={handleUserChange}
         isMulti={true}

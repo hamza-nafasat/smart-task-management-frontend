@@ -1,36 +1,41 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import AddIcon from "../../../assets/svgs/tasks/AddIcon";
+import Button from "../../../components/shared/button/Button";
 import Modal from "../../../components/shared/modal/Modal";
 import AddTask from "../../../components/shared/tasks/addTask/AddTask";
 import FinishedCard from "../../../components/shared/tasks/FinishedCard";
 import InprogressCard from "../../../components/shared/tasks/InprogressCard";
 import ScheduleCard from "../../../components/shared/tasks/ScheduleCard";
 import TaskColumn from "../../../components/shared/tasks/TaskColumn";
-import Button from "../../../components/shared/button/Button";
-import { useDispatch, useSelector } from "react-redux";
 import { getAllTasksAction } from "../../../redux/actions/tasksActions";
-import AddIcon from "../../../assets/svgs/tasks/AddIcon";
+import { clearTaskError, clearTaskMessage } from "../../../redux/slices/tasksSlices";
 
 const Tasks = () => {
   const dispatch = useDispatch();
-  const { tasks } = useSelector((state) => state.tasks);
+  const { tasks, message, error } = useSelector((state) => state.tasks);
   const [isModal, setIsModal] = useState(false);
   const [activeTab, setActiveTab] = useState("In Progress");
 
-  const tabHandler = (tab) => {
-    setActiveTab(tab);
-  };
-
-  const handleOpenModal = () => {
-    setIsModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModal(false);
-  };
+  const tabHandler = (tab) => setActiveTab(tab);
+  const handleOpenModal = () => setIsModal(true);
+  const handleCloseModal = () => setIsModal(false);
 
   useEffect(() => {
     dispatch(getAllTasksAction());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clearTaskError());
+    }
+    if (message) {
+      toast.success(message);
+      dispatch(clearTaskMessage());
+    }
+  }, [dispatch, error, message]);
 
   return (
     <React.Fragment>
@@ -137,7 +142,7 @@ const Tasks = () => {
       </div>
       {isModal && (
         <Modal onClose={handleCloseModal}>
-          <AddTask />
+          <AddTask onClose={handleCloseModal} />
         </Modal>
       )}
     </React.Fragment>

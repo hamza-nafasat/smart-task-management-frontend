@@ -11,9 +11,9 @@ const AlertIcon = () => {
           />
         </g>
         <defs>
-          <clipPathh id="clip0_43_498">
+          <clippathh id="clip0_43_498">
             <rect width="20" height="20" fill="white" />
-          </clipPathh>
+          </clippathh>
         </defs>
       </svg>
     </>
