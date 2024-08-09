@@ -205,10 +205,10 @@ const getMyProfileAction = () => async (dispatch) => {
 
 // update my profile
 // -----------------
-const updateProfileAction = (name, email) => async (dispatch) => {
+const updateProfileAction = (formDate) => async (dispatch) => {
   try {
     dispatch(updateProfileStart());
-    const response = await customAxios.put("/users/me", { name, email });
+    const response = await customFormAxios.put("/users/my-profile", formDate);
     console.log("success while update my profile", response);
     dispatch(updateProfileSuccess(response.data));
   } catch (error) {

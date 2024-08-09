@@ -4,12 +4,16 @@ import Input from "../../../components/auth/Input";
 import profileImg from "../../../assets/images/tasks/dp.png";
 import Button from "../../../components/shared/button/Button";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getMyProfileAction, updateProfileAction } from "../../../redux/actions/usersActions";
 
 const Profile = () => {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
   const [imgSrc, setImgSrc] = useState("");
   const [isFormEdited, setIsFormEdited] = useState(false);
+  const [isUpdateLoading, setIsUpdateLoading] = useState(false);
+  const [image, setImage] = useState("");
   const [formFields, setFormFields] = useState({
     name: "name",
     userName: "username",
@@ -32,6 +36,7 @@ const Profile = () => {
   };
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    setImage(file);
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -41,8 +46,23 @@ const Profile = () => {
     }
   };
 
-  const updateProfileHandler = async () => {
-    console.log(formFields);
+  const updateProfileHandler = async (e) => {
+    try {
+      setIsUpdateLoading(true);
+      e.preventDefault();
+      const { name, userName, email, gender } = formFields;
+      const formData = new FormData();
+      formData.append("name", name);
+      if (userName != user.username) formData.append("username", userName);
+      if (email !== user.email) formData.append("email", email);
+      formData.append("gender", gender);
+      if (image) formData.append("file", image);
+      await dispatch(updateProfileAction(formData));
+      await dispatch(getMyProfileAction());
+      setIsUpdateLoading(false);
+    } catch (error) {
+      setIsUpdateLoading(false);
+    }
   };
 
   // useEffect
@@ -65,7 +85,10 @@ const Profile = () => {
     <div className="md:h-screen p-4">
       <div className="p-4 lg:p-6 rounded-lg bg-[#eef2f56e]">
         <h2 className="text-md lg:text-xl font-semibold">My Profile</h2>
-        <form className="grid grid-cols-1 lg:grid-cols-12 gap-4 xl:gap-8 mt-4 lg:mt-6" onSubmit={updateProfileHandler}>
+        <form
+          className="grid grid-cols-1 lg:grid-cols-12 gap-4 xl:gap-8 mt-4 lg:mt-6"
+          onSubmit={updateProfileHandler}
+        >
           <div className="lg:col-span-9">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
               <div className="lg:col-span-6">
@@ -146,8 +169,17 @@ const Profile = () => {
               text={isFormEdited ? "Cancel" : "Edit"}
               click={handleFormEdit}
             ></Button>
-            {isFormEdited && <Button type="submit" height="h-[40px] md:h-[50px]" width="w-full md:w-[150px]" text="Update"></Button>}
-            <Link to="/dashboard/change-password" style={{display:'contents'}}>
+            {isFormEdited && (
+              <Button
+              disabled={isUpdateLoading}
+                click={updateProfileHandler}
+                type="submit"
+                height="h-[40px] md:h-[50px]"
+                width="w-full md:w-[150px]"
+                text="Update"
+              ></Button>
+            )}
+            <Link to="/dashboard/change-password" style={{ display: "contents" }}>
               <Button height="h-[40px] md:h-[50px]" width="w-full md:w-[200px]" text="Change Password" />
             </Link>
           </div>

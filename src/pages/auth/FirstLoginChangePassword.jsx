@@ -11,16 +11,12 @@ import { useNavigate } from "react-router-dom";
 const ChangePassword = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.users);
+  const { user, message } = useSelector((state) => state.users);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [isSubmitLoading, setIsSubmitIsLoading] = useState(false);
   const [skipIsLoading, setSkipIsLoading] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  if (user && !user.firstLogin) {
-    return navigate("/dashboard");
-  }
 
   const submitHandler = async (e) => {
     try {
