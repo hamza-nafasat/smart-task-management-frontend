@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { cloneElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../../assets/images/logo.png";
@@ -11,33 +11,6 @@ import ProfileIcon from "../../../assets/svgs/aside/ProfileIcon";
 import ReportsIcon from "../../../assets/svgs/aside/ReportsIcon";
 import UsersIcon from "../../../assets/svgs/aside/UsersIcon";
 
-let pages = [
-  {
-    title: "dashboard",
-    link: "/dashboard",
-    icon: <DashboardIcon />,
-  },
-  {
-    title: "notifications",
-    link: "/dashboard/notifications",
-    icon: <NotificationsIcon />,
-  },
-  {
-    title: "profile",
-    link: "/dashboard/profile",
-    icon: <ProfileIcon />,
-  },
-  {
-    title: "reports",
-    link: "/dashboard/reports",
-    icon: <ReportsIcon />,
-  },
-  {
-    title: "users",
-    link: "/dashboard/users",
-    icon: <UsersIcon />,
-  },
-];
 const Aside = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -47,26 +20,54 @@ const Aside = () => {
   const location = useLocation();
   const locationSplit = location.pathname.split("/");
   const url = locationSplit[locationSplit.length - 1];
-
+  console.log(url)
+  
   const handleNavOpen = () => setIsNavOpen(!isNavOpen);
-
+  
   const logoutHandler = async () => {
     setIsLogoutLoading(true);
     await dispatch(logoutAction());
     setIsLogoutLoading(false);
   };
-
+  
   useEffect(() => {
     if (message) {
       return navigate("/login");
     }
   }, [dispatch, message, navigate]);
-
+  
+  let pages = [
+    {
+      title: "dashboard",
+      link: "/dashboard",
+      icon: <DashboardIcon activeLink={url === 'dashboard'} />,
+    },
+    {
+      title: "notifications",
+      link: "/dashboard/notifications",
+      icon: <NotificationsIcon activeLink={url === 'notifications'} />,
+    },
+    {
+      title: "profile",
+      link: "/dashboard/profile",
+      icon: <ProfileIcon activeLink={url === 'profile'} />,
+    },
+    {
+      title: "reports",
+      link: "/dashboard/reports",
+      icon: <ReportsIcon activeLink={url === 'reports'} />,
+    },
+    {
+      title: "users",
+      link: "/dashboard/users",
+      icon: <UsersIcon activeLink={url === 'users'} />,
+    },
+  ];
   // conditionally change user
   if (user.role !== "admin") {
     pages = pages.map((page) => page.title !== "users" && { ...page });
   }
-
+  
   return (
     <div
       className={`p-4 rounded-t-md h-[calc(100vh-0px)] relative flex flex-col justify-between transition-all duration-500 ${
