@@ -33,8 +33,12 @@ const Header = () => {
   const formatDateTime = (date) => {
     const optionsDate = { day: "numeric", month: "short", year: "numeric" };
     const optionsTime = { hour: "numeric", minute: "numeric", hour12: true };
-    const dateString = date.toLocaleString("en-US", optionsDate).replace(/,/g, "");
-    const timeString = date.toLocaleString("en-US", optionsTime).replace("/^0/", "");
+    const dateString = date
+      .toLocaleString("en-US", optionsDate)
+      .replace(/,/g, "");
+    const timeString = date
+      .toLocaleString("en-US", optionsTime)
+      .replace("/^0/", "");
     return { dateString, timeString };
   };
   const { dateString, timeString } = formatDateTime(dateTime);
@@ -60,13 +64,20 @@ const Header = () => {
           <p className="text-[8px] md:text-xs text-white">{dateString}</p>
           <p className="text-[11px] md:text-base text-white">{timeString}</p>
         </div>
-        <h3 className="text-white text-md md:text-lg lg:text-3xl font-bold">Hey, John Doe!</h3>
+        <h3 className="text-white text-md md:text-lg lg:text-3xl font-bold">
+          Hey, John Doe!
+        </h3>
         <div className="flex items-center gap-1 md:gap-4">
           <div className="relative">
             <div className="absolute top-[-2px] right-[-3px] bg-red-700 w-3 h-3 rounded-full flex items-center justify-center text-[10px] font-semibold text-white">
               4
             </div>
-            <IoNotifications cursor="pointer" fontSize={20} color="#fff" onClick={handleNotificationOpen} />
+            <IoNotifications
+              cursor="pointer"
+              fontSize={20}
+              color="#fff"
+              onClick={handleNotificationOpen}
+            />
             <div
               className={`absolute top-[160%] right-[-35%] bg-white rounded-lg drop-shadow-md w-[250px] transition-all duration-400 ${
                 isNotificationOpen ? "opacity-100 z-[999]" : "opacity-0"
@@ -80,7 +91,11 @@ const Header = () => {
             </div>
           </div>
           <Link to="profile">
-            <img src={profileUrl || Profile} alt="" className="w-[30px] h-[30px] md:w-[40px] md:h-[40px] rounded-full object-cover" />
+            <img
+              src={profileUrl || Profile}
+              alt=""
+              className="w-[30px] h-[30px] md:w-[40px] md:h-[40px] rounded-full object-cover"
+            />
           </Link>
         </div>
       </div>
@@ -102,16 +117,20 @@ const FeedbackModal = ({ onclose }) => {
         className="p-4 bg-white rounded-md w-full md:w-[400px] overflow-y-scroll scrollbar-0"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-base font-semibold text-center">Leave a Feedback</h3>
+        <h3 className="text-base font-semibold text-center">
+          Leave a Feedback
+        </h3>
         <div className="my-4 flex items-center justify-between gap-2 px-4">
-          {faceExpressions.map((expression) => (
-            <button
-              key={expression.label}
-              onClick={() => setSelectedExpression(expression.icon)}
-              className="text-[2.5rem] hover:scale-[1.3] transition-all duration-300"
-            >
-              {expression.icon}
-            </button>
+          {faceExpressions.map((expression, i) => (
+            <div className="flex flex-col items-center" key={i}>
+              <button
+                onClick={() => setSelectedExpression(expression.icon)}
+                className="text-[2.5rem] hover:scale-[1.3] transition-all duration-300"
+              >
+                {expression.icon}
+              </button>
+              <p className="text-[10px] text-gray-700">{expression.label}</p>
+            </div>
           ))}
         </div>
         {selectedExpression && (

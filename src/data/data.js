@@ -182,9 +182,9 @@ export  const comments = [
   ];
 
   export const faceExpressions = [
-    { label: '1', icon: '🙁' },
-    { label: '2', icon: '😶' },
-    { label: '3', icon: '😐' },
-    { label: '4', icon: '🙂' },
-    { label: '5', icon: '😊' },
+    { label: 'Very Bad', icon: '🙁' },
+    { label: 'Bad', icon: '😶' },
+    { label: 'Average', icon: '😐' },
+    { label: 'Good', icon: '🙂' },
+    { label: 'Excellent', icon: '😊' },
   ];
