@@ -2,8 +2,6 @@ import React from "react";
 
 const DashboardIcon = ({activeLink}) => {
     const isActive = activeLink ? '#17a2bb':'#fff';
-    console.log('color', isActive);
-    console.log('activelink', activeLink);
   return (
     <>
       <svg

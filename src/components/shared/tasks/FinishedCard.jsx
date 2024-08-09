@@ -24,7 +24,7 @@ const FinishedCard = ({ task }) => {
         </div>
       </div>
       <div className="mt-2">
-        <h2 className="line-through text-[#00000066] text-base md:text-[18px] font-semibold">
+        <h2 className="line-through text-[#00000066] text-base md:text-[18px] font-semibold capitalize">
           {task?.title}
         </h2>
         <p className="mt-2 text-[11px] sm:text-xs">{task?.description}</p>

@@ -64,8 +64,8 @@ const Header = () => {
           <p className="text-[8px] md:text-xs text-white">{dateString}</p>
           <p className="text-[11px] md:text-base text-white">{timeString}</p>
         </div>
-        <h3 className="text-white text-md md:text-lg lg:text-3xl font-medium md:font-bold">
-          Hey, {user.name}!
+        <h3 className="text-white text-md md:text-lg lg:text-2xl font-medium md:font-semibold">
+          Hey,👋 {user.name}!
         </h3>
         <div className="flex items-center gap-2 md:gap-4">
           <div className="relative">

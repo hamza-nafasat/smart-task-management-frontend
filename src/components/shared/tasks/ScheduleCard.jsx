@@ -53,7 +53,7 @@ const ScheduleCard = ({ task }) => {
         </div>
       </div>
       <div className="mt-2">
-        <h2 className="text-[#000] text-base md:text-[18px] font-semibold">{task?.title}</h2>
+        <h2 className="text-[#000] text-base md:text-[18px] font-semibold capitalize">{task?.title}</h2>
         <p className="mt-2 text-[11px] sm:text-xs">{task?.description}</p>
         <div className="mt-3">
           <h6 className="text-[11px] sm:text-xs text-primary font-medium md:font-semibold">

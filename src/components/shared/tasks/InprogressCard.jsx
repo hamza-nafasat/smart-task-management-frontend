@@ -23,7 +23,7 @@ const InprogressCard = ({ task }) => {
         </div>
       </div>
       <div className="mt-2">
-        <h2 className="text-base md:text-[18px] font-semibold text-[#000]">{task?.title}</h2>
+        <h2 className="text-base md:text-[18px] font-semibold text-[#000] capitalize">{task?.title}</h2>
         <p className="mt-2 text-[11px] sm:text-xs">{task?.description}</p>
         <div>
           <div className="flex items-center justify-between mt-3">
