@@ -1,39 +1,41 @@
 import { useEffect, useState } from "react";
-import { GrTask } from "react-icons/gr";
-import { IoIosArrowBack, IoIosLogOut } from "react-icons/io";
-import { IoNotificationsOutline } from "react-icons/io5";
-import { TbUserCheck } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../../assets/images/logo.png";
 import { logoutAction } from "../../../redux/actions/usersActions";
 import Button from "../../shared/button/Button";
+import { IoIosArrowBack, IoIosLogOut } from "react-icons/io";
+import DashboardIcon from "../../../assets/svgs/aside/DashboardIcon";
+import NotificationsIcon from "../../../assets/svgs/aside/NotificationsIcon";
+import ProfileIcon from "../../../assets/svgs/aside/ProfileIcon";
+import ReportsIcon from "../../../assets/svgs/aside/ReportsIcon";
+import UsersIcon from "../../../assets/svgs/aside/UsersIcon";
 
 let pages = [
   {
     title: "dashboard",
     link: "/dashboard",
-    icon: <GrTask />,
+    icon: <DashboardIcon />,
   },
   {
     title: "notifications",
     link: "/dashboard/notifications",
-    icon: <IoNotificationsOutline />,
+    icon: <NotificationsIcon />,
   },
   {
     title: "profile",
     link: "/dashboard/profile",
-    icon: <TbUserCheck />,
+    icon: <ProfileIcon />,
   },
   {
     title: "reports",
     link: "/dashboard/reports",
-    icon: <TbUserCheck />,
+    icon: <ReportsIcon />,
   },
   {
     title: "users",
     link: "/dashboard/users",
-    icon: <TbUserCheck />,
+    icon: <UsersIcon />,
   },
 ];
 const Aside = () => {

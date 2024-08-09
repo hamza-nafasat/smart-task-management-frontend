@@ -114,7 +114,7 @@ const Login = () => {
               radius="14px"
               size="20px"
               weight="500"
-              height='h-[70px]'
+              height='h-[60px]'
             />
           </form>
           <div className="mt-4 md:mt-[50px] flex justify-end items-end grow">
