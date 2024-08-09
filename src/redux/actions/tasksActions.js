@@ -88,10 +88,10 @@ const deleteSingleTaskAction = (id) => async (dispatch) => {
 // get all tasks action
 // ----------------------
 
-const getAllTasksAction = () => async (dispatch) => {
+const getAllTasksAction = (status) => async (dispatch) => {
   try {
     dispatch(getAllTasksStart());
-    const response = await customAxios.get("/tasks/all");
+    const response = await customAxios.get(`/tasks/all?status=${status}`);
     console.log("success while get all tasks", response);
     dispatch(getAllTasksSuccess(response.data));
   } catch (error) {

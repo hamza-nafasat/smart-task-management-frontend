@@ -13,11 +13,10 @@ const UserCard = ({ user }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-  const deleteHandler = async () => {
+  const deleteHandler = async (id) => {
     setLoading(true);
-    const userId = user?._id;
-    if (!userId) return toast.error("User id not found");
-    await dispatch(deleteUserByAdminAction(userId));
+    if (!id) return toast.error("User id not found");
+    await dispatch(deleteUserByAdminAction(id));
     await dispatch(getAllUsersAction());
     setLoading(false);
   };
@@ -77,7 +76,13 @@ const UserCard = ({ user }) => {
           <Link to={`/dashboard/edit-user/${user?._id}`} className="w-full">
             <Button text="Edit" height="h-[40px]" />
           </Link>
-          <Button disabled={loading} click={deleteHandler} text="Delete" height="h-[40px]" bg="#9d0707" />
+          <Button
+            disabled={loading}
+            click={() => deleteHandler(user?._id)}
+            text="Delete"
+            height="h-[40px]"
+            bg="#9d0707"
+          />
         </div>
       </div>
     </div>
