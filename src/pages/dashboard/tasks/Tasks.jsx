@@ -24,6 +24,8 @@ const Tasks = () => {
     setIsModal(false);
   };
 
+  // get all tasks
+
   return (
     <React.Fragment>
       <div className="block md:hidden p-4">
