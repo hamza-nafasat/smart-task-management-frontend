@@ -8,6 +8,7 @@ import TaskColumn from "../../../components/shared/tasks/TaskColumn";
 import Button from "../../../components/shared/button/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllTasksAction } from "../../../redux/actions/tasksActions";
+import AddIcon from "../../../assets/svgs/tasks/AddIcon";
 
 const Tasks = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,14 @@ const Tasks = () => {
 
   return (
     <React.Fragment>
+      <div className="px-4 pt-4">
+        <div className="p-4 bg-[#eef2f56e] rounded-[10px] flex items-center justify-between">
+          <h2 className="text-md lg:text-xl font-semibold">My Tasks</h2>
+          <div className="cursor-pointer" onClick={handleOpenModal}>
+            <AddIcon />
+          </div>
+        </div>
+      </div>
       <div className="block md:hidden p-4">
         <div className="flex items-center gap-4">
           <Button
@@ -102,7 +111,7 @@ const Tasks = () => {
       <div className="hidden md:block">
         <div className="grid lg:grid-cols-2 xl:grid-cols-3 p-4 lg:p-5 gap-4 lg:gap-5 relative z-10 h-[250vh] xl:h-screen">
           {activeTab === "In Progress" && (
-            <TaskColumn click={handleOpenModal} title="In Progress">
+            <TaskColumn title="In Progress">
               {tasks?.map((task) => {
                 if (task.status === "in-progress") {
                   return <InprogressCard key={task._id} task={task} />;

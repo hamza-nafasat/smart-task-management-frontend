@@ -61,11 +61,11 @@ const Header = () => {
     <>
       <div className="pt-6 md:pt-0 h-[80px] flex items-center justify-between px-4">
         <div className="flex flex-col">
-          <p className="text-[8px] md:text-xs text-white">{dateString}</p>
           <p className="text-[11px] md:text-base text-white">{timeString}</p>
+          <p className="text-[8px] md:text-xs text-white">{dateString}</p>
         </div>
-        <h3 className="text-white text-md md:text-lg lg:text-2xl font-medium md:font-semibold">
-          Hey,👋 {user.name}!
+        <h3 className="text-white text-md md:text-lg lg:text-2xl font-medium md:font-semibold flex">
+          Hey<span className="hidden sm:block">🖐</span> {user.name}!
         </h3>
         <div className="flex items-center gap-2 md:gap-4">
           <div className="relative">
