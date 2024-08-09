@@ -26,6 +26,11 @@ let pages = [
     icon: <TbUserCheck />,
   },
   {
+    title: "reports",
+    link: "/dashboard/reports",
+    icon: <TbUserCheck />,
+  },
+  {
     title: "users",
     link: "/dashboard/users",
     icon: <TbUserCheck />,

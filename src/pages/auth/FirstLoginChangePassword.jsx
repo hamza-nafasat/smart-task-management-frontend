@@ -86,17 +86,19 @@ const ChangePassword = () => {
                 type="submit"
                 text="Change Password"
                 radius="10px"
-                height="h-[50px]"
+                height="h-[60px]"
               />
             </div>
           </form>
-          <div className="mt-2">
+          <div className="mt-2 underline">
             <Button
               disabled={skipIsLoading}
               click={skipClickHandler}
               text="Skip This Step"
               radius="10px"
               height="h-[45px]"
+              bg="transparent"
+              color="#000000"
             />
           </div>
         </div>

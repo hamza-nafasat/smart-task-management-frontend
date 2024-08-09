@@ -9,7 +9,6 @@ import { clearUserError, clearUserMessage } from "./redux/slices/usersSlices";
 import ProtectedRoute from "./utils/ProtectedRoute";
 
 const Login = lazy(() => import("./pages/auth/Login"));
-const Home = lazy(() => import("./pages/dashboard/home/Home"));
 const Dashboard = lazy(() => import("./pages/dashboard/index"));
 const Notifications = lazy(() => import("./pages/dashboard/notifications/Notifications"));
 const Tasks = lazy(() => import("./pages/dashboard/tasks/Tasks"));
@@ -21,6 +20,7 @@ const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const Users = lazy(() => import("./pages/dashboard/users/Users"));
 const AddUser = lazy(() => import("./pages/dashboard/users/AddUser"));
 const EditUser = lazy(() => import("./pages/dashboard/users/EditUser"));
+const Reports = lazy(() => import("./pages/dashboard/reports/Reports"));
 const FirstLoginChangePassword = lazy(() => import("./pages/auth/FirstLoginChangePassword"));
 
 function App() {
@@ -60,7 +60,6 @@ function App() {
         {/* Routes for logged-in users */}
         <Route element={<ProtectedRoute onLoginPage={false} />}>
           <Route path="/dashboard" element={<Dashboard />}>
-            <Route index element={<Home />} />
             <Route path="first-login-change-password" element={<FirstLoginChangePassword />} />
             <Route path="notifications" element={<Notifications />} />
             <Route path="tasks" element={<Tasks />} />
@@ -68,6 +67,7 @@ function App() {
             <Route path="profile" element={<Profile />} />
             <Route path="change-password" element={<ChangePassword />} />
             <Route path="users" element={<Users />} />
+            <Route path="reports" element={<Reports />} />
             <Route path="add-user" element={<AddUser />} />
             <Route path="edit-user/:userId" element={<EditUser />} />
           </Route>
