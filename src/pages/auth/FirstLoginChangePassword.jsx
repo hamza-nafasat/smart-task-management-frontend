@@ -1,17 +1,16 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import Input from "../../components/auth/Input";
-import { IoEye, IoEyeOff } from "react-icons/io5";
-import Button from "../../components/shared/button/Button";
 import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
-import { changePasswordAction, firstLoginAction, getMyProfileAction } from "../../redux/actions/usersActions";
+import { IoEye, IoEyeOff } from "react-icons/io5";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Input from "../../components/auth/Input";
+import Button from "../../components/shared/button/Button";
+import { changePasswordAction, firstLoginAction, getMyProfileAction } from "../../redux/actions/usersActions";
 
 const ChangePassword = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user, message } = useSelector((state) => state.users);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [isSubmitLoading, setIsSubmitIsLoading] = useState(false);

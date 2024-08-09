@@ -20,7 +20,10 @@ const ChangePassword = () => {
     try {
       e.preventDefault();
       setIsSubmitIsLoading(true);
-      if (newPassword !== confirmPassword) return toast.error("Both passwords do not match");
+      if (newPassword !== confirmPassword) {
+        setIsSubmitIsLoading(false);
+        return toast.error("Both passwords do not match");
+      }
       await dispatch(changePasswordAction(oldPassword, newPassword));
       await dispatch(getMyProfileAction());
       setOldPassword("");
