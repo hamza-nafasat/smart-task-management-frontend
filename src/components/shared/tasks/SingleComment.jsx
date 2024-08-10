@@ -58,7 +58,7 @@ const SingleComment = ({ comment }) => {
   };
 
   return (
-    <div className="p-[10px] bg-[#016a7a0d] rounded-md flex gap-2 transition-all duration-400">
+    <div className="p-[10px] bg-[#016a7a0d] rounded-md flex gap-2 transition-all duration-1000">
       <img
         src={comment?.user?.image?.url}
         alt="image"
@@ -75,19 +75,20 @@ const SingleComment = ({ comment }) => {
             }`}
             onClick={handleReplyView}
           >
-            Replies
+            {isRepliesComingLoading ? "Loading..." : "Reply"}
           </p>
         </div>
-        {/* single comment replies show here  */}
+        {/* single comment replies  */}
+        {/* ----------------------- */}
         <div
-          className={`bg-[#016a7a0d] w-full rounded-md overflow-hidden transition-all duration-500 ${
-            isReplyViewActive ? "max-h-[500px] p-[10px] opacity-100" : "max-h-0 opacity-0"
+          className={`w-full rounded-md overflow-hidden transition-all duration-1000 ${
+            isReplyViewActive ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
           }`}
           style={{ transitionProperty: "max-height, opacity, padding" }}
         >
           {singleCommentReplies?.length > 0 &&
             singleCommentReplies?.map((reply) => <SingleReply key={reply?._id} reply={reply} />)}
-          {/* add comment reply from here */}
+          {/* add comment reply*/}
           <div className={` w-full overflow-hidden min-h-8 h-8 flex items-center gap-2 `}>
             <input
               type="text"
@@ -115,24 +116,21 @@ export default SingleComment;
 // single reply component
 const SingleReply = ({ reply }) => {
   return (
-    <>
-      <div className="flex gap-2 w-full">
-        <img
-          src={reply?.user.image.url}
-          alt="image"
-          className="w-7 h-7 rounded-full object-cover border border-primary"
-        />
-        <div className="flex flex-col gap-4 xl:basis-[70%]">
-          <h6 className="text-[10px] md:text-[13px] font-semibold text-[#333333]">{reply?.user.name}</h6>
-          <p className="text-[10px] md:text-[13px] text-[#4f4f4f]">{reply?.content}</p>
-          <div className="flex items-center gap-4">
-            <p className="text-[10px] md:text-xs text-[#828282] text-nowrap">
-              {getTimeAgo(new Date(reply?.createdAt))}
-            </p>
-          </div>
+    <div className="flex gap-4 w-full bg-[#016a7a0d] p-3 mb-2">
+      <img
+        src={reply?.user.image.url}
+        alt="image"
+        className="w-7 h-7 rounded-full object-cover border border-primary"
+      />
+      <div className="flex flex-col gap-[4px] xl:basis-[70%]">
+        <h6 className="text-[10px] md:text-[13px] font-semibold text-[#333333]">{reply?.user.name}</h6>
+        <p className="text-[10px] md:text-[13px] text-[#4f4f4f]">{reply?.content}</p>
+        <div className="flex items-center gap-4">
+          <p className="text-[10px] md:text-xs text-[#828282] text-nowrap">
+            {getTimeAgo(new Date(reply?.createdAt))}
+          </p>
         </div>
       </div>
-      <div className="my-4 w-full h-[0.4px] bg-[#00000080]"></div>
-    </>
+    </div>
   );
 };
