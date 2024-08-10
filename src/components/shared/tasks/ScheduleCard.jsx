@@ -2,7 +2,6 @@
 import { Link } from "react-router-dom";
 import AttachmentIcon from "../../../assets/svgs/tasks/AttachmentIcon";
 import CommentIcon from "../../../assets/svgs/tasks/CommentIcon";
-import ThreeDotsIcon from "../../../assets/svgs/tasks/ThreeDotsIcon";
 import UserIcon from "../../../assets/svgs/tasks/UserIcon";
 
 const days = [
@@ -50,9 +49,6 @@ const ScheduleCard = ({ task }) => {
             Assigned By :
             <span className="font-semibold md:font-bold text-primary">{task?.creator?.name}</span>
           </p>
-        </div>
-        <div className="cursor-pointer">
-          <ThreeDotsIcon />
         </div>
       </div>
       <div className="mt-2">

@@ -53,7 +53,12 @@ const AddTask = ({ onClose }) => {
         formData.append("status", "scheduled");
       }
       if (selectedUsers.length > 0) formData.append("assignee", assigneeIds.join(","));
-      if (selectedFiles.length > 0) formData.append("attachments", selectedFiles);
+      if (selectedFiles.length > 0) {
+        console.log("selected Files", selectedFiles);
+        selectedFiles.forEach((file, index) => {
+          formData.append("files", file, `${file.name}<>${index}`);
+        });
+      }
       await dispatch(createNewTaskAction(formData));
       await dispatch(getAllTasksAction());
       setIsLoading(false);

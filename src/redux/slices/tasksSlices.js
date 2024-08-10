@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit/react";
 
 const initialState = {
+  message: null,
   tasks: [],
   singleTask: null,
+  singleTaskComments: [],
+  singleCommentReplies: [],
   loading: false,
   error: null,
-  message: null,
 };
 
 const tasksSlices = createSlice({
@@ -79,6 +81,58 @@ const tasksSlices = createSlice({
       state.error = action.payload;
     },
 
+    // get all comments of a task
+    getSingleTaskCommentsStart(state) {
+      state.loading = true;
+    },
+    getSingleTaskCommentsSuccess(state, action) {
+      state.loading = false;
+      state.singleTaskComments = action.payload.data;
+    },
+    getSingleTaskCommentsFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // add comment in task
+    addCommentStart(state) {
+      state.loading = true;
+    },
+    addCommentSuccess(state, action) {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+    addCommentFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // get single comment replies
+    getCommentRepliesStart(state) {
+      state.loading = true;
+    },
+    getCommentRepliesSuccess(state, action) {
+      state.loading = false;
+      state.singleCommentReplies = action.payload.data;
+    },
+    getCommentRepliesFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // add comment reply
+    addCommentReplyStart(state) {
+      state.loading = true;
+    },
+    addCommentReplySuccess(state, action) {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+    addCommentReplyFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     // clear error and message
     clearTaskError(state) {
       state.error = null;
@@ -114,6 +168,26 @@ export const {
   getAllTasksStart,
   getAllTasksSuccess,
   getAllTasksFailure,
+
+  // get all comments of a task
+  getSingleTaskCommentsStart,
+  getSingleTaskCommentsSuccess,
+  getSingleTaskCommentsFailure,
+
+  // add comment in task
+  addCommentStart,
+  addCommentSuccess,
+  addCommentFailure,
+
+  // get single comment replies
+  getCommentRepliesStart,
+  getCommentRepliesSuccess,
+  getCommentRepliesFailure,
+
+  // add comment reply
+  addCommentReplyStart,
+  addCommentReplySuccess,
+  addCommentReplyFailure,
 
   // clear error and message
   clearTaskError,

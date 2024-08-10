@@ -1,5 +1,11 @@
 import { customAxios, customFormAxios } from "../../utils/customAxios";
 import {
+  addCommentFailure,
+  addCommentReplyFailure,
+  addCommentReplyStart,
+  addCommentReplySuccess,
+  addCommentStart,
+  addCommentSuccess,
   createNewTaskFailure,
   createNewTaskStart,
   createNewTaskSuccess,
@@ -9,6 +15,12 @@ import {
   getAllTasksFailure,
   getAllTasksStart,
   getAllTasksSuccess,
+  getCommentRepliesFailure,
+  getCommentRepliesStart,
+  getCommentRepliesSuccess,
+  getSingleTaskCommentsFailure,
+  getSingleTaskCommentsStart,
+  getSingleTaskCommentsSuccess,
   getSingleTaskFailure,
   getSingleTaskStart,
   getSingleTaskSuccess,
@@ -100,10 +112,85 @@ const getAllTasksAction = () => async (dispatch) => {
   }
 };
 
+// get single task all notifications
+// ---------------------------------
+const getSingleTaskAllCommentsAction = (taskId) => async (dispatch) => {
+  try {
+    dispatch(getSingleTaskCommentsStart());
+    const response = await customAxios.get(`/tasks/comments/all/${taskId}`);
+    console.log("success while get single task", response);
+    dispatch(getSingleTaskCommentsSuccess(response.data));
+    return response.data;
+  } catch (error) {
+    dispatch(
+      getSingleTaskCommentsFailure(
+        error?.response?.data?.message || "Some Error Occurred While Get Single Task"
+      )
+    );
+    console.log("error while get single task", error);
+  }
+};
+
+// add comment in task
+// ----------------------
+const addCommentAction = (taskId, content) => async (dispatch) => {
+  try {
+    dispatch(addCommentStart());
+    const response = await customAxios.post("/tasks/add-comment/create", { taskId, content });
+    console.log("success while add comment in task", response);
+    dispatch(addCommentSuccess(response.data));
+  } catch (error) {
+    console.log("error while add comment in task", error);
+    dispatch(
+      addCommentFailure(error?.response?.data?.message || "Some Error Occurred While Add Comment In Task")
+    );
+  }
+};
+
+// get single comment replies
+// ----------------------
+
+const getCommentRepliesAction = (commentId) => async (dispatch) => {
+  try {
+    dispatch(getCommentRepliesStart());
+    const response = await customAxios.get(`/tasks/replies/all/${commentId}`);
+    console.log("success while get comment replies", response);
+    dispatch(getCommentRepliesSuccess(response.data));
+  } catch (error) {
+    console.log("error while get comment replies", error);
+    dispatch(
+      getCommentRepliesFailure(
+        error?.response?.data?.message || "Some Error Occurred While Get Comment Replies"
+      )
+    );
+  }
+};
+
+// add comment reply
+// ----------------------
+
+const addCommentReplyAction = (commentId, content) => async (dispatch) => {
+  try {
+    dispatch(addCommentReplyStart());
+    const response = await customAxios.post("/tasks/add-reply/create", { commentId, content });
+    console.log("success while add comment reply", response);
+    dispatch(addCommentReplySuccess(response.data));
+  } catch (error) {
+    console.log("error while add comment reply", error);
+    dispatch(
+      addCommentReplyFailure(error?.response?.data?.message || "Some Error Occurred While Add Comment Reply")
+    );
+  }
+};
+
 export {
   createNewTaskAction,
   getSingleTaskAction,
   updateSingleTaskAction,
   deleteSingleTaskAction,
   getAllTasksAction,
+  getSingleTaskAllCommentsAction,
+  addCommentAction,
+  getCommentRepliesAction,
+  addCommentReplyAction,
 };

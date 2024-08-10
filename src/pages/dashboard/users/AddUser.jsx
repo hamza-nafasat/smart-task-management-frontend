@@ -11,7 +11,7 @@ const AddUser = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [imgSrc, setImgSrc] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(profileImg);
   const [isLoading, setIsLoading] = useState(false);
   const [formFields, setFormFields] = useState({
     name: "",

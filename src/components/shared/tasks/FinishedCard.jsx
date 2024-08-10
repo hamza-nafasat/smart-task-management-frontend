@@ -1,11 +1,10 @@
 /* eslint-disable react/prop-types */
-import UserIcon from "../../../assets/svgs/tasks/UserIcon";
-import ThreeDotsIcon from "../../../assets/svgs/tasks/ThreeDotsIcon";
-import CommentIcon from "../../../assets/svgs/tasks/CommentIcon";
+import { Link } from "react-router-dom";
 import AttachmentIcon from "../../../assets/svgs/tasks/AttachmentIcon";
 import CheckIcon from "../../../assets/svgs/tasks/CheckIcon";
-import { Link } from "react-router-dom";
-import { taskTimeLeft } from "../../../utils/taskTimeCalculator";
+import CommentIcon from "../../../assets/svgs/tasks/CommentIcon";
+import UserIcon from "../../../assets/svgs/tasks/UserIcon";
+import { taskTimeLeft } from "../../../utils/formatting";
 
 const FinishedCard = ({ task }) => {
   return (
@@ -21,9 +20,6 @@ const FinishedCard = ({ task }) => {
             Assigned By :
             <span className="font-semibold md:font-bold text-primary">{task?.creator?.name}</span>
           </p>
-        </div>
-        <div className="cursor-pointer">
-          <ThreeDotsIcon />
         </div>
       </div>
       <div className="mt-2">
