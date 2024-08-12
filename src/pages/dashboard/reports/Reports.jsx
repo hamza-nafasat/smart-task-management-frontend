@@ -9,16 +9,16 @@ const columns = [
   {
     name: "User",
     selector: (row) => row.user,
-    width: '18%',
+    width: '12%',
   },
   {
     name: "Task",
     selector: (row) => row.task,
-    width: '20%',
+    width: '15%',
   },
   {
     name: "Date",
-    width: '23%',
+    width: '24%',
     cell: (row) => (
       <div className="flex items-center gap-1">
         <div>
@@ -102,12 +102,12 @@ const columns = [
   },
   {
     name: "Details",
-    width: '10%',
     selector: () => (
       <div className="cursor-pointer">
         <DetailsIcon />
       </div>
     ),
+    width: '13%'
   },
 ];
 

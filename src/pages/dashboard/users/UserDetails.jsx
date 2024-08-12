@@ -25,7 +25,8 @@ const UserDetails = () => {
           </select>
         </div>
         <div className="mt-4 grid lg:grid-cols-2 gap-4">
-          <UserProfileSection />
+          <UserProfileSection userImg={dp} totalRating={23} />
+          <UserPerformanceSec />
         </div>
       </div>
     </div>
@@ -35,15 +36,41 @@ const UserDetails = () => {
 export default UserDetails;
 
 const UserPerformanceSec = () => {
+  return (
+    <div className="bg-white rounded-lg p-4">
+      <p className="text-base font-semibold text-[#414141]">Performance:</p>
+      <div className="flex items-center gap-4 justify-center mt-5">
+        <div className="w-full md:px-8">
+          <RatingList ratingName={'Excellent'} ragings={23} ratingEmoji={'😊'} />
+          <RatingList ratingName={'Good'} ragings={11} ratingEmoji={' 🙂 '} />
+          <RatingList ratingName={'Average'} ragings={29} ratingEmoji={' 😐 '} />
+          <RatingList ratingName={'Bad'} ragings={9} ratingEmoji={' 😶 '} />
+        </div>
+        <div className="w-full md:px-8 flex justify-center">
+            chart
+        </div>
+      </div>
+    </div>
+  );
+};
 
+const RatingList = ({ratingName, ragings, ratingEmoji}) => {
+  return (
+      <div className="flex items-center gap-4">
+          <p className="text-base font-semibold text-[#41414199] basis-[50%]">{ratingName}:</p>
+          <p className="flex items-center gap-1 text-base font-semibold text-[#414141] basis-[48%]">
+            <p className="text-2xl">{ratingEmoji}</p>{ragings}
+          </p>
+        </div>
+  )
 }
 
-const UserProfileSection = ({userImg, ratings, totalRating, user}) => {
+const UserProfileSection = ({ userImg, ratings, totalRating, user }) => {
   return (
     <div className="bg-white p-4 rounded-lg flex items-center gap-6">
       <div className="flex flex-col items-center gap-2">
         <img
-          src={dp}
+          src={userImg}
           alt="profile"
           className="w-[160px] h-[160px] rounded-full object-cover border-2 border-[#17a2b8]"
         />
@@ -54,7 +81,9 @@ const UserProfileSection = ({userImg, ratings, totalRating, user}) => {
           <FaStar color="#c8a21a" fontSize={24} />
           <FaStar color="#00000073" fontSize={24} />
         </div>
-        <p className="text-sm font-bold text-[#242222cc]">214 Rates</p>
+        <p className="text-sm font-bold text-[#242222cc]">
+          {totalRating} Rates
+        </p>
       </div>
       <div className="flex-1">
         <table className="w-full">
@@ -64,9 +93,7 @@ const UserProfileSection = ({userImg, ratings, totalRating, user}) => {
                 <p className="text-sm text-[#41414199]">Name:</p>
               </td>
               <td className="basis-[60%]">
-                <p className="text-sm font-semibold text-[#242222cc]">
-                  Zain
-                </p>
+                <p className="text-sm font-semibold text-[#242222cc]">Zain</p>
               </td>
             </tr>
             <tr className="flex items-center justify-between gap-4">
@@ -75,7 +102,7 @@ const UserProfileSection = ({userImg, ratings, totalRating, user}) => {
               </td>
               <td className="basis-[60%]">
                 <p className="text-sm font-semibold text-[#242222cc]">
-                Zain@645
+                  Zain@645
                 </p>
               </td>
             </tr>
@@ -84,9 +111,7 @@ const UserProfileSection = ({userImg, ratings, totalRating, user}) => {
                 <p className="text-sm text-[#41414199]">Gender:</p>
               </td>
               <td className="basis-[60%]">
-                <p className="text-sm font-semibold text-[#242222cc]">
-                Male
-                </p>
+                <p className="text-sm font-semibold text-[#242222cc]">Male</p>
               </td>
             </tr>
             <tr className="flex items-center justify-between gap-4">
@@ -95,7 +120,7 @@ const UserProfileSection = ({userImg, ratings, totalRating, user}) => {
               </td>
               <td className="basis-[60%]">
                 <p className="text-sm font-semibold text-[#242222cc]">
-                zain1215@gmail.com
+                  zain1215@gmail.com
                 </p>
               </td>
             </tr>
@@ -105,7 +130,7 @@ const UserProfileSection = ({userImg, ratings, totalRating, user}) => {
               </td>
               <td className="basis-[60%]">
                 <p className="text-sm font-semibold text-[#242222cc]">
-                UI/UX Designer  
+                  UI/UX Designer
                 </p>
               </td>
             </tr>
