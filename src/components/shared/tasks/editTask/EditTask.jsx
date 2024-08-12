@@ -1,14 +1,18 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import DateIcon from "../../../../assets/svgs/modal/DateIcon";
-import FileUpload from "./FileUpload";
-import MultiSelectUser from "./MultiSelectUser";
+import FileUpload from "../addTask/FileUpload";
+import MultiSelectUser from "../addTask/MultiSelectUser";
+import { getSingleTaskAction } from "../../../../redux/actions/tasksActions";
+import { formatDateForInput } from "../../../../utils/features";
 
-const weeks = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const weeks = ["mon", "tue", "wed", "thu", "fru", "sat", "sun"];
 
-const EditTask = ({ onClose }) => {
+const EditTask = ({ onClose, taskId }) => {
   const dispatch = useDispatch();
+  const { singleTask } = useSelector((state) => state.tasks);
+  const { user: me } = useSelector((state) => state.users);
   const [isDefault, setIsDefault] = useState(true);
   const [isSchedule, setIsSchedule] = useState(false);
   const [activeWeek, setActiveWeek] = useState(null);
@@ -35,6 +39,66 @@ const EditTask = ({ onClose }) => {
       setActiveWeek(week);
     }
   };
+
+  const updateTaskHandler = async (e) => {
+    const assigneeIds = selectedUsers.map((user) => user.value);
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      e.preventDefault();
+      const formData = new FormData();
+      if (title) formData.append("title", title);
+      if (description) formData.append("description", description);
+      if (startDate && !isSchedule) formData.append("startDate", startDate);
+      if (endDate && !isSchedule) formData.append("endDate", endDate);
+      if (isSchedule && activeWeek) {
+        formData.append("onDay", activeWeek);
+        formData.append("status", "scheduled");
+      }
+      if (selectedUsers.length > 0) formData.append("assignee", assigneeIds);
+      else formData.append("assignee", "removed");
+
+      console.log("formData", endDate);
+      // await dispatch(createNewTaskAction(formData));
+      // await dispatch(getAllTasksAction());
+      onClose();
+    } catch (error) {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (taskId) {
+      dispatch(getSingleTaskAction(taskId));
+    }
+  }, [dispatch, taskId]);
+  //   make the data of edit
+  useEffect(() => {
+    if (singleTask) {
+      setTitle(singleTask?.title);
+      setDescription(singleTask?.description);
+      setStartDate(formatDateForInput(singleTask?.startDate));
+      setEndDate(formatDateForInput(singleTask?.endDate));
+      setSelectedFiles(singleTask?.files);
+
+      if (singleTask?.onDay) {
+        setActiveWeek(singleTask?.onDay);
+        setIsSchedule(true);
+        setIsDefault(false);
+      }
+      if (singleTask?.assignee) {
+        let modifiedUsers = singleTask?.assignee?.map((user) => {
+          return {
+            value: user._id,
+            label: user?.name,
+            image: user?.image?.url,
+          };
+        });
+        modifiedUsers = modifiedUsers?.filter((user) => String(user?.value) != String(me?._id));
+        setSelectedUsers(modifiedUsers);
+      }
+    }
+  }, [me?._id, singleTask]);
 
   return (
     <div className="mt-4 xl:mt-8">
@@ -139,20 +203,21 @@ const EditTask = ({ onClose }) => {
                 activeWeek === week ? "bg-primary text-white" : "bg-[#17a2b829] text-black"
               }`}
             >
-              {week}
+              {week.toUpperCase()}
             </div>
           ))}
         </div>
-        <div className="bg-white my-4 xl:my-6 rounded-lg p-4 xl:p-6">
+        {/* <div className="bg-white my-4 xl:my-6 rounded-lg p-4 xl:p-6">
           <h3 className="text-sm sm:text-base font-semibold text-[#333333]">Add Attachment</h3>
           <FileUpload selectedFile={selectedFiles} setSelectedFile={setSelectedFiles} />
-        </div>
+        </div> */}
         <button
+          onClick={updateTaskHandler}
           disabled={isLoading}
           type="submit"
           className="bg-primary rounded-[10px] disabled:cursor-not-allowed disabled:opacity-50 w-full h-[50px] md:h-[70px] font-medium md:font-semibold text-white text-sm md:text-xl"
         >
-          Create Task
+          Update Task
         </button>
       </form>
     </div>

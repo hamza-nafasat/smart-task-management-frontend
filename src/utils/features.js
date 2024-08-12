@@ -40,4 +40,10 @@ const isToday = (day, isReturn = false) => {
   }
 };
 
-export { generateCloudinaryDownloadUrl, handleDownloadAll, isToday };
+const formatDateForInput = (dateString) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  const isoString = date.toISOString();
+  return isoString.slice(0, 16);
+};
+export { generateCloudinaryDownloadUrl, handleDownloadAll, isToday, formatDateForInput };
