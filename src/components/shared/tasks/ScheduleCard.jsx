@@ -6,32 +6,25 @@ import UserIcon from "../../../assets/svgs/tasks/UserIcon";
 
 const days = [
   {
-    day: "Mon",
-    isActive: false,
+    day: "mon",
   },
   {
-    day: "Tue",
-    isActive: false,
+    day: "tue",
   },
   {
-    day: "Wed",
-    isActive: true,
+    day: "wed",
   },
   {
-    day: "Thu",
-    isActive: false,
+    day: "thu",
   },
   {
-    day: "Fri",
-    isActive: false,
+    day: "fri",
   },
   {
-    day: "Sat",
-    isActive: false,
+    day: "sat",
   },
   {
-    day: "Sun",
-    isActive: false,
+    day: "sun",
   },
 ];
 
@@ -60,7 +53,7 @@ const ScheduleCard = ({ task }) => {
           </h6>
           <div className="mt-3 flex items-center justify-between gap-2">
             {days.map((day, i) => {
-              const isDayActive = day.isActive === true;
+              const isDayActive = task.onDay == day.day;
               return (
                 <div
                   key={i}
@@ -68,7 +61,7 @@ const ScheduleCard = ({ task }) => {
                     isDayActive ? "bg-[#17a2b8] text-white" : "bg-[#17a2b829] text-[#000]"
                   }`}
                 >
-                  {day.day}
+                  {day.day.toUpperCase()}
                 </div>
               );
             })}

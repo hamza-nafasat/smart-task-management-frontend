@@ -28,4 +28,16 @@ const handleDownloadAll = async (attachments) => {
   }
 };
 
-export { generateCloudinaryDownloadUrl, handleDownloadAll };
+const isToday = (day, isReturn = false) => {
+  const daysOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+  const fullDaysOfWeek = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+  const today = new Date().getDay();
+  const dayLowerCase = day.toLowerCase();
+  if (isReturn) {
+    return daysOfWeek[today] === dayLowerCase ? fullDaysOfWeek[today] : fullDaysOfWeek[today];
+  } else {
+    return daysOfWeek[today] === dayLowerCase ? true : false;
+  }
+};
+
+export { generateCloudinaryDownloadUrl, handleDownloadAll, isToday };

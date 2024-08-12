@@ -1,12 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { IoTrashOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AlertIcon from "../../../assets/svgs/tasks/AlertIcon";
 import EditIcon from "../../../assets/svgs/tasks/EditIcon";
 import TimeIcon from "../../../assets/svgs/tasks/TimeIcon";
 import UsersIcon from "../../../assets/svgs/tasks/UsersIcon";
 import WatchIcon from "../../../assets/svgs/tasks/WatchIcon";
-import { getSingleTaskAction, getSingleTaskAllCommentsAction } from "../../../redux/actions/tasksActions";
+import {
+  deleteSingleTaskAction,
+  getSingleTaskAction,
+  getSingleTaskAllCommentsAction,
+} from "../../../redux/actions/tasksActions";
+import { isToday } from "../../../utils/features";
 import { isTaskEndTimeEnded, taskTimeLeft } from "../../../utils/formatting";
 import Activity from "./Activity";
 import Comments from "./Comments";
@@ -14,9 +21,35 @@ import TaskAttachments from "./TaskAttachments";
 
 const TaskDetail = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const taskId = params?.taskId;
   const dispatch = useDispatch();
-  const { singleTask, singleTaskComments } = useSelector((state) => state.tasks);
+  const [isDelLoading, setIsDelLoading] = useState(false);
+  const { singleTask, singleTaskComments, message } = useSelector((state) => state.tasks);
+
+  const taskDetailsDeleteHandler = async (taskId) => {
+    // confirmAlert({
+    // title: "Confirm delete",
+    // message: "Are you sure you want to delete this Task?",
+    // closeOnClickOutside: false,
+    // buttons: [
+    //   {
+    //     label: "Yes",
+    //     onClick: async () => {
+    setIsDelLoading(true);
+    if (!taskId) toast.error("Task Id No Found");
+    await dispatch(deleteSingleTaskAction(taskId));
+    setIsDelLoading(false);
+    // return navigate("/dashboard");
+    //       },
+    //     },
+    //     {
+    //       label: "No",
+    //       onClick: () => toast.info("Delete action cancelled", { autoClose: 2000 }),
+    //     },
+    //   ],
+    // });
+  };
 
   useEffect(() => {
     if (taskId) {
@@ -24,6 +57,9 @@ const TaskDetail = () => {
       dispatch(getSingleTaskAllCommentsAction(taskId));
     }
   }, [dispatch, taskId]);
+  useEffect(() => {
+    if (message) return navigate("/dashboard");
+  }, [message, navigate]);
 
   return (
     <div className="p-4 md:p-5 relative z-10">
@@ -31,8 +67,16 @@ const TaskDetail = () => {
         <div className="flex items-center justify-between">
           <h2 className="text-sm md:text-base font-semibold">Task Detail</h2>
           <div className="flex items-center gap-3 md:gap-4">
-            <div className="cursor-pointer">
+            <div className="cursor-pointer ">
               <EditIcon />
+            </div>
+            <div
+              className={`${
+                isDelLoading ? "cursor-not-allowed opacity-50" : "cursor-pointer opacity-100"
+              } text-[#fa2121] text-2xl `}
+              onClick={() => taskDetailsDeleteHandler(singleTask?._id)}
+            >
+              <IoTrashOutline />
             </div>
             <p className="bg-[#ff9500] text-xs md:text-base p-3 rounded-[10px] text-white">
               {singleTask?.status}
@@ -40,24 +84,43 @@ const TaskDetail = () => {
           </div>
         </div>
         <div className="mt-4 md:mt-5 bg-[#f8f8f8cc] rounded-[10px] px-2 md:px-4 xl:px-6 py-6 xl:py-8">
-          <div className="flex items-center justify-between gap-1">
-            {isTaskEndTimeEnded(singleTask?.endDate) ? (
-              <div className="flex items-center gap-1 bg-[#ffdada] px-2 py-2 md:py-[6px] md:px-[10px] rounded-md text-[10px] sm:text-sm md:text-base font-medium md:font-semibold text-[#ff5b5b]">
-                <AlertIcon />
-                Task Is Overdued
-              </div>
-            ) : (
-              <div className="flex items-center gap-1 bg-[#93f8fcb6] px-2 py-2 md:py-[6px] md:px-[10px] rounded-md text-[10px] sm:text-sm md:text-base font-medium md:font-semibold text-[#336699]">
-                <WatchIcon color="#336699" width={18} height={18} />
-                Task is on time
-              </div>
-            )}
+          {/* task date showing part on top  */}
+          {singleTask?.status !== "scheduled" ? (
+            // for in progress and completed
+            <div className="flex items-center justify-between gap-1">
+              {isTaskEndTimeEnded(singleTask?.endDate) ? (
+                <div className="flex items-center gap-1 bg-[#ffdada] px-2 py-2 md:py-[6px] md:px-[10px] rounded-md text-[10px] sm:text-sm md:text-base font-medium md:font-semibold text-[#ff5b5b]">
+                  <AlertIcon />
+                  Task Is Overdued
+                </div>
+              ) : (
+                <div className="flex items-center gap-1 bg-[#93f8fcb6] px-2 py-2 md:py-[6px] md:px-[10px] rounded-md text-[10px] sm:text-sm md:text-base font-medium md:font-semibold text-[#336699]">
+                  <WatchIcon color="#336699" width={18} height={18} />
+                  Task is on time
+                </div>
+              )}
 
-            <div className="flex items-center gap-1 bg-[#00677717] px-2 py-2 md:py-[6px] md:px-[10px] rounded-md text-[10px] sm:text-sm md:text-base font-medium md:font-semibold text-primary">
-              <TimeIcon />
-              <span>{taskTimeLeft(singleTask?.endDate, singleTask?.status)}</span>
+              <div className="flex items-center gap-1 bg-[#00677717] px-2 py-2 md:py-[6px] md:px-[10px] rounded-md text-[10px] sm:text-sm md:text-base font-medium md:font-semibold text-primary">
+                <TimeIcon />
+                <span>{taskTimeLeft(singleTask?.endDate, singleTask?.status)}</span>
+              </div>
             </div>
-          </div>
+          ) : (
+            // for scheduled
+            <div className="flex items-center justify-between gap-1">
+              {isToday(singleTask?.onDay?.toLowerCase()) ? (
+                <div className="flex items-center gap-1 bg-[#37c913] px-2 py-2 md:py-[6px] md:px-[10px] rounded-md text-[10px] sm:text-sm md:text-base font-medium md:font-semibold text-[#f4f7f3]">
+                  Complete this task today
+                </div>
+              ) : (
+                <div className="flex items-center gap-1 bg-[#93f8fcb6] px-2 py-2 md:py-[6px] md:px-[10px] rounded-md text-[10px] sm:text-sm md:text-base font-medium md:font-semibold text-[#336699]">
+                  Task Start&apos;s on {isToday(singleTask?.onDay, true)}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* details of task  */}
           <div className="grid grid-cols-12 gap-4 xl:gap-8 mt-3">
             <div className="col-span-12 lg:col-span-7">
               <h2 className="text-base md:text-lg xl:text-2xl font-semibold">{singleTask?.title}</h2>
@@ -79,7 +142,9 @@ const TaskDetail = () => {
                     <div className="text-[10px] md:text-xs">Due Date</div>
                   </div>
                   <div className="text-[10px] md:text-xs font-semibold text-primary pl-1">
-                    {singleTask?.endDate?.split("T")[0]?.split("-").reverse().join("-")}
+                    {singleTask?.status !== "scheduled"
+                      ? singleTask?.endDate?.split("T")[0]?.split("-").reverse().join("-")
+                      : "only today"}
                   </div>
                 </div>
                 <div className="flex items-center gap-[2px]">
@@ -91,7 +156,7 @@ const TaskDetail = () => {
                     {singleTask?.assignee?.map((assignee, i) => (
                       <div key={i} className="flex items-center gap-1 bg-primary px-1 py-[6px] rounded-md">
                         <img
-                          src={assignee.image.url}
+                          src={assignee?.image.url}
                           alt="profile image"
                           className="w-4 h-4 md:w-6 md:h-6 rounded-full object-cover"
                         />

@@ -3,13 +3,15 @@ import App from "./App.jsx";
 import { Provider } from "react-redux";
 import store from "./redux/store/store.js";
 import { BrowserRouter } from "react-router-dom";
+// import { StrictMode } from "react";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  // <React.StrictMode>
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  // <StrictMode>
   <Provider store={store}>
     <BrowserRouter>
       <App />
     </BrowserRouter>
   </Provider>
-  // </React.StrictMode>
+  //</StrictMode>
 );
