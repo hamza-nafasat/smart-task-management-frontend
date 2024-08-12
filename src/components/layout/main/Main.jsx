@@ -5,7 +5,7 @@ const Main = () => {
   const location = useLocation();
   return (
     <div className='main-bg '>
-      <div className="relative z-[99]">
+      <div className="relative z-[99] h-screen md:h-auto">
         {location.pathname === '/dashboard' && (<Tasks />) || location.pathname === '/dashboard/' && (<Tasks />)}
           <Outlet />
       </div>
