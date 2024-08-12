@@ -59,9 +59,8 @@ const AddTask = ({ onClose }) => {
           formData.append("files", file, `${file.name}<>${index}`);
         });
       }
-      console.log("formData", endDate);
-      // await dispatch(createNewTaskAction(formData));
-      // await dispatch(getAllTasksAction());
+      await dispatch(createNewTaskAction(formData));
+      await dispatch(getAllTasksAction());
       setIsLoading(false);
       onClose();
     } catch (error) {
