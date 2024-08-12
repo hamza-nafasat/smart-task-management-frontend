@@ -55,7 +55,7 @@ const FinishedCard = ({ task }) => {
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1">
               <CommentIcon />
-              <p className="text-xs">{task?.comments?.length || 0}</p>
+              <p className="text-xs">{task?.commentsCount || 0}</p>
             </div>
             <div className="flex items-center gap-1">
               <AttachmentIcon />

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { IoNotifications } from "react-icons/io5";
 import { Link } from "react-router-dom";
@@ -33,12 +34,8 @@ const Header = () => {
   const formatDateTime = (date) => {
     const optionsDate = { day: "numeric", month: "short", year: "numeric" };
     const optionsTime = { hour: "numeric", minute: "numeric", hour12: true };
-    const dateString = date
-      .toLocaleString("en-US", optionsDate)
-      .replace(/,/g, "");
-    const timeString = date
-      .toLocaleString("en-US", optionsTime)
-      .replace("/^0/", "");
+    const dateString = date.toLocaleString("en-US", optionsDate).replace(/,/g, "");
+    const timeString = date.toLocaleString("en-US", optionsTime).replace("/^0/", "");
     return { dateString, timeString };
   };
   const { dateString, timeString } = formatDateTime(dateTime);
@@ -50,7 +47,7 @@ const Header = () => {
       setDateTime(new Date());
     }, 5000);
 
-    document.body.addEventListener("click", (e) => {
+    document.body.addEventListener("click", () => {
       setIsNotificationOpen(false);
     });
 
@@ -72,12 +69,7 @@ const Header = () => {
             <div className="absolute top-[-2px] right-[-3px] bg-red-700 w-3 h-3 rounded-full flex items-center justify-center text-[10px] font-semibold text-white">
               4
             </div>
-            <IoNotifications
-              cursor="pointer"
-              fontSize={20}
-              color="#fff"
-              onClick={handleNotificationOpen}
-            />
+            <IoNotifications cursor="pointer" fontSize={20} color="#fff" onClick={handleNotificationOpen} />
             <div
               className={`absolute top-[160%] right-[-35%] bg-white rounded-lg drop-shadow-md w-[250px] transition-all duration-400 ${
                 isNotificationOpen ? "opacity-100 z-[999]" : "opacity-0"
@@ -117,9 +109,7 @@ const FeedbackModal = ({ onclose }) => {
         className="p-4 bg-white rounded-md w-full md:w-[400px] overflow-y-scroll scrollbar-0"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-base font-semibold text-center">
-          Leave a Feedback
-        </h3>
+        <h3 className="text-base font-semibold text-center">Leave a Feedback</h3>
         <div className="my-4 flex items-center justify-between gap-2 px-4">
           {faceExpressions.map((expression, i) => (
             <div className="flex flex-col items-center" key={i}>
