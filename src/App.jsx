@@ -21,6 +21,7 @@ const Users = lazy(() => import("./pages/dashboard/users/Users"));
 const AddUser = lazy(() => import("./pages/dashboard/users/AddUser"));
 const EditUser = lazy(() => import("./pages/dashboard/users/EditUser"));
 const Reports = lazy(() => import("./pages/dashboard/reports/Reports"));
+const UserDetails = lazy(() => import("./pages/dashboard/users/UserDetails"));
 const FirstLoginChangePassword = lazy(() => import("./pages/auth/FirstLoginChangePassword"));
 
 function App() {
@@ -70,6 +71,7 @@ function App() {
             <Route path="reports" element={<Reports />} />
             <Route path="add-user" element={<AddUser />} />
             <Route path="edit-user/:userId" element={<EditUser />} />
+            <Route path="single-user/:userId" element={<UserDetails />} />
           </Route>
         </Route>
 

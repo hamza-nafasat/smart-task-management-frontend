@@ -46,6 +46,9 @@ body {
 .notification-scroll::-webkit-scrollbar-track {
     background: #f2f2f2;
   }
+.report-table .sc-eEPDDI::-webkit-scrollbar {
+    width: 0;
+  }
 .loader {
     width: 45px;
     aspect-ratio: 1;
