@@ -32,17 +32,14 @@ const AddTask = ({ onClose }) => {
   };
 
   const handleWeekClick = (week) => {
-    if (isSchedule) {
-      setActiveWeek(week);
-    }
+    if (isSchedule) setActiveWeek(week);
   };
 
   const submitTaskHandler = async (e) => {
+    e.preventDefault();
     const assigneeIds = selectedUsers.map((user) => user.value);
-
     setIsLoading(true);
     try {
-      e.preventDefault();
       const formData = new FormData();
       if (title) formData.append("title", title);
       if (description) formData.append("description", description);

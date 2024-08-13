@@ -31,13 +31,25 @@ const handleDownloadAll = async (attachments) => {
 const isToday = (day, isReturn = false) => {
   const daysOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
   const fullDaysOfWeek = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-  const today = new Date().getDay();
-  const dayLowerCase = day.toLowerCase();
-  if (isReturn) {
-    return daysOfWeek[today] === dayLowerCase ? fullDaysOfWeek[today] : fullDaysOfWeek[today];
-  } else {
-    return daysOfWeek[today] === dayLowerCase ? true : false;
+
+  if (!day || typeof day !== "string") {
+    console.error("Invalid day input");
+    return isReturn ? null : false;
   }
+
+  const todayIndex = new Date().getDay();
+  const dayLowerCase = day.toLowerCase().slice(0, 3);
+
+  if (!daysOfWeek.includes(dayLowerCase)) {
+    console.error("Day not recognized");
+    return isReturn ? null : false;
+  }
+
+  if (isReturn) {
+    return fullDaysOfWeek[daysOfWeek.indexOf(dayLowerCase)];
+  }
+
+  return daysOfWeek[todayIndex] === dayLowerCase;
 };
 
 const formatDateForInput = (dateString) => {

@@ -66,7 +66,7 @@ const getSingleTaskAction = (id) => async (dispatch) => {
 const updateSingleTaskAction = (id, data) => async (dispatch) => {
   try {
     dispatch(updateSingleTaskStart());
-    const response = await customAxios.put(`/tasks/single/${id}`, data);
+    const response = await customFormAxios.put(`/tasks/single/${id}`, data);
     console.log("success while update single task", response);
     dispatch(updateSingleTaskSuccess(response.data));
   } catch (error) {

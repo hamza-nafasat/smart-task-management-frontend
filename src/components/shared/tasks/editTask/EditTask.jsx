@@ -2,10 +2,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DateIcon from "../../../../assets/svgs/modal/DateIcon";
-import FileUpload from "../addTask/FileUpload";
 import MultiSelectUser from "../addTask/MultiSelectUser";
-import { getSingleTaskAction } from "../../../../redux/actions/tasksActions";
+import { getSingleTaskAction, updateSingleTaskAction } from "../../../../redux/actions/tasksActions";
 import { formatDateForInput } from "../../../../utils/features";
+import FileUpload from "../addTask/FileUpload";
 
 const weeks = ["mon", "tue", "wed", "thu", "fru", "sat", "sun"];
 
@@ -40,27 +40,38 @@ const EditTask = ({ onClose, taskId }) => {
     }
   };
 
+  //   update handle function
+  //   -----------------------
+
   const updateTaskHandler = async (e) => {
-    const assigneeIds = selectedUsers.map((user) => user.value);
     e.preventDefault();
     setIsLoading(true);
+    const assigneeIds = selectedUsers.map((user) => user.value);
     try {
       e.preventDefault();
       const formData = new FormData();
       if (title) formData.append("title", title);
       if (description) formData.append("description", description);
-      if (startDate && !isSchedule) formData.append("startDate", startDate);
-      if (endDate && !isSchedule) formData.append("endDate", endDate);
-      if (isSchedule && activeWeek) {
-        formData.append("onDay", activeWeek);
-        formData.append("status", "scheduled");
+      //   if selected is default or not
+      if (isDefault) {
+        formData.append("startDate", startDate);
+        formData.append("endDate", endDate);
       }
-      if (selectedUsers.length > 0) formData.append("assignee", assigneeIds);
-      else formData.append("assignee", "removed");
-
-      console.log("formData", endDate);
-      // await dispatch(createNewTaskAction(formData));
-      // await dispatch(getAllTasksAction());
+      //   if selected is schedule or not
+      if (isSchedule && activeWeek) formData.append("onDay", activeWeek);
+      if (selectedUsers.length > 0) {
+        formData.append("assignee", assigneeIds.join(","));
+      } else {
+        formData.append("assignee", "removed");
+      }
+      if (selectedFiles.length > 0) {
+        selectedFiles.forEach((file, index) => {
+          formData.append("files", file, `${file.name}<>${index}`);
+        });
+      }
+      await dispatch(updateSingleTaskAction(singleTask?._id, formData));
+      await dispatch(getSingleTaskAction(singleTask?._id));
+      setIsLoading(false);
       onClose();
     } catch (error) {
       setIsLoading(false);
@@ -79,8 +90,6 @@ const EditTask = ({ onClose, taskId }) => {
       setDescription(singleTask?.description);
       setStartDate(formatDateForInput(singleTask?.startDate));
       setEndDate(formatDateForInput(singleTask?.endDate));
-      setSelectedFiles(singleTask?.files);
-
       if (singleTask?.onDay) {
         setActiveWeek(singleTask?.onDay);
         setIsSchedule(true);
@@ -207,10 +216,10 @@ const EditTask = ({ onClose, taskId }) => {
             </div>
           ))}
         </div>
-        {/* <div className="bg-white my-4 xl:my-6 rounded-lg p-4 xl:p-6">
-          <h3 className="text-sm sm:text-base font-semibold text-[#333333]">Add Attachment</h3>
+        <div className="bg-white my-4 xl:my-6 rounded-lg p-4 xl:p-6">
+          <h3 className="text-sm sm:text-base font-semibold text-[#333333]">Add More Attachment</h3>
           <FileUpload selectedFile={selectedFiles} setSelectedFile={setSelectedFiles} />
-        </div> */}
+        </div>
         <button
           onClick={updateTaskHandler}
           disabled={isLoading}

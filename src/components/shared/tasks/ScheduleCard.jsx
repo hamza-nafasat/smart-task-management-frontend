@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import AttachmentIcon from "../../../assets/svgs/tasks/AttachmentIcon";
 import CommentIcon from "../../../assets/svgs/tasks/CommentIcon";
 import UserIcon from "../../../assets/svgs/tasks/UserIcon";
+import { isToday } from "../../../utils/features";
 
 const days = [
   {
@@ -53,12 +54,17 @@ const ScheduleCard = ({ task }) => {
           </h6>
           <div className="mt-3 flex items-center justify-between gap-2">
             {days.map((day, i) => {
-              const isDayActive = task.onDay == day.day;
+              const isDayActive = task.onDay == day.day ? day.day : "";
+              let isActiveDayIsToday = isToday(day.day);
               return (
                 <div
                   key={i}
                   className={`w-8 h-11 rounded-[2px] text-[10px] sm:text-[11px] flex items-center justify-center cursor-pointer ${
-                    isDayActive ? "bg-[#17a2b8] text-white" : "bg-[#17a2b829] text-[#000]"
+                    !isActiveDayIsToday && isDayActive
+                      ? "bg-[#17a2b8] text-white"
+                      : isDayActive && isActiveDayIsToday
+                      ? "bg-[#14ff14] text-white"
+                      : "bg-[#17a2b829] text-[#000]"
                   }`}
                 >
                   {day.day.toUpperCase()}
