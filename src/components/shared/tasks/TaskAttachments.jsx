@@ -3,6 +3,7 @@ import DownloadIcon from "../../../assets/svgs/tasks/DownloadIcon";
 import { generateCloudinaryDownloadUrl, handleDownloadAll } from "../../../utils/features";
 import { formatFileSize } from "../../../utils/formatting";
 import fileLogo from "../../../assets/fileLogo.png";
+import { IoTrashBinSharp } from "react-icons/io5";
 
 const TaskAttachments = ({ attachments }) => {
   return (
@@ -38,6 +39,14 @@ const TaskAttachments = ({ attachments }) => {
                   <a href={generateCloudinaryDownloadUrl(attachment?.url)} download>
                     <DownloadIcon />
                   </a>
+                </td>
+                <td className="text-end pb-4 xl:pd-6 cursor-pointer">
+                  <button
+                    onClick={() => handleDownloadAll(attachments)}
+                    className="text-red-500 flex items-center"
+                  >
+                    <IoTrashBinSharp size={20} />
+                  </button>
                 </td>
               </tr>
             ))

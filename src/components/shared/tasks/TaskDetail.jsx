@@ -27,36 +27,17 @@ const TaskDetail = () => {
   const taskId = params?.taskId;
   const dispatch = useDispatch();
   const [isModal, setIsModal] = useState(false);
-  const [activeTab, setActiveTab] = useState("In Progress");
   const [isDelLoading, setIsDelLoading] = useState(false);
   const { singleTask, singleTaskComments, message } = useSelector((state) => state.tasks);
 
-  const tabHandler = (tab) => setActiveTab(tab);
   const handleOpenModal = () => setIsModal(true);
   const handleCloseModal = () => setIsModal(false);
 
   const taskDetailsDeleteHandler = async (taskId) => {
-    // confirmAlert({
-    // title: "Confirm delete",
-    // message: "Are you sure you want to delete this Task?",
-    // closeOnClickOutside: false,
-    // buttons: [
-    //   {
-    //     label: "Yes",
-    //     onClick: async () => {
     setIsDelLoading(true);
     if (!taskId) toast.error("Task Id No Found");
     await dispatch(deleteSingleTaskAction(taskId));
     setIsDelLoading(false);
-    // return navigate("/dashboard");
-    //       },
-    //     },
-    //     {
-    //       label: "No",
-    //       onClick: () => toast.info("Delete action cancelled", { autoClose: 2000 }),
-    //     },
-    //   ],
-    // });
   };
 
   useEffect(() => {

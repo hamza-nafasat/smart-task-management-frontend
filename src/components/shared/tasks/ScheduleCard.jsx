@@ -63,7 +63,7 @@ const ScheduleCard = ({ task }) => {
                     !isActiveDayIsToday && isDayActive
                       ? "bg-[#17a2b8] text-white"
                       : isDayActive && isActiveDayIsToday
-                      ? "bg-[#14ff14] text-white"
+                      ? "bg-[#14a714] text-white"
                       : "bg-[#17a2b829] text-[#000]"
                   }`}
                 >

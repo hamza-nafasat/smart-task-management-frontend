@@ -4,7 +4,7 @@ const taskTimeLeft = (taskEndDate, status = false) => {
   const endTime = new Date(taskEndDate);
   const timeDifference = endTime - currentTime;
   if (timeDifference <= 0) {
-    const elapsedTime = Math.abs(timeDifference); // Get the absolute value
+    const elapsedTime = Math.abs(timeDifference);
     const days = Math.floor(elapsedTime / (1000 * 60 * 60 * 24));
     const hours = Math.floor((elapsedTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
