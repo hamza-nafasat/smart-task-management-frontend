@@ -72,5 +72,8 @@ body {
   }
   .react-confirm-alert-body {
     background: #17A2B8 !important;
-    color: #fff !important; 
+    color: #fff !important;
+  }
+  .react-confirm-alert-body h1 {
+    font-weight: 600 !important;
   }

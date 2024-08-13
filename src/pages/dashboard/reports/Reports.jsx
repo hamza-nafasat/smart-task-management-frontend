@@ -1,34 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import DetailsIcon from "../../../assets/svgs/reports/DetailsIcon";
 import CompletedIcon from "../../../assets/svgs/reports/CompletedIcon.jsx";
 import InprogressIcon from "../../../assets/svgs/reports/InprogressIcon.jsx";
 import ScheduleIcon from "../../../assets/svgs/reports/ScheduleIcon.jsx";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const columns = [
   {
     name: "User",
     selector: (row) => row.user,
-    width: '12%',
+    width: "12%",
   },
   {
     name: "Task",
     selector: (row) => row.task,
-    width: '15%',
+    width: "15%",
   },
   {
     name: "Date",
-    width: '24%',
+    width: "24%",
     cell: (row) => (
       <div className="flex items-center gap-1">
         <div>
-        {row.status === 'Completed' ? (
-          <CompletedIcon />
-        ) : row.status === 'In Progress' ? (
-          <InprogressIcon />
-        ) : (
-          <ScheduleIcon />
-        )}
+          {row.status === "Completed" ? (
+            <CompletedIcon />
+          ) : row.status === "In Progress" ? (
+            <InprogressIcon />
+          ) : (
+            <ScheduleIcon />
+          )}
         </div>
         <div className="flex flex-col">
           <p className="text-[12px] font-semibold text-[#17a2b8]">
@@ -53,7 +55,7 @@ const columns = [
   },
   {
     name: "Status",
-    width: '21%',
+    width: "21%",
     cell: (row) =>
       row.status === "Completed" ? (
         <p className="bg-[#87d10f] rounded-[12px] text-white text-sm font-medium p-2 w-[99px] text-center">
@@ -71,7 +73,7 @@ const columns = [
   },
   {
     name: "Feedback",
-    width: '15%',
+    width: "15%",
     cell: (row) =>
       row.feedback === 5 ? (
         <div className="flex items-center flex-col w-14">
@@ -107,7 +109,7 @@ const columns = [
         <DetailsIcon />
       </div>
     ),
-    width: '13%'
+    width: "13%",
   },
 ];
 
@@ -225,40 +227,66 @@ const rows = [
 ];
 
 const Reports = () => {
+  const [filterName, setFilterName] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+  const [filterStartDate, setFilterStartDate] = useState(null);
+  const [filterEndDate, setFilterEndDate] = useState(null);
+
+  const filteredRows = rows.filter((row) => {
+    const isNameMatch = row.user
+      .toLowerCase()
+      .includes(filterName.toLowerCase());
+    const isStatusMatch = filterStatus ? row.status === filterStatus : true;
+    const isStartDateMatch = filterStartDate
+      ? new Date(row.startDate) >= new Date(filterStartDate)
+      : true;
+    const isEndDateMatch = filterEndDate
+      ? new Date(row.endDate) <= new Date(filterEndDate)
+      : true;
+    return isNameMatch && isStatusMatch && isStartDateMatch && isEndDateMatch;
+  });
+
   return (
     <div className="h-screen p-4">
       <div className="bg-[#fff] backdrop-blur-lg rounded-lg">
-        <div className="flex items-center justify-between p-4">
-          <h2 className="text-base font-medium text-[#414141]">
-            Task Report
-          </h2>
-          <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-4 p-4 relative z-50">
+          <h2 className="text-base font-medium text-[#414141] text-nowrap">Task Report</h2>
+          <div className="flex items-center flex-wrap gap-4">
             <input
-              type="search"
-              className="py-2 px-3 text-xs focus:outline-none bg-transparent border border-[#0000000f] rounded-full"
-              placeholder="Search report"
+              type="text"
+              placeholder="Search by name"
+              value={filterName}
+              onChange={(e) => setFilterName(e.target.value)}
+              className="border p-2 rounded-lg focus:outline-none text-sm text-[#101010]"
             />
-            <select className="text-[#7e7e7e] text-xs py-2 px-3 bg-transparent focus:outline-none border border-[#0000000f] rounded-full cursor-pointer">
-              <option className="text-[#7e7e7e] text-xs" disabled selected>
-                Sort by: {""}
-                <span className="text-[#414141] font-semibold">Newest</span>
-              </option>
-              <option className="py-2 px-3" value="sort-by-user">
-                Sort by user
-              </option>
-              <option className="py-2 px-3" value="sort-by-date">
-                Sort by date
-              </option>
-              <option className="py-2 px-3" value="sort-by-status">
-                Sort by status
-              </option>
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="border p-2 rounded-lg focus:outline-none text-sm text-[#101010]"
+            >
+              <option value="">All Statuses</option>
+              <option value="Completed">Completed</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Schedule">Schedule</option>
             </select>
+            <DatePicker
+              selected={filterStartDate}
+              onChange={(date) => setFilterStartDate(date)}
+              placeholderText="Start Date"
+              className="border p-2 rounded-lg focus:outline-none text-sm text-[#101010]"
+            />
+            <DatePicker
+              selected={filterEndDate}
+              onChange={(date) => setFilterEndDate(date)}
+              placeholderText="End Date"
+              className="border p-2 rounded-lg focus:outline-none text-sm text-[#101010]"
+            />
           </div>
         </div>
         <div className="mt-4 report-table">
           <DataTable
             columns={columns}
-            data={rows}
+            data={filteredRows}
             customStyles={customStyles}
             pagination
             fixedHeader
@@ -291,7 +319,7 @@ const customStyles = {
   },
   pagination: {
     style: {
-      borderRadius: '12px',
-    }
-  }
+      borderRadius: "12px",
+    },
+  },
 };
