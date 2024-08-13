@@ -10,7 +10,7 @@ const Dashboard = () => {
     setIsMobileNavOpen(!isMobileNavOpen);
   };
   return (
-    <section className="w-full user-dashboard relative h-[calc(100vh-0px)] overflow-x-hidden overflow-y-scroll bg-[#f5f7fb] z-0 scrollbar-0">
+    <section className="w-full user-dashboard relative overflow-x-hidden overflow-y-scroll bg-[#f5f7fb] z-0 scrollbar-0">
       <div className="flex flex-col-2">
         <div
           onClick={mobileNavHandler}
