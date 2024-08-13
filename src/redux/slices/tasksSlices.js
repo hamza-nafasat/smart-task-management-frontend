@@ -67,6 +67,19 @@ const tasksSlices = createSlice({
       state.error = action.payload;
     },
 
+    // remove attachment
+    removeAttachmentStart(state) {
+      state.loading = true;
+    },
+    removeAttachmentSuccess(state, action) {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+    removeAttachmentFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     // get all tasks
     getAllTasksStart(state) {
       state.loading = true;
@@ -163,6 +176,11 @@ export const {
   deleteSingleTaskStart,
   deleteSingleTaskSuccess,
   deleteSingleTaskFailure,
+
+  // remove attachment
+  removeAttachmentStart,
+  removeAttachmentSuccess,
+  removeAttachmentFailure,
 
   // get all tasks
   getAllTasksStart,

@@ -20,6 +20,7 @@ import Comments from "./Comments";
 import TaskAttachments from "./TaskAttachments";
 import Modal from "../modal/Modal";
 import EditTask from "./editTask/EditTask";
+import { confirmAlert } from "react-confirm-alert";
 
 const TaskDetail = () => {
   const params = useParams();
@@ -29,15 +30,34 @@ const TaskDetail = () => {
   const [isModal, setIsModal] = useState(false);
   const [isDelLoading, setIsDelLoading] = useState(false);
   const { singleTask, singleTaskComments, message } = useSelector((state) => state.tasks);
+  const { user } = useSelector((state) => state.users);
+
+  const isMeCreator = String(user._id) === String(singleTask?.creator?._id);
+  const isSubmitButtonDisable =
+    (singleTask?.isSubmit && !isMeCreator) || (!singleTask?.isSubmit && isMeCreator);
 
   const handleOpenModal = () => setIsModal(true);
   const handleCloseModal = () => setIsModal(false);
 
   const taskDetailsDeleteHandler = async (taskId) => {
-    setIsDelLoading(true);
-    if (!taskId) toast.error("Task Id No Found");
-    await dispatch(deleteSingleTaskAction(taskId));
-    setIsDelLoading(false);
+    confirmAlert({
+      title: "Delete Task",
+      message: "Are you sure, you want to delete the Task?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            setIsDelLoading(true);
+            if (!taskId) toast.error("Task Id No Found");
+            await dispatch(deleteSingleTaskAction(taskId));
+            setIsDelLoading(false);
+          },
+        },
+        {
+          label: "No",
+        },
+      ],
+    });
   };
 
   useEffect(() => {
@@ -57,20 +77,31 @@ const TaskDetail = () => {
           <div className="flex items-center justify-between">
             <h2 className="text-sm md:text-base font-semibold">Task Detail</h2>
             <div className="flex items-center gap-3 md:gap-4">
-              <button className="cursor-pointer" onClick={handleOpenModal}>
-                <EditIcon />
-              </button>
-              <div
+              {isMeCreator && (
+                <>
+                  {" "}
+                  <button className="cursor-pointer" onClick={handleOpenModal}>
+                    <EditIcon />
+                  </button>
+                  <div
+                    className={`${
+                      isDelLoading ? "cursor-not-allowed opacity-50" : "cursor-pointer opacity-100"
+                    } text-[#fa2121] text-2xl `}
+                    onClick={() => taskDetailsDeleteHandler(singleTask?._id)}
+                  >
+                    <IoTrashOutline />
+                  </div>
+                </>
+              )}
+
+              <button
+                disabled={isSubmitButtonDisable}
                 className={`${
-                  isDelLoading ? "cursor-not-allowed opacity-50" : "cursor-pointer opacity-100"
-                } text-[#fa2121] text-2xl `}
-                onClick={() => taskDetailsDeleteHandler(singleTask?._id)}
+                  isMeCreator ? "bg-[#2acf14]" : "bg-[#ff9500]"
+                } text-xs md:text-base p-3 rounded-[10px] text-white  disabled:opacity-50 disabled:cursor-not-allowed1`}
               >
-                <IoTrashOutline />
-              </div>
-              <p className="bg-[#ff9500] text-xs md:text-base p-3 rounded-[10px] text-white">
-                {singleTask?.status}
-              </p>
+                {isMeCreator ? "Complete" : "Submit Task"}
+              </button>
             </div>
           </div>
           <div className="mt-4 md:mt-5 bg-[#f8f8f8cc] rounded-[10px] px-2 md:px-4 xl:px-6 py-6 xl:py-8">
@@ -160,7 +191,13 @@ const TaskDetail = () => {
                 </div>
               </div>
               <div className="col-span-12 lg:col-span-5">
-                {singleTask && <TaskAttachments attachments={singleTask?.attachments} />}
+                {singleTask && (
+                  <TaskAttachments
+                    isMeCreator={isMeCreator ? "yes" : "no"}
+                    attachments={singleTask?.attachments}
+                    taskId={singleTask?._id}
+                  />
+                )}
               </div>
             </div>
             {/* divider */}

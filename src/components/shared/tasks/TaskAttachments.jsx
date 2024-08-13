@@ -4,8 +4,38 @@ import { generateCloudinaryDownloadUrl, handleDownloadAll } from "../../../utils
 import { formatFileSize } from "../../../utils/formatting";
 import fileLogo from "../../../assets/fileLogo.png";
 import { IoTrashBinSharp } from "react-icons/io5";
+import { confirmAlert } from "react-confirm-alert";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { getSingleTaskAction, removeAttachmentAction } from "../../../redux/actions/tasksActions";
+import { useDispatch } from "react-redux";
 
-const TaskAttachments = ({ attachments }) => {
+const TaskAttachments = ({ attachments, taskId, isMeCreator }) => {
+  const dispatch = useDispatch();
+  const [isDelLoading, setIsDelLoading] = useState(false);
+
+  const removeAttachmentHandler = async (public_id) => {
+    confirmAlert({
+      title: "Delete This File",
+      message: "Are you sure, you want to delete this File?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            setIsDelLoading(true);
+            if (!public_id) toast.error("Attachment No Found");
+            await dispatch(removeAttachmentAction(taskId, public_id));
+            await dispatch(getSingleTaskAction(taskId));
+            setIsDelLoading(false);
+          },
+        },
+        {
+          label: "No",
+        },
+      ],
+    });
+  };
+
   return (
     <div className="bg-white rounded-lg px-4 md:px-5 py-4 xl:py-6">
       {attachments.length > 0 && (
@@ -40,14 +70,17 @@ const TaskAttachments = ({ attachments }) => {
                     <DownloadIcon />
                   </a>
                 </td>
-                <td className="text-end pb-4 xl:pd-6 cursor-pointer">
-                  <button
-                    onClick={() => handleDownloadAll(attachments)}
-                    className="text-red-500 flex items-center"
-                  >
-                    <IoTrashBinSharp size={20} />
-                  </button>
-                </td>
+                {isMeCreator == "yes" && (
+                  <td className="text-end pb-4 xl:pd-6 cursor-pointer">
+                    <button
+                      onClick={() => removeAttachmentHandler(attachment?.public_id)}
+                      disabled={isDelLoading}
+                      className="text-red-500 flex items-center disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <IoTrashBinSharp size={20} />
+                    </button>
+                  </td>
+                )}
               </tr>
             ))
           ) : (

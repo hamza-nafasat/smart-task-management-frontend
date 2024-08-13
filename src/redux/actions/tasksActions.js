@@ -24,6 +24,9 @@ import {
   getSingleTaskFailure,
   getSingleTaskStart,
   getSingleTaskSuccess,
+  removeAttachmentFailure,
+  removeAttachmentStart,
+  removeAttachmentSuccess,
   updateSingleTaskFailure,
   updateSingleTaskStart,
   updateSingleTaskSuccess,
@@ -76,6 +79,22 @@ const updateSingleTaskAction = (id, data) => async (dispatch) => {
         error?.response?.data?.message || "Some Error Occurred While Update Single Task"
       )
     );
+  }
+};
+
+// remove task attachment
+// ----------------------
+const removeAttachmentAction = (taskId, public_id) => async (dispatch) => {
+  try {
+    dispatch(removeAttachmentStart());
+    const response = await customAxios.put(`/tasks/remove-attachment`, { taskId, public_id });
+    console.log("success while remove task attachment", response);
+    dispatch(removeAttachmentSuccess(response.data));
+  } catch (error) {
+    dispatch(
+      removeAttachmentFailure(error?.response?.data?.message || "Some Error Occurred While Remove Attachment")
+    );
+    console.log("error while remove task attachment", error);
   }
 };
 
@@ -190,6 +209,7 @@ export {
   deleteSingleTaskAction,
   getAllTasksAction,
   getSingleTaskAllCommentsAction,
+  removeAttachmentAction,
   addCommentAction,
   getCommentRepliesAction,
   addCommentReplyAction,
