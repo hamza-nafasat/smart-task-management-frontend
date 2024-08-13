@@ -7,6 +7,7 @@ import { Loader } from "./components/shared/loader/Loader";
 import { getMyProfileAction } from "./redux/actions/usersActions";
 import { clearUserError, clearUserMessage } from "./redux/slices/usersSlices";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const Login = lazy(() => import("./pages/auth/Login"));
 const Dashboard = lazy(() => import("./pages/dashboard/index"));

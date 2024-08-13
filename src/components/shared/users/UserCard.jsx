@@ -12,17 +12,32 @@ import {
 } from "../../../redux/actions/usersActions";
 import { useState } from "react";
 import { BsFillInfoSquareFill } from "react-icons/bs";
+import { confirmAlert } from "react-confirm-alert";
 
 const UserCard = ({ user }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-  const deleteHandler = async (id) => {
-    setLoading(true);
-    if (!id) return toast.error("User id not found");
-    await dispatch(deleteUserByAdminAction(id));
-    await dispatch(getAllUsersAction());
-    setLoading(false);
+  const deleteHandler = (id) => {
+    confirmAlert({
+      title: 'Delete User',
+      message: 'Are you sure, you want to delete the user?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: async() => {
+            setLoading(true);
+            if (!id) return toast.error("User id not found");
+            await dispatch(deleteUserByAdminAction(id));
+            await dispatch(getAllUsersAction());
+            setLoading(false);
+          },
+        },
+        {
+          label: 'No',
+        }
+      ],
+    })
   };
   return (
     <div className="lg:col-span-6 xl:col-span-4 bg-[#f8f8f8cc] rounded-lg">
