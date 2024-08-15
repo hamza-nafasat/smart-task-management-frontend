@@ -4,7 +4,7 @@ import AttachmentIcon from "../../../assets/svgs/tasks/AttachmentIcon";
 import CheckIcon from "../../../assets/svgs/tasks/CheckIcon";
 import CommentIcon from "../../../assets/svgs/tasks/CommentIcon";
 import UserIcon from "../../../assets/svgs/tasks/UserIcon";
-import { taskTimeLeft } from "../../../utils/formatting";
+import { getTimeAgo, taskTimeLeft } from "../../../utils/formatting";
 
 const FinishedCard = ({ task }) => {
   return (
@@ -32,7 +32,7 @@ const FinishedCard = ({ task }) => {
             <div className="flex items-center gap-1">
               <CheckIcon />
               <h6 className="text-[11px] sm:text-xs text-[#40a737] font-medium md:font-semibold">
-                {`${taskTimeLeft(task?.endDate)}`}
+                {`${getTimeAgo(task?.completedAt)}`}
               </h6>
             </div>
             <p className="text-[10px] sm:text-[11px] text-white px-2 py-1 rounded-full bg-[#40a737]">

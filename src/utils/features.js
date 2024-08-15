@@ -51,11 +51,29 @@ const isToday = (day, isReturn = false) => {
 
   return daysOfWeek[todayIndex] === dayLowerCase;
 };
-
+// formate date which come from mongodb
 const formatDateForInput = (dateString) => {
   if (!dateString) return "";
   const date = new Date(dateString);
   const isoString = date.toISOString();
   return isoString.slice(0, 16);
 };
-export { generateCloudinaryDownloadUrl, handleDownloadAll, isToday, formatDateForInput };
+
+// how much time left for this task
+function getElapsedTimePercentage(startDate, endDate) {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const now = new Date();
+  const totalDuration = end - start;
+  const timeElapsed = now - start;
+  const elapsedPercentage = (timeElapsed / totalDuration) * 100;
+  return Math.max(0, Math.min(100, elapsedPercentage));
+}
+
+export {
+  generateCloudinaryDownloadUrl,
+  handleDownloadAll,
+  isToday,
+  formatDateForInput,
+  getElapsedTimePercentage,
+};

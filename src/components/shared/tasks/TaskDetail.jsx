@@ -9,12 +9,14 @@ import TimeIcon from "../../../assets/svgs/tasks/TimeIcon";
 import UsersIcon from "../../../assets/svgs/tasks/UsersIcon";
 import WatchIcon from "../../../assets/svgs/tasks/WatchIcon";
 import {
+  completeTaskAction,
   deleteSingleTaskAction,
   getSingleTaskAction,
   getSingleTaskAllCommentsAction,
+  submitTaskAction,
 } from "../../../redux/actions/tasksActions";
 import { isToday } from "../../../utils/features";
-import { isTaskEndTimeEnded, taskTimeLeft } from "../../../utils/formatting";
+import { getTimeAgo, isTaskEndTimeEnded, taskTimeLeft } from "../../../utils/formatting";
 import Activity from "./Activity";
 import Comments from "./Comments";
 import TaskAttachments from "./TaskAttachments";
@@ -34,10 +36,19 @@ const TaskDetail = () => {
 
   const isMeCreator = String(user._id) === String(singleTask?.creator?._id);
   const isSubmitButtonDisable =
-    (singleTask?.isSubmit && !isMeCreator) || (!singleTask?.isSubmit && isMeCreator);
+    (singleTask?.isSubmitted && !isMeCreator) || (!singleTask?.isSubmitted && isMeCreator);
 
   const handleOpenModal = () => setIsModal(true);
   const handleCloseModal = () => setIsModal(false);
+
+  const taskCompleteHandler = async () => {
+    if (!taskId) toast.error("Task Id No Found");
+    await dispatch(completeTaskAction(taskId));
+  };
+  const taskSubmitHandler = async () => {
+    if (!taskId) toast.error("Task Id No Found");
+    await dispatch(submitTaskAction(taskId));
+  };
 
   const taskDetailsDeleteHandler = async (taskId) => {
     confirmAlert({
@@ -79,7 +90,6 @@ const TaskDetail = () => {
             <div className="flex items-center gap-3 md:gap-4">
               {isMeCreator && (
                 <>
-                  {" "}
                   <button className="cursor-pointer" onClick={handleOpenModal}>
                     <EditIcon />
                   </button>
@@ -96,6 +106,11 @@ const TaskDetail = () => {
 
               <button
                 disabled={isSubmitButtonDisable}
+                onClick={
+                  isMeCreator
+                    ? () => taskCompleteHandler(singleTask?._id)
+                    : () => taskSubmitHandler(singleTask?._id)
+                }
                 className={`${
                   isMeCreator ? "bg-[#2acf14]" : "bg-[#ff9500]"
                 } text-xs md:text-base p-3 rounded-[10px] text-white  disabled:opacity-50 disabled:cursor-not-allowed1`}
@@ -109,10 +124,14 @@ const TaskDetail = () => {
             {singleTask?.status !== "scheduled" ? (
               // for in progress and completed
               <div className="flex items-center justify-between gap-1">
-                {isTaskEndTimeEnded(singleTask?.endDate) ? (
+                {isTaskEndTimeEnded(singleTask?.endDate) && singleTask?.status === "in-progress" ? (
                   <div className="flex items-center gap-1 bg-[#ffdada] px-2 py-2 md:py-[6px] md:px-[10px] rounded-md text-[10px] sm:text-sm md:text-base font-medium md:font-semibold text-[#ff5b5b]">
                     <AlertIcon />
                     Task Is Overdued
+                  </div>
+                ) : singleTask?.status === "completed" ? (
+                  <div className="flex items-center gap-1 bg-[#4fec1fd8] px-2 py-2 md:py-[6px] md:px-[10px] rounded-md text-[10px] sm:text-sm md:text-base font-medium md:font-semibold text-[#dae6f3]">
+                    Task is Completed Now
                   </div>
                 ) : (
                   <div className="flex items-center gap-1 bg-[#93f8fcb6] px-2 py-2 md:py-[6px] md:px-[10px] rounded-md text-[10px] sm:text-sm md:text-base font-medium md:font-semibold text-[#336699]">
@@ -123,7 +142,11 @@ const TaskDetail = () => {
 
                 <div className="flex items-center gap-1 bg-[#00677717] px-2 py-2 md:py-[6px] md:px-[10px] rounded-md text-[10px] sm:text-sm md:text-base font-medium md:font-semibold text-primary">
                   <TimeIcon />
-                  <span>{taskTimeLeft(singleTask?.endDate, singleTask?.status)}</span>
+                  <span>
+                    {singleTask?.status === "in-progress"
+                      ? taskTimeLeft(singleTask?.endDate, singleTask?.status)
+                      : getTimeAgo(singleTask?.completedAt)}
+                  </span>
                 </div>
               </div>
             ) : (

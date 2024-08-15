@@ -54,6 +54,32 @@ const tasksSlices = createSlice({
       state.error = action.payload;
     },
 
+    // submit task
+    submitTaskStart(state) {
+      state.loading = true;
+    },
+    submitTaskSuccess(state, action) {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+    submitTaskFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // complete task
+    completeTaskStart(state) {
+      state.loading = true;
+    },
+    completeTaskSuccess(state, action) {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+    completeTaskFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     // delete single task
     deleteSingleTaskStart(state) {
       state.loading = true;
@@ -171,6 +197,16 @@ export const {
   updateSingleTaskStart,
   updateSingleTaskSuccess,
   updateSingleTaskFailure,
+
+  // submit task
+  submitTaskStart,
+  submitTaskSuccess,
+  submitTaskFailure,
+
+  // complete task
+  completeTaskStart,
+  completeTaskSuccess,
+  completeTaskFailure,
 
   // delete single task
   deleteSingleTaskStart,

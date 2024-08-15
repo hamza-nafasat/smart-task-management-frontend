@@ -6,6 +6,9 @@ import {
   addCommentReplySuccess,
   addCommentStart,
   addCommentSuccess,
+  completeTaskFailure,
+  completeTaskStart,
+  completeTaskSuccess,
   createNewTaskFailure,
   createNewTaskStart,
   createNewTaskSuccess,
@@ -27,6 +30,9 @@ import {
   removeAttachmentFailure,
   removeAttachmentStart,
   removeAttachmentSuccess,
+  submitTaskFailure,
+  submitTaskStart,
+  submitTaskSuccess,
   updateSingleTaskFailure,
   updateSingleTaskStart,
   updateSingleTaskSuccess,
@@ -95,6 +101,39 @@ const removeAttachmentAction = (taskId, public_id) => async (dispatch) => {
       removeAttachmentFailure(error?.response?.data?.message || "Some Error Occurred While Remove Attachment")
     );
     console.log("error while remove task attachment", error);
+  }
+};
+
+// submit task
+// ----------------------
+const submitTaskAction = (id) => async (dispatch) => {
+  try {
+    dispatch(submitTaskStart());
+    const response = await customAxios.put(`/tasks/submit-task/${id}`);
+    console.log("success while submit task", response);
+    dispatch(submitTaskSuccess(response.data));
+    dispatch(getSingleTaskAction(id));
+  } catch (error) {
+    dispatch(submitTaskFailure(error?.response?.data?.message || "Some Error Occurred While Submit Task"));
+    console.log("error while submit task", error);
+  }
+};
+
+// complete task
+// ----------------------
+
+const completeTaskAction = (id) => async (dispatch) => {
+  try {
+    dispatch(completeTaskStart());
+    const response = await customAxios.put(`/tasks/complete-task/${id}`);
+    console.log("success while complete task", response);
+    dispatch(completeTaskSuccess(response.data));
+    dispatch(getSingleTaskAction(id));
+  } catch (error) {
+    dispatch(
+      completeTaskFailure(error?.response?.data?.message || "Some Error Occurred While Complete Task")
+    );
+    console.log("error while complete task", error);
   }
 };
 
@@ -209,6 +248,8 @@ export {
   deleteSingleTaskAction,
   getAllTasksAction,
   getSingleTaskAllCommentsAction,
+  completeTaskAction,
+  submitTaskAction,
   removeAttachmentAction,
   addCommentAction,
   getCommentRepliesAction,
