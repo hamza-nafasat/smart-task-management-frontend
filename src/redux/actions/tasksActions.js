@@ -106,10 +106,10 @@ const removeAttachmentAction = (taskId, public_id) => async (dispatch) => {
 
 // submit task
 // ----------------------
-const submitTaskAction = (id) => async (dispatch) => {
+const submitTaskAction = (id, feedback) => async (dispatch) => {
   try {
     dispatch(submitTaskStart());
-    const response = await customAxios.put(`/tasks/submit-task/${id}`);
+    const response = await customAxios.put(`/tasks/submit-task/${id}`, { feedback });
     console.log("success while submit task", response);
     dispatch(submitTaskSuccess(response.data));
     dispatch(getSingleTaskAction(id));
@@ -122,10 +122,10 @@ const submitTaskAction = (id) => async (dispatch) => {
 // complete task
 // ----------------------
 
-const completeTaskAction = (id) => async (dispatch) => {
+const completeTaskAction = (id, feedback) => async (dispatch) => {
   try {
     dispatch(completeTaskStart());
-    const response = await customAxios.put(`/tasks/complete-task/${id}`);
+    const response = await customAxios.put(`/tasks/complete-task/${id}`, { feedback });
     console.log("success while complete task", response);
     dispatch(completeTaskSuccess(response.data));
     dispatch(getSingleTaskAction(id));

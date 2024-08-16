@@ -23,6 +23,7 @@ import Activity from "./Activity";
 import Comments from "./Comments";
 import EditTask from "./editTask/EditTask";
 import TaskAttachments from "./TaskAttachments";
+import FeedbackModal from "../feedbackModal/FeedbackModal";
 
 const TaskDetail = () => {
   const params = useParams();
@@ -31,6 +32,7 @@ const TaskDetail = () => {
   const dispatch = useDispatch();
   const [isModal, setIsModal] = useState(false);
   const [isDelLoading, setIsDelLoading] = useState(false);
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const { singleTask, singleTaskComments, message } = useSelector((state) => state.tasks);
   const { user } = useSelector((state) => state.users);
 
@@ -39,16 +41,11 @@ const TaskDetail = () => {
     (singleTask?.isSubmitted && !isMeCreator) || (!singleTask?.isSubmitted && isMeCreator);
 
   const handleOpenModal = () => setIsModal(true);
+  const handleOpenFeedbackModal = () => setIsFeedbackModalOpen(true);
   const handleCloseModal = () => setIsModal(false);
-
-  const taskCompleteHandler = async () => {
-    if (!taskId) toast.error("Task Id No Found");
-    await dispatch(completeTaskAction(taskId));
-  };
-  const taskSubmitHandler = async () => {
-    if (!taskId) toast.error("Task Id No Found");
-    await dispatch(submitTaskAction(taskId));
-  };
+  const handleCloseFeedbackModal = () => setIsFeedbackModalOpen(false);
+  const taskCompleteHandler = async (tasId, feedback) => await dispatch(completeTaskAction(taskId, feedback));
+  const taskSubmitHandler = async (tasId, feedback) => await dispatch(submitTaskAction(taskId, feedback));
 
   const taskDetailsDeleteHandler = async (taskId) => {
     confirmAlert({
@@ -106,11 +103,7 @@ const TaskDetail = () => {
 
               <button
                 disabled={isSubmitButtonDisable}
-                onClick={
-                  isMeCreator
-                    ? () => taskCompleteHandler(singleTask?._id)
-                    : () => taskSubmitHandler(singleTask?._id)
-                }
+                onClick={handleOpenFeedbackModal}
                 className={`${
                   isMeCreator ? "bg-[#2acf14]" : "bg-[#ff9500]"
                 } text-xs md:text-base p-3 rounded-[10px] text-white  disabled:opacity-50 disabled:cursor-not-allowed1`}
@@ -242,7 +235,13 @@ const TaskDetail = () => {
           <EditTask task={singleTask} onClose={handleCloseModal} />
         </Modal>
       )}
-      {}
+      {isFeedbackModalOpen && (
+        <FeedbackModal
+          onclose={handleCloseFeedbackModal}
+          submitHandler={isMeCreator ? taskCompleteHandler : taskSubmitHandler}
+          task={singleTask}
+        />
+      )}
     </>
   );
 };
