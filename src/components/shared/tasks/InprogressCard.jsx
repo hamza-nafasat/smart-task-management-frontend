@@ -4,8 +4,8 @@ import AlertIcon from "../../../assets/svgs/tasks/AlertIcon";
 import AttachmentIcon from "../../../assets/svgs/tasks/AttachmentIcon";
 import CommentIcon from "../../../assets/svgs/tasks/CommentIcon";
 import UserIcon from "../../../assets/svgs/tasks/UserIcon";
-import { getElapsedTimePercentage } from "../../../utils/features";
-import { getTimeLeft, taskTimeLeft } from "../../../utils/formatting";
+import { getPercentTimeCompleted } from "../../../utils/features";
+import { taskTimeLeft } from "../../../utils/formatting";
 
 const InprogressCard = ({ task }) => {
   return (
@@ -32,7 +32,7 @@ const InprogressCard = ({ task }) => {
             {taskTimeLeft(task?.endDate) ? (
               <p className="text-[11px] sm:text-xs text-primary">
                 {/* find how much time left according task.End date and current time  */}
-                {taskTimeLeft(task?.startDate, task?.endDate)}
+                {taskTimeLeft(task?.endDate)}
               </p>
             ) : (
               <div className="flex items-center gap-1 px-2 py-2 md:py-[6px] md:px-[10px] rounded-md text-[10px] sm:text-sm md:text-base font-medium md:font-semibold text-[#ff5b5b]">
@@ -46,7 +46,7 @@ const InprogressCard = ({ task }) => {
               className="absolute h-[8px] rounded-[6px]"
               style={{
                 background: "rgba(23, 162, 184, 1)",
-                width: getElapsedTimePercentage(task?.startDate, task?.endDate),
+                width: `${getPercentTimeCompleted(task?.startDate, task?.endDate)}%`,
               }}
             ></div>
           </div>

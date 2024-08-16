@@ -1,13 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
+import { BiSolidUpArrow } from "react-icons/bi";
 import { IoNotifications } from "react-icons/io5";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Profile from "../../../assets/images/profile.png";
-import { BiSolidUpArrow } from "react-icons/bi";
 import NotificationInner from "../../../pages/dashboard/notifications/modal/NotificationInner";
-import Button from "../../../components/shared/button/Button";
-import { faceExpressions } from "../../../data/data";
-import { useSelector } from "react-redux";
 import FeedbackModal from "../../shared/feedbackModal/FeedbackModal";
 
 const Header = () => {

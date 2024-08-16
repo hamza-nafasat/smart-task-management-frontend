@@ -60,20 +60,21 @@ const formatDateForInput = (dateString) => {
 };
 
 // how much time left for this task
-function getElapsedTimePercentage(startDate, endDate) {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  const now = new Date();
-  const totalDuration = end - start;
-  const timeElapsed = now - start;
-  const elapsedPercentage = (timeElapsed / totalDuration) * 100;
-  return Math.max(0, Math.min(100, elapsedPercentage));
-}
 
+function getPercentTimeCompleted(startDate, endDate) {
+  const now = new Date(); // Get the current date and time
+  const start = new Date(startDate); // Convert start date string to Date object
+  const end = new Date(endDate); // Convert end date string to Date object
+  const totalTime = end - start;
+  const timePassed = now - start;
+  const percentTimeCompleted = (timePassed / totalTime) * 100;
+  console.log(percentTimeCompleted);
+  return Math.max(0, Math.min(100, percentTimeCompleted));
+}
 export {
   generateCloudinaryDownloadUrl,
   handleDownloadAll,
   isToday,
   formatDateForInput,
-  getElapsedTimePercentage,
+  getPercentTimeCompleted,
 };

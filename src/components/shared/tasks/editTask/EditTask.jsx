@@ -2,12 +2,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DateIcon from "../../../../assets/svgs/modal/DateIcon";
-import MultiSelectUser from "../addTask/MultiSelectUser";
 import { getSingleTaskAction, updateSingleTaskAction } from "../../../../redux/actions/tasksActions";
-import { formatDateForInput } from "../../../../utils/features";
 import FileUpload from "../addTask/FileUpload";
+import MultiSelectUser from "../addTask/MultiSelectUser";
 
-const weeks = ["mon", "tue", "wed", "thu", "fru", "sat", "sun"];
+const weeks = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
 const EditTask = ({ onClose, taskId }) => {
   const dispatch = useDispatch();
@@ -24,6 +23,7 @@ const EditTask = ({ onClose, taskId }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log(startDate, endDate);
   const handleDefaultChange = () => {
     setIsDefault(!isDefault);
     setIsSchedule(isDefault);
@@ -88,8 +88,8 @@ const EditTask = ({ onClose, taskId }) => {
     if (singleTask) {
       setTitle(singleTask?.title);
       setDescription(singleTask?.description);
-      setStartDate(formatDateForInput(singleTask?.startDate));
-      setEndDate(formatDateForInput(singleTask?.endDate));
+      setStartDate(singleTask?.startDate);
+      setEndDate(singleTask?.endDate);
       if (singleTask?.onDay) {
         setActiveWeek(singleTask?.onDay);
         setIsSchedule(true);

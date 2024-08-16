@@ -1,4 +1,4 @@
-// function for formatting the task time left
+// how much time left for this task according task end date
 const taskTimeLeft = (taskEndDate, status = false) => {
   const currentTime = new Date();
   const endTime = new Date(taskEndDate);
@@ -26,22 +26,6 @@ const taskTimeLeft = (taskEndDate, status = false) => {
   const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
   return `${days}d ${hours}h ${minutes}m left`;
 };
-
-// check how much time left for this task
-function getTimeLeft(startDate, endDate) {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  const now = new Date();
-  if (now >= end) {
-    return "The task has already ended.";
-  }
-  const timeLeftMs = end - now;
-  const days = Math.floor(timeLeftMs / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((timeLeftMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((timeLeftMs % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((timeLeftMs % (1000 * 60)) / 1000);
-  return `${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds left.`;
-}
 
 // check is task cross the due date
 const isTaskEndTimeEnded = (taskEndDate) => {
@@ -75,7 +59,7 @@ const getTimeAgo = (createdAt) => {
     return "Invalid createdAt";
   }
   const now = new Date().getTime();
-  const diff = now - Number(createdAt);
+  const diff = now - createdAt.getTime(); // Use getTime() directly on the date object
 
   const seconds = Math.floor(diff / 1000);
   const minutes = Math.floor(seconds / 60);
@@ -87,16 +71,16 @@ const getTimeAgo = (createdAt) => {
   if (seconds < 60) {
     return `${seconds} sec ago`;
   } else if (minutes < 60) {
-    return `${minutes} min ago`;
+    return `${minutes} min, ${seconds % 60} sec ago`;
   } else if (hours < 24) {
-    return `${hours} hours ago`;
+    return `${hours}h ${minutes % 60}m ago`;
   } else if (days < 30) {
-    return `${days} days ago`;
+    return `${days}d ${hours % 24}h ago`;
   } else if (months < 12) {
-    return `${months} mon ago`;
+    return `${months} months ${days % 30} day ago`;
   } else {
-    return `${years} years ago`;
+    return `${years}y ${months % 12}m ago`;
   }
 };
 
-export { taskTimeLeft, formatFileSize, isTaskEndTimeEnded, getTimeAgo, getTimeLeft };
+export { formatFileSize, getTimeAgo, isTaskEndTimeEnded, taskTimeLeft };

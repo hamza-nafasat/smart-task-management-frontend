@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { confirmAlert } from "react-confirm-alert";
 import toast from "react-hot-toast";
 import { IoTrashOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,12 +18,11 @@ import {
 } from "../../../redux/actions/tasksActions";
 import { isToday } from "../../../utils/features";
 import { getTimeAgo, isTaskEndTimeEnded, taskTimeLeft } from "../../../utils/formatting";
+import Modal from "../modal/Modal";
 import Activity from "./Activity";
 import Comments from "./Comments";
-import TaskAttachments from "./TaskAttachments";
-import Modal from "../modal/Modal";
 import EditTask from "./editTask/EditTask";
-import { confirmAlert } from "react-confirm-alert";
+import TaskAttachments from "./TaskAttachments";
 
 const TaskDetail = () => {
   const params = useParams();
@@ -131,7 +131,7 @@ const TaskDetail = () => {
                   </div>
                 ) : singleTask?.status === "completed" ? (
                   <div className="flex items-center gap-1 bg-[#4fec1fd8] px-2 py-2 md:py-[6px] md:px-[10px] rounded-md text-[10px] sm:text-sm md:text-base font-medium md:font-semibold text-[#dae6f3]">
-                    Task is Completed Now
+                    Task is Completed
                   </div>
                 ) : (
                   <div className="flex items-center gap-1 bg-[#93f8fcb6] px-2 py-2 md:py-[6px] md:px-[10px] rounded-md text-[10px] sm:text-sm md:text-base font-medium md:font-semibold text-[#336699]">
@@ -144,7 +144,7 @@ const TaskDetail = () => {
                   <TimeIcon />
                   <span>
                     {singleTask?.status === "in-progress"
-                      ? taskTimeLeft(singleTask?.endDate, singleTask?.status)
+                      ? taskTimeLeft(singleTask?.endDate)
                       : getTimeAgo(singleTask?.completedAt)}
                   </span>
                 </div>
@@ -242,6 +242,7 @@ const TaskDetail = () => {
           <EditTask task={singleTask} onClose={handleCloseModal} />
         </Modal>
       )}
+      {}
     </>
   );
 };
