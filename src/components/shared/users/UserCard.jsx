@@ -6,10 +6,7 @@ import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import {
-  deleteUserByAdminAction,
-  getAllUsersAction,
-} from "../../../redux/actions/usersActions";
+import { deleteUserByAdminAction, getAllUsersAction } from "../../../redux/actions/usersActions";
 import { useState } from "react";
 import { BsFillInfoSquareFill } from "react-icons/bs";
 import { confirmAlert } from "react-confirm-alert";
@@ -20,12 +17,12 @@ const UserCard = ({ user }) => {
 
   const deleteHandler = (id) => {
     confirmAlert({
-      title: 'Delete User',
-      message: 'Are you sure, you want to delete the user?',
+      title: "Delete User",
+      message: "Are you sure, you want to delete the user?",
       buttons: [
         {
-          label: 'Yes',
-          onClick: async() => {
+          label: "Yes",
+          onClick: async () => {
             setLoading(true);
             if (!id) return toast.error("User id not found");
             await dispatch(deleteUserByAdminAction(id));
@@ -34,16 +31,16 @@ const UserCard = ({ user }) => {
           },
         },
         {
-          label: 'No',
-        }
+          label: "No",
+        },
       ],
-    })
+    });
   };
   return (
     <div className="lg:col-span-6 xl:col-span-4 bg-[#f8f8f8cc] rounded-lg">
       <div className="relative p-4">
         <div className="absolute right-4 top-4">
-          <Link title="User Details" to='/dashboard/single-user/hkh'>
+          <Link title="User Details" to="/dashboard/single-user/hkh">
             <BsFillInfoSquareFill color="#3d3d3d" fontSize={18} />
           </Link>
         </div>
@@ -55,10 +52,7 @@ const UserCard = ({ user }) => {
           />
         </div>
         <div className="mt-[2.5rem] flex items-center justify-center gap-1">
-          <h3 className="text-base md:text-md text-gray-800 font-medium text-center">
-            {user?.username}
-          </h3>
-          •
+          <h3 className="text-base md:text-md text-gray-800 font-medium text-center">{user?.username}</h3>•
           {user?.gender === "male" ? (
             <IoMdMale fontSize={20} color="rgb(23, 162, 184)" />
           ) : (
@@ -67,9 +61,7 @@ const UserCard = ({ user }) => {
         </div>
         <div className="mt-2 flex justify-center items-center gap-1">
           <FaStar fontSize={20} color="#FFA534" />
-          <p className="text-xs text-gray-700">
-            (ratings {user?.ratings || 5})
-          </p>
+          <p className="text-xs text-gray-700">(ratings {user?.rating || 5})</p>
         </div>
         <div className="mt-3 flex items-center justify-between">
           <div>
@@ -77,12 +69,8 @@ const UserCard = ({ user }) => {
             <p className="text-sm md:text-base text-primary">{user?.name}</p>
           </div>
           <div>
-            <p className="text-xs md:text-sm text-gray-500 font-light text-end">
-              Position
-            </p>
-            <p className="text-sm md:text-base text-primary text-end">
-              {user?.position}
-            </p>
+            <p className="text-xs md:text-sm text-gray-500 font-light text-end">Position</p>
+            <p className="text-sm md:text-base text-primary text-end">{user?.position}</p>
           </div>
         </div>
         <div className="mt-3 flex items-center justify-between">
@@ -91,30 +79,18 @@ const UserCard = ({ user }) => {
             <p className="text-sm md:text-base text-primary">{user?.email}</p>
           </div>
           <div>
-            <p className="text-xs md:text-sm text-gray-500 font-light text-end">
-              In Progress Tasks
-            </p>
-            <p className="text-sm md:text-base text-primary text-end">
-              {user?.inProgressTasks}
-            </p>
+            <p className="text-xs md:text-sm text-gray-500 font-light text-end">In Progress Tasks</p>
+            <p className="text-sm md:text-base text-primary text-end">{user?.inProgressTasks}</p>
           </div>
         </div>
         <div className="mt-3 flex items-center justify-between">
           <div>
-            <p className="text-xs md:text-sm text-gray-500 font-light">
-              Completed Tasks
-            </p>
-            <p className="text-sm md:text-base text-primary">
-              {user?.completedTasks}
-            </p>
+            <p className="text-xs md:text-sm text-gray-500 font-light">Completed Tasks</p>
+            <p className="text-sm md:text-base text-primary">{user?.completedTasks}</p>
           </div>
           <div>
-            <p className="text-xs md:text-sm text-gray-500 font-light text-end">
-              Scheduled Tasks
-            </p>
-            <p className="text-sm md:text-base text-primary text-end">
-              {user?.scheduledTasks}
-            </p>
+            <p className="text-xs md:text-sm text-gray-500 font-light text-end">Scheduled Tasks</p>
+            <p className="text-sm md:text-base text-primary text-end">{user?.scheduledTasks}</p>
           </div>
         </div>
         <div className="flex items-center justify-between gap-4 mt-3">

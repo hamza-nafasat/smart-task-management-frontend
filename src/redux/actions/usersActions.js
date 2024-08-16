@@ -136,7 +136,7 @@ const logoutAction = () => async (dispatch) => {
 const firstLoginAction = () => async (dispatch) => {
   try {
     dispatch(firstLoginStart());
-    const response = await customAxios.get("/users/first-login");
+    await customAxios.get("/users/first-login");
     // console.log("success while first login", response);
   } catch (error) {
     // console.log("error while first login", error);
@@ -150,7 +150,7 @@ const getAllUsersAction = () => async (dispatch) => {
   try {
     dispatch(allUsersStart());
     const response = await customAxios.get("/users/all-users");
-    // console.log("success while get all users", response);
+    console.log("success while get all users", response);
     dispatch(allUsersSuccess(response.data));
   } catch (error) {
     // console.log("error while get all users", error);
