@@ -60,15 +60,13 @@ const formatDateForInput = (dateString) => {
 };
 
 // how much time left for this task
-
 function getPercentTimeCompleted(startDate, endDate) {
-  const now = new Date(); // Get the current date and time
-  const start = new Date(startDate); // Convert start date string to Date object
-  const end = new Date(endDate); // Convert end date string to Date object
+  const now = new Date();
+  const start = new Date(startDate);
+  const end = new Date(endDate);
   const totalTime = end - start;
   const timePassed = now - start;
   const percentTimeCompleted = (timePassed / totalTime) * 100;
-  console.log(percentTimeCompleted);
   return Math.max(0, Math.min(100, percentTimeCompleted));
 }
 export {

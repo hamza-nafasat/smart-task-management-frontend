@@ -2,7 +2,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DateIcon from "../../../../assets/svgs/modal/DateIcon";
-import { getSingleTaskAction, updateSingleTaskAction } from "../../../../redux/actions/tasksActions";
+import {
+  getSingleTaskAction,
+  getTaskActivitiesAction,
+  updateSingleTaskAction,
+} from "../../../../redux/actions/tasksActions";
 import FileUpload from "../addTask/FileUpload";
 import MultiSelectUser from "../addTask/MultiSelectUser";
 
@@ -71,6 +75,7 @@ const EditTask = ({ onClose, taskId }) => {
       }
       await dispatch(updateSingleTaskAction(singleTask?._id, formData));
       await dispatch(getSingleTaskAction(singleTask?._id));
+      dispatch(getTaskActivitiesAction(singleTask?._id));
       setIsLoading(false);
       onClose();
     } catch (error) {

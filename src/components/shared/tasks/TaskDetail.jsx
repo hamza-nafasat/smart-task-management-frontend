@@ -14,6 +14,7 @@ import {
   deleteSingleTaskAction,
   getSingleTaskAction,
   getSingleTaskAllCommentsAction,
+  getTaskActivitiesAction,
   submitTaskAction,
 } from "../../../redux/actions/tasksActions";
 import { isToday } from "../../../utils/features";
@@ -33,7 +34,7 @@ const TaskDetail = () => {
   const [isModal, setIsModal] = useState(false);
   const [isDelLoading, setIsDelLoading] = useState(false);
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
-  const { singleTask, singleTaskComments, message } = useSelector((state) => state.tasks);
+  const { singleTask, singleTaskComments, message, taskActivities } = useSelector((state) => state.tasks);
   const { user } = useSelector((state) => state.users);
 
   const isMeCreator = String(user._id) === String(singleTask?.creator?._id);
@@ -71,6 +72,7 @@ const TaskDetail = () => {
   useEffect(() => {
     if (taskId) {
       dispatch(getSingleTaskAction(taskId));
+      dispatch(getTaskActivitiesAction(taskId));
       dispatch(getSingleTaskAllCommentsAction(taskId));
     }
   }, [dispatch, taskId]);
@@ -224,7 +226,7 @@ const TaskDetail = () => {
                 <Comments taskId={taskId} comments={singleTaskComments} />
               </div>
               <div className="col-span-12 lg:col-span-3">
-                <Activity />
+                <Activity activities={taskActivities} />
               </div>
             </div>
           </div>

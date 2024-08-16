@@ -4,7 +4,7 @@ import AttachmentIcon from "../../../assets/svgs/tasks/AttachmentIcon";
 import CheckIcon from "../../../assets/svgs/tasks/CheckIcon";
 import CommentIcon from "../../../assets/svgs/tasks/CommentIcon";
 import UserIcon from "../../../assets/svgs/tasks/UserIcon";
-import { getTimeAgo, taskTimeLeft } from "../../../utils/formatting";
+import { getTimeAgo } from "../../../utils/formatting";
 
 const FinishedCard = ({ task }) => {
   return (

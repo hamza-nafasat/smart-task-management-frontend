@@ -8,6 +8,7 @@ const initialState = {
   singleCommentReplies: [],
   loading: false,
   error: null,
+  taskActivities: [],
 };
 
 const tasksSlices = createSlice({
@@ -76,6 +77,19 @@ const tasksSlices = createSlice({
       state.message = action.payload.message;
     },
     completeTaskFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // get task activities
+    getTaskActivitiesStart(state) {
+      state.loading = true;
+    },
+    getTaskActivitiesSuccess(state, action) {
+      state.loading = false;
+      state.taskActivities = action.payload.data;
+    },
+    getTaskActivitiesFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
     },
@@ -192,6 +206,11 @@ export const {
   getSingleTaskStart,
   getSingleTaskSuccess,
   getSingleTaskFailure,
+
+  // get single task activities
+  getTaskActivitiesStart,
+  getTaskActivitiesSuccess,
+  getTaskActivitiesFailure,
 
   // update single task
   updateSingleTaskStart,

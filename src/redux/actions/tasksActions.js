@@ -27,6 +27,9 @@ import {
   getSingleTaskFailure,
   getSingleTaskStart,
   getSingleTaskSuccess,
+  getTaskActivitiesFailure,
+  getTaskActivitiesStart,
+  getTaskActivitiesSuccess,
   removeAttachmentFailure,
   removeAttachmentStart,
   removeAttachmentSuccess,
@@ -170,7 +173,26 @@ const getAllTasksAction = () => async (dispatch) => {
   }
 };
 
-// get single task all notifications
+// get task activities
+// ----------------------
+
+const getTaskActivitiesAction = (id) => async (dispatch) => {
+  try {
+    dispatch(getTaskActivitiesStart());
+    const response = await customAxios.get(`/tasks/activities/all/${id}`);
+    console.log("success while get task activities", response);
+    dispatch(getTaskActivitiesSuccess(response.data));
+  } catch (error) {
+    console.log("error while get task activities", error);
+    dispatch(
+      getTaskActivitiesFailure(
+        error?.response?.data?.message || "Some Error Occurred While Get Task Activities"
+      )
+    );
+  }
+};
+
+// get single task all comments
 // ---------------------------------
 const getSingleTaskAllCommentsAction = (taskId) => async (dispatch) => {
   try {
@@ -254,4 +276,5 @@ export {
   addCommentAction,
   getCommentRepliesAction,
   addCommentReplyAction,
+  getTaskActivitiesAction,
 };

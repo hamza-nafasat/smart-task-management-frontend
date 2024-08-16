@@ -61,7 +61,7 @@ const UserCard = ({ user }) => {
         </div>
         <div className="mt-2 flex justify-center items-center gap-1">
           <FaStar fontSize={20} color="#FFA534" />
-          <p className="text-xs text-gray-700">(ratings {user?.rating || 5})</p>
+          <p className="text-xs text-gray-700">(ratings {isNaN(user?.rating) ? 0 : user?.rating})</p>
         </div>
         <div className="mt-3 flex items-center justify-between">
           <div>
