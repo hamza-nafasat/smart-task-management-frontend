@@ -11,7 +11,7 @@ const InprogressCard = ({ task }) => {
   return (
     <Link
       to={`/dashboard/tasks/${task?._id}`}
-      className="bg-[#f8f8f8cc] rounded-[20px] p-4 lg:p-6 cursor-pointer"
+      className={` rounded-[20px] p-4 lg:p-6 cursor-pointer bg-[#f8f8f8cc]`}
     >
       {/* header */}
       <div className="flex items-center justify-between gap-4">
@@ -24,21 +24,42 @@ const InprogressCard = ({ task }) => {
         </div>
       </div>
       <div className="mt-2">
-        <h2 className="text-base md:text-[18px] font-semibold text-[#000] capitalize">{task?.title}</h2>
-        <p className="mt-2 text-[11px] sm:text-xs">{task?.description}</p>
+        <h2
+          className={`text-base md:text-[18px] font-semibold capitalize text-[#000]
+          }`}
+        >
+          {task?.title}
+        </h2>
+        <p className={`mt-2 text-[11px] sm:text-xs text-[#000]`}>{task?.description}</p>
         <div>
           <div className="flex items-center justify-between mt-3">
-            <h6 className="text-[11px] sm:text-xs text-primary font-medium md:font-semibold">Time Left</h6>
-            {taskTimeLeft(task?.endDate) ? (
-              <p className="text-[11px] sm:text-xs text-primary">
-                {/* find how much time left according task.End date and current time  */}
-                {taskTimeLeft(task?.endDate)}
-              </p>
+            {task.isSubmitted ? (
+              <>
+                <h6 className="text-[11px] sm:text-xs text-primary font-medium md:font-semibold">Status</h6>
+                <p className="text-[11px] sm:text-sm text-[#fff] bg-[#40a737] px-[8px] py-[4px] rounded-full">
+                  Task Submitted
+                </p>
+              </>
+            ) : taskTimeLeft(task?.endDate) ? (
+              <>
+                <h6 className="text-[11px] sm:text-xs text-primary font-medium md:font-semibold">
+                  Time Left
+                </h6>
+                <p className="text-[11px] sm:text-xs text-primary">
+                  {/* find how much time left according task.End date and current time  */}
+                  {taskTimeLeft(task?.endDate)}
+                </p>
+              </>
             ) : (
-              <div className="flex items-center gap-1 px-2 py-2 md:py-[6px] md:px-[10px] rounded-md text-[10px] sm:text-sm md:text-base font-medium md:font-semibold text-[#ff5b5b]">
-                <AlertIcon />
-                Task Is Overdued
-              </div>
+              <>
+                <h6 className="text-[11px] sm:text-xs text-primary font-medium md:font-semibold">
+                  Time Left
+                </h6>
+                <div className="flex items-center gap-1 px-2 py-2 md:py-[6px] md:px-[10px] rounded-md text-[10px] sm:text-sm md:text-base font-medium md:font-semibold text-[#ff5b5b]">
+                  <AlertIcon />
+                  Task Is Overdued
+                </div>
+              </>
             )}
           </div>
           <div className="mt-4 w-full h-[8px] rounded-[6px] bg-[#17a2b829] relative">
