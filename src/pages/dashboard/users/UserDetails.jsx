@@ -1,12 +1,11 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
-import dp from "../../../assets/images/profile.png";
-import { FaStar } from "react-icons/fa";
-import { Cell, Pie, PieChart, Tooltip } from "recharts";
-import UserReport from "../../../components/shared/users/UserReport";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUserDetailsAction } from "../../../redux/actions/usersActions";
 import { useParams } from "react-router-dom";
+import { Cell, Pie, PieChart, Tooltip } from "recharts";
+import dp from "../../../assets/images/profile.png";
+import UserReport from "../../../components/shared/users/UserReport";
+import { getAllUserDetailsAction } from "../../../redux/actions/usersActions";
 
 const UserDetails = () => {
   const params = useParams();
@@ -44,11 +43,11 @@ const UserDetails = () => {
           if (rating[0] == 2) {
             badPerformances = rating?.length || 0;
           }
+          if (rating[0] == 3) {
+            averagePerformances = rating?.length || 0;
+          }
           if (rating[0] == 4) {
             goodPerformances = rating?.length || 0;
-          }
-          if (rating[0] == 5) {
-            averagePerformances = rating?.length || 0;
           }
           if (rating[0] == 5) {
             excellentPerformances = rating?.length || 0;
@@ -94,7 +93,7 @@ const UserDetails = () => {
           />
         </div>
         <div className="mt-4 bg-white rounded-lg p-4">
-          <UserReport />
+          <UserReport tasks={userDetails?.tasks} />
         </div>
       </div>
     </div>
@@ -145,13 +144,9 @@ const UserProfileSection = ({ user }) => {
           className="w-20 h-20 md:w-[160px] md:h-[160px] rounded-full object-cover border-2 border-[#17a2b8]"
         />
         <div className="flex items-center gap-1">
-          <FaStar color="#c8a21a" fontSize={24} />
-          <FaStar color="#c8a21a" fontSize={24} />
-          <FaStar color="#c8a21a" fontSize={24} />
-          <FaStar color="#c8a21a" fontSize={24} />
-          <FaStar color="#00000073" fontSize={24} />
+          <UserRatingStarList rating={user?.rating} />
         </div>
-        <p className="text-sm font-bold text-[#242222cc]">{user?.feedback?.length} Rates</p>
+        <p className="text-sm font-bold text-[#242222cc]">Rating: {user?.rating}</p>
       </div>
       <div className="flex-1 w-full">
         <table className="w-full">
@@ -215,10 +210,10 @@ const UserProfileSection = ({ user }) => {
 
 const PerformancePieChart = ({ data, ratingPercent }) => {
   const colors = ["#9eff00", "#ff8900", "#7b90ff"];
-
   const chartData = data?.map((item, index) => ({
     name: item.label,
-    value: item.value,
+    value: 1,
+    actualValue: item?.value,
     color: colors[index],
   }));
 
@@ -243,16 +238,57 @@ const PerformancePieChart = ({ data, ratingPercent }) => {
         {chartData?.map((entry, index) => (
           <defs key={`gradient-${index}`}>
             <linearGradient id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor={entry.color} stopOpacity={0.7} />
-              <stop offset="100%" stopColor={entry.color} stopOpacity={1} />
+              <stop offset="0%" stopColor={entry?.color} stopOpacity={0.7} />
+              <stop offset="100%" stopColor={entry?.color} stopOpacity={1} />
             </linearGradient>
           </defs>
         ))}
-        <Tooltip />
+        <Tooltip
+          wrapperStyle={{ zIndex: 10 }}
+          formatter={(value, name, props) => `${props?.payload?.actualValue}`}
+        />
       </PieChart>
-      <p className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-2xl md:text-[42px] font-semibold text-[#17a2b8]">
+      <p className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-2xl md:text-[42px] font-semibold text-[#17a2b8] z-[1]">
         {ratingPercent}%
       </p>
+    </div>
+  );
+};
+
+const UserRatingStarList = ({ rating }) => {
+  const getStarClass = (starIndex) => {
+    if (rating >= starIndex) {
+      return "text-yellow-500";
+    } else if (rating >= starIndex - 0.5) {
+      return "text-yellow-300";
+    } else {
+      return "text-gray-400";
+    }
+  };
+
+  return (
+    <div className="flex flex-row-reverse justify-center rating">
+      {[5, 4, 3, 2, 1].map((starIndex) => (
+        <React.Fragment key={starIndex}>
+          <input
+            value={starIndex}
+            name="rate"
+            id={`star${starIndex}`}
+            type="radio"
+            className="hidden"
+            checked={Math.floor(rating) === starIndex}
+            readOnly
+          />
+          <label
+            htmlFor={`star${starIndex}`}
+            className={`cursor-pointer text-2xl transition duration-200 ease-in-out ${getStarClass(
+              starIndex
+            )}`}
+          >
+            ★
+          </label>
+        </React.Fragment>
+      ))}
     </div>
   );
 };
