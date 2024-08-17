@@ -7,7 +7,11 @@ import { IoTrashBinSharp } from "react-icons/io5";
 import { confirmAlert } from "react-confirm-alert";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { getSingleTaskAction, removeAttachmentAction } from "../../../redux/actions/tasksActions";
+import {
+  getSingleTaskAction,
+  getTaskActivitiesAction,
+  removeAttachmentAction,
+} from "../../../redux/actions/tasksActions";
 import { useDispatch } from "react-redux";
 
 const TaskAttachments = ({ attachments, taskId, isMeCreator }) => {
@@ -25,6 +29,7 @@ const TaskAttachments = ({ attachments, taskId, isMeCreator }) => {
             setIsDelLoading(true);
             if (!public_id) toast.error("Attachment No Found");
             await dispatch(removeAttachmentAction(taskId, public_id));
+            await dispatch(getTaskActivitiesAction(taskId));
             await dispatch(getSingleTaskAction(taskId));
             setIsDelLoading(false);
           },

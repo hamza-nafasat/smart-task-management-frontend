@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import SendIcon from "../../../assets/svgs/tasks/SendIcon";
-import { addCommentAction, getSingleTaskAllCommentsAction } from "../../../redux/actions/tasksActions";
+import {
+  addCommentAction,
+  getSingleTaskAllCommentsAction,
+  getTaskActivitiesAction,
+} from "../../../redux/actions/tasksActions";
 import SingleComment from "./SingleComment";
 import { clearTaskError, clearTaskMessage } from "../../../redux/slices/tasksSlices";
 
@@ -25,6 +29,7 @@ const Comments = ({ taskId, comments }) => {
       return toast.error("You can't send empty Comment");
     }
     await dispatch(addCommentAction(taskId, commentContent));
+    await dispatch(getTaskActivitiesAction(taskId));
     await dispatch(getSingleTaskAllCommentsAction(taskId));
     setCommentContent("");
     setSendCommentLoading(false);
@@ -49,7 +54,7 @@ const Comments = ({ taskId, comments }) => {
         ))}
       </div>
       {/* send comment input  */}
-      <div className="flex items-center gap-3 mt-3 rounded-[4px] border border-primary p-2 md:py-3 md:px-4">
+      <form className="flex items-center gap-3 mt-3 rounded-[4px] border border-primary p-2 md:py-3 md:px-4">
         <input
           type="text"
           value={commentContent}
@@ -57,15 +62,15 @@ const Comments = ({ taskId, comments }) => {
           placeholder="Write your comment here"
           className="w-full focus:outline-none bg-transparent text-[11px] md:text-[13px] text-[#33333380]"
         />
-        <div
+        <button
           className={` ${
             sendCommentLoading ? "opacity-50  cursor-not-allowed" : "opacity-100 cursor-pointer"
           } `}
           onClick={addNewCommentHandler}
         >
           <SendIcon />
-        </div>
-      </div>
+        </button>
+      </form>
     </div>
   );
 };

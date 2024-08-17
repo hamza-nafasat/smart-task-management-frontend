@@ -155,9 +155,8 @@ const userSlice = createSlice({
       state.loading = false;
       state.user = action.payload.data;
     },
-    getMyProfileFailure(state, action) {
+    getMyProfileFailure(state) {
       state.loading = false;
-      state.error = action.payload;
     },
 
     // first login
