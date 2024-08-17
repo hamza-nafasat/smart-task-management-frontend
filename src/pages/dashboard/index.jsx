@@ -33,7 +33,7 @@ const Dashboard = () => {
         <div className="bg-linearGrad backdrop-blur-lg hidden md:block">
           <Aside />
         </div>
-        <div className="w-[100%]">
+        <div className="w-[100%] relative">
           <Header />
           <Main />
         </div>
