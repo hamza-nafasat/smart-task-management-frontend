@@ -40,7 +40,7 @@ const UserCard = ({ user }) => {
     <div className="lg:col-span-6 xl:col-span-4 bg-[#f8f8f8cc] rounded-lg">
       <div className="relative p-4">
         <div className="absolute right-4 top-4">
-          <Link title="User Details" to="/dashboard/single-user/hkh">
+          <Link title="User Details" to={`/dashboard/single-user/${user?._id}`}>
             <BsFillInfoSquareFill color="#3d3d3d" fontSize={18} />
           </Link>
         </div>

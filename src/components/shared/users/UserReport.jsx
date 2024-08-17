@@ -32,9 +32,7 @@ const columns = [
           )}
         </div>
         <div className="flex flex-col">
-          <p className="text-[12px] font-semibold text-[#17a2b8]">
-            {row.startDate}
-          </p>
+          <p className="text-[12px] font-semibold text-[#17a2b8]">{row.startDate}</p>
           <p
             className={`text-[12px] font-semibold ${
               row.status === "Completed"
@@ -179,7 +177,7 @@ const UserReport = () => {
           customStyles={customStyles}
           pagination
           fixedHeader
-          // fixedHeaderScrollHeight="30%"
+          fixedHeaderScrollHeight="30%"
         />
       </div>
     </div>

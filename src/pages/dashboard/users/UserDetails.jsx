@@ -1,25 +1,76 @@
-import React from "react";
+/* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
 import dp from "../../../assets/images/profile.png";
 import { FaStar } from "react-icons/fa";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import UserReport from "../../../components/shared/users/UserReport";
-
-const tasksData = [
-  { label: "Completed", value: 30 },
-  { label: "In Progress", value: 15 },
-  { label: "Schedule", value: 13 },
-  { label: "In Progress but Overdue", value: 19 },
-];
-
+import { useDispatch, useSelector } from "react-redux";
+import { getAllUserDetailsAction } from "../../../redux/actions/usersActions";
+import { useParams } from "react-router-dom";
 
 const UserDetails = () => {
+  const params = useParams();
+  const dispatch = useDispatch();
+  const { userDetails } = useSelector((state) => state.users);
+  const [UserPerformance, setUserPerformance] = useState([
+    { ratingName: "Excellent", ratings: 0, ratingEmoji: "😊" },
+    { ratingName: "Good", ratings: 0, ratingEmoji: "🙂" },
+    { ratingName: "Average", ratings: 0, ratingEmoji: "😐" },
+    { ratingName: "Bad", ratings: 0, ratingEmoji: "😶" },
+    { ratingName: "Very Bad", ratings: 0, ratingEmoji: "🙁" },
+  ]);
+
+  useEffect(() => {
+    if (params.userId) {
+      dispatch(getAllUserDetailsAction(params.userId));
+    }
+  }, [dispatch, params.userId]);
+
+  // find data for user efficiency
+  useEffect(() => {
+    if (userDetails) {
+      let excellentPerformances = 0;
+      let goodPerformances = 0;
+      let averagePerformances = 0;
+      let badPerformances = 0;
+      let veryBadPerformances = 0;
+
+      if (userDetails?.rattingArrays?.length > 0) {
+        userDetails?.rattingArrays?.forEach((rating) => {
+          console.log("rating", rating);
+          if (rating[0] == 1) {
+            veryBadPerformances = rating?.length || 0;
+          }
+          if (rating[0] == 2) {
+            badPerformances = rating?.length || 0;
+          }
+          if (rating[0] == 4) {
+            goodPerformances = rating?.length || 0;
+          }
+          if (rating[0] == 5) {
+            averagePerformances = rating?.length || 0;
+          }
+          if (rating[0] == 5) {
+            excellentPerformances = rating?.length || 0;
+          }
+        });
+
+        setUserPerformance([
+          { ratingName: "Excellent", ratings: excellentPerformances, ratingEmoji: "😊" },
+          { ratingName: "Good", ratings: goodPerformances, ratingEmoji: "🙂" },
+          { ratingName: "Average", ratings: averagePerformances, ratingEmoji: "😐" },
+          { ratingName: "Bad", ratings: badPerformances, ratingEmoji: "😶" },
+          { ratingName: "Very Bad", ratings: veryBadPerformances, ratingEmoji: "🙁" },
+        ]);
+      }
+    }
+  }, [userDetails]);
+
   return (
-    <div className="h-fullp-4">
+    <div className="h-full p-4">
       <div className="p-4 rounded-lg bg-[#eef2f56e]">
         <div className="flex items-center gap-4">
-          <h2 className="text-base font-medium text-[#414141] text-nowrap">
-            User Report
-          </h2>
+          <h2 className="text-base font-medium text-[#414141] text-nowrap">User Report</h2>
           <div className="h-[1px] bg-[#0000005c] w-full"></div>
           <select className="text-[#7e7e7e] text-xs py-2 px-3 bg-white focus:outline-none border border-[#0000000f] rounded-full cursor-pointer">
             <option className="text-[#7e7e7e] text-xs" disabled selected>
@@ -35,8 +86,12 @@ const UserDetails = () => {
           </select>
         </div>
         <div className="mt-4 grid lg:grid-cols-2 gap-4">
-          <UserProfileSection userImg={dp} totalRating={23} />
-          <UserPerformanceSec />
+          <UserProfileSection user={userDetails} userImg={dp} />
+          <UserPerformanceSec
+            UserPerformance={UserPerformance}
+            chartData={userDetails?.chartData}
+            ratingPercent={userDetails?.ratingEfficiency}
+          />
         </div>
         <div className="mt-4 bg-white rounded-lg p-4">
           <UserReport />
@@ -48,27 +103,18 @@ const UserDetails = () => {
 
 export default UserDetails;
 
-const UserPerformanceSec = () => {
+const UserPerformanceSec = ({ UserPerformance, chartData, ratingPercent }) => {
   return (
     <div className="bg-white rounded-lg p-4">
       <p className="text-base font-semibold text-[#414141]">Performance:</p>
       <div className="flex flex-col sm:flex-row items-center gap-12 sm:gap-4 justify-center mt-5">
         <div className="w-full md:px-8">
-          <RatingList
-            ratingName={"Excellent"}
-            ratings={23}
-            ratingEmoji={"😊"}
-          />
-          <RatingList ratingName={"Good"} ratings={11} ratingEmoji={" 🙂 "} />
-          <RatingList
-            ratingName={"Average"}
-            ratings={29}
-            ratingEmoji={" 😐 "}
-          />
-          <RatingList ratingName={"Bad"} ratings={9} ratingEmoji={" 😶 "} />
+          {UserPerformance?.map(({ ratingName, ratings, ratingEmoji }, i) => (
+            <RatingList key={i} ratingName={ratingName} ratings={ratings} ratingEmoji={ratingEmoji} />
+          ))}
         </div>
         <div className="w-full md:px-8 flex justify-center">
-          <PerformancePieChart data={tasksData} />
+          <PerformancePieChart data={chartData} ratingPercent={ratingPercent} />
         </div>
       </div>
     </div>
@@ -78,7 +124,7 @@ const UserPerformanceSec = () => {
 const RatingList = ({ ratingName, ratings, ratingEmoji }) => {
   return (
     <div className="flex items-center gap-4">
-      <p className="text-sm sm:text-base font-medium sm:font-semibold text-[#41414199] basis-[50%]">
+      <p className="text-sm sm:text-base font-medium sm:font-semibold text-[#41414199] basis-[80%]">
         {ratingName}:
       </p>
       <p className="flex items-center gap-1 text-sm sm:text-base font-medium sm:font-semibold text-[#414141] basis-[48%]">
@@ -89,12 +135,12 @@ const RatingList = ({ ratingName, ratings, ratingEmoji }) => {
   );
 };
 
-const UserProfileSection = ({ userImg, ratings, totalRating, user }) => {
+const UserProfileSection = ({ user }) => {
   return (
     <div className="bg-white p-4 rounded-lg flex flex-col sm:flex-row items-center gap-6">
       <div className="flex flex-col items-center gap-2">
         <img
-          src={userImg}
+          src={user?.image?.url}
           alt="profile"
           className="w-20 h-20 md:w-[160px] md:h-[160px] rounded-full object-cover border-2 border-[#17a2b8]"
         />
@@ -105,9 +151,7 @@ const UserProfileSection = ({ userImg, ratings, totalRating, user }) => {
           <FaStar color="#c8a21a" fontSize={24} />
           <FaStar color="#00000073" fontSize={24} />
         </div>
-        <p className="text-sm font-bold text-[#242222cc]">
-          {totalRating} Rates
-        </p>
+        <p className="text-sm font-bold text-[#242222cc]">{user?.feedback?.length} Rates</p>
       </div>
       <div className="flex-1 w-full">
         <table className="w-full">
@@ -117,7 +161,9 @@ const UserProfileSection = ({ userImg, ratings, totalRating, user }) => {
                 <p className="text-xs sm:text-sm text-[#41414199]">Name:</p>
               </td>
               <td className="basis-[60%]">
-                <p className="text-xs sm:text-sm font-medium sm:font-semibold text-[#242222cc]">Zain</p>
+                <p className="text-xs sm:text-sm font-medium sm:font-semibold text-[#242222cc]">
+                  {user?.name}
+                </p>
               </td>
             </tr>
             <tr className="flex items-center justify-between gap-4">
@@ -126,7 +172,7 @@ const UserProfileSection = ({ userImg, ratings, totalRating, user }) => {
               </td>
               <td className="basis-[60%]">
                 <p className="text-xs sm:text-sm font-medium sm:font-semibold text-[#242222cc]">
-                  Zain@645
+                  {user?.username}
                 </p>
               </td>
             </tr>
@@ -135,7 +181,9 @@ const UserProfileSection = ({ userImg, ratings, totalRating, user }) => {
                 <p className="text-xs sm:text-sm text-[#41414199]">Gender:</p>
               </td>
               <td className="basis-[60%]">
-                <p className="text-xs sm:text-sm font-medium sm:font-semibold text-[#242222cc]">Male</p>
+                <p className="text-xs sm:text-sm font-medium sm:font-semibold text-[#242222cc]">
+                  {user?.gender}
+                </p>
               </td>
             </tr>
             <tr className="flex items-center justify-between gap-4">
@@ -144,7 +192,7 @@ const UserProfileSection = ({ userImg, ratings, totalRating, user }) => {
               </td>
               <td className="basis-[60%]">
                 <p className="text-xs sm:text-sm font-medium sm:font-semibold text-[#242222cc]">
-                  zain1215@gmail.com
+                  {user?.email}
                 </p>
               </td>
             </tr>
@@ -154,7 +202,7 @@ const UserProfileSection = ({ userImg, ratings, totalRating, user }) => {
               </td>
               <td className="basis-[60%]">
                 <p className="text-xs sm:text-sm font-medium sm:font-semibold text-[#242222cc]">
-                  UI/UX Designer
+                  {user?.position}
                 </p>
               </td>
             </tr>
@@ -165,15 +213,10 @@ const UserProfileSection = ({ userImg, ratings, totalRating, user }) => {
   );
 };
 
-const PerformancePieChart = ({ data }) => {
-  const colors = [
-    "#9eff00", // Completed
-    "#ff8900", // In Progress
-    "#7b90ff", // Schedule
-    "#ff3e00", // In Progress but Overdue
-  ];
+const PerformancePieChart = ({ data, ratingPercent }) => {
+  const colors = ["#9eff00", "#ff8900", "#7b90ff"];
 
-  const chartData = data.map((item, index) => ({
+  const chartData = data?.map((item, index) => ({
     name: item.label,
     value: item.value,
     color: colors[index],
@@ -193,23 +236,13 @@ const PerformancePieChart = ({ data }) => {
           dataKey="value"
           nameKey="name"
         >
-          {chartData.map((entry, index) => (
-            <Cell
-              key={`cell-${index}`}
-              fill={`url(#gradient-${index})`}
-              stroke="none"
-            />
+          {chartData?.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={`url(#gradient-${index})`} stroke="none" />
           ))}
         </Pie>
-        {chartData.map((entry, index) => (
+        {chartData?.map((entry, index) => (
           <defs key={`gradient-${index}`}>
-            <linearGradient
-              id={`gradient-${index}`}
-              x1="0%"
-              y1="0%"
-              x2="100%"
-              y2="100%"
-            >
+            <linearGradient id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor={entry.color} stopOpacity={0.7} />
               <stop offset="100%" stopColor={entry.color} stopOpacity={1} />
             </linearGradient>
@@ -218,9 +251,8 @@ const PerformancePieChart = ({ data }) => {
         <Tooltip />
       </PieChart>
       <p className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-2xl md:text-[42px] font-semibold text-[#17a2b8]">
-        {data.reduce((acc, item) => acc + item.value, 0)}%
+        {ratingPercent}%
       </p>
     </div>
   );
 };
-

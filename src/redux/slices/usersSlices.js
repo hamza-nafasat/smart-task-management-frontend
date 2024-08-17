@@ -7,6 +7,7 @@ const initialState = {
   loading: false,
   error: null,
   message: null,
+  userDetails: null,
 };
 
 const userSlice = createSlice({
@@ -185,6 +186,19 @@ const userSlice = createSlice({
       state.error = action.payload;
     },
 
+    // get all user details
+    getAllUserDetailsStart(state) {
+      state.loading = true;
+    },
+    getAllUserDetailsSuccess(state, action) {
+      state.loading = false;
+      state.userDetails = action.payload.data;
+    },
+    getAllUserDetailsFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     // clear error and message
     clearUserError(state) {
       state.error = null;
@@ -247,6 +261,10 @@ export const {
   updateProfileStart,
   updateProfileSuccess,
   updateProfileFailure,
+
+  getAllUserDetailsStart,
+  getAllUserDetailsSuccess,
+  getAllUserDetailsFailure,
 
   clearUserError,
   clearUserMessage,
