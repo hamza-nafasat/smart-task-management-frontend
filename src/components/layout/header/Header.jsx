@@ -55,7 +55,7 @@ const Header = () => {
 
   return (
     <>
-      <div className={`pt-6 md:pt-0 h-[80px] flex items-center justify-between px-4 sticky top-0 left-0 transition-all duration-400 ${isNotificationOpen ? 'z-[999]':'z-0'}`}>
+      <div className={`pt-6 md:pt-0 h-[80px] flex items-center justify-between px-4 transition-all duration-400 ${isNotificationOpen ? 'z-[999]':'z-0'}`}>
         <div className="flex flex-col">
           <p className="text-[11px] md:text-base text-white">{timeString}</p>
           <p className="text-[8px] md:text-xs text-white">{dateString}</p>
