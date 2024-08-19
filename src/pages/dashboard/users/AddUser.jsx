@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import profileImg from "../../../assets/images/profile.png";
+import excelImg from "../../../assets/images/tasks/xl.png";
 import Input from "../../../components/auth/Input";
 import Button from "../../../components/shared/button/Button";
-import { addUserAction, getAllUsersAction } from "../../../redux/actions/usersActions";
-import toast from "react-hot-toast";
-import FileUpload from "../../../components/shared/tasks/addTask/FileUpload";
+import { addUserAction, getAllUsersAction, importUsersAction } from "../../../redux/actions/usersActions";
 
 const AddUser = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const AddUser = () => {
   const [imgSrc, setImgSrc] = useState("");
   const [image, setImage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formFields, setFormFields] = useState({
     name: "",
     userName: "",
@@ -24,6 +24,9 @@ const AddUser = () => {
     position: "",
     gender: "",
   });
+
+  const handleModalClose = () => setIsModalOpen(false);
+  const handleModalOpen = () => setIsModalOpen(true);
 
   const handleFormFields = (e) => {
     const { name, value } = e.target;
@@ -78,7 +81,12 @@ const AddUser = () => {
     <div className="md:h-screen p-4">
       <div className="p-4 lg:p-6 rounded-lg bg-[#eef2f56e]">
         <div className="flex justify-end">
-          <Button text="Import Users" width="w-[130px] md:w-[150px]" height="h-[40px]" />
+          <Button
+            click={handleModalOpen}
+            text="Import Users"
+            width="w-[130px] md:w-[150px]"
+            height="h-[40px]"
+          />
         </div>
         <h2 className="text-md lg:text-xl font-semibold mt-3">Add User</h2>
         <form className="grid lg:grid-cols-12 gap-4 xl:gap-8 mt-4 lg:mt-6" onSubmit={submitHandler}>
@@ -160,14 +168,13 @@ const AddUser = () => {
             ></Button>
           </div>
         </form>
-        {isModalOpen && <AddExcelFileModal />}
+        {isModalOpen && <AddExcelFileModal onclose={handleModalClose} />}
       </div>
     </div>
   );
 };
 
 export default AddUser;
-import excelImg from "../../../assets/images/tasks/xl.png";
 
 const ChangeButton = ({ onChange }) => {
   return (
@@ -180,11 +187,34 @@ const ChangeButton = ({ onChange }) => {
 
 // add excel file modal
 const AddExcelFileModal = ({ onclose }) => {
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const { message } = useSelector((state) => state.users);
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setIsLoading(true);
+      if (!selectedFile) return toast.error("Please Select a file first");
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      await dispatch(importUsersAction(formData));
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (message) return onclose();
+  }, [message, onclose]);
   return (
     <div
       className="fixed inset-0 backdrop-blur-sm drop-shadow-2xl w-full p-4 flex items-center justify-center z-[999] transition-all duration-500"
@@ -206,7 +236,7 @@ const AddExcelFileModal = ({ onclose }) => {
             </label>
           </div>
         </div>
-        <Button text="Submit" height="h-[40px]" />
+        <Button disabled={isLoading} text="Submit" click={handleSubmit} height="h-[40px]" />
       </div>
     </div>
   );

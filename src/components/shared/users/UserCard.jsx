@@ -10,6 +10,7 @@ import { deleteUserByAdminAction, getAllUsersAction } from "../../../redux/actio
 import { useState } from "react";
 import { BsFillInfoSquareFill } from "react-icons/bs";
 import { confirmAlert } from "react-confirm-alert";
+import profileImage from "../../../assets/images/profile.png";
 
 const UserCard = ({ user }) => {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ const UserCard = ({ user }) => {
         <div className="absolute -top-[40px] left-1/2 transform -translate-x-1/2">
           <img
             alt="profile pic"
-            src={user?.image?.url}
+            src={user?.image?.url || profileImage}
             className="w-20 h-20 relative overflow-hidden rounded-full object-cover"
           />
         </div>

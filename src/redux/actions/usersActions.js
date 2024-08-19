@@ -25,6 +25,9 @@ import {
   getSingleUserFailure,
   getSingleUserStart,
   getSingleUserSuccess,
+  importUsersFailure,
+  importUsersStart,
+  importUsersSuccess,
   loginFailure,
   loginStart,
   loginSuccess,
@@ -53,6 +56,20 @@ const addUserAction = (formData) => async (dispatch) => {
   } catch (error) {
     // console.log("error while register", error);
     dispatch(registerFailure(error?.response?.data?.message || "Some Error Occurred While Register"));
+  }
+};
+
+// import users from excel
+// ---------------
+const importUsersAction = (formData) => async (dispatch) => {
+  try {
+    dispatch(importUsersStart());
+    const response = await customFormAxios.post("/users/register-from-excel", formData);
+    console.log("success while import users", response);
+    dispatch(importUsersSuccess(response.data));
+  } catch (error) {
+    // console.log("error while import users", error);
+    dispatch(importUsersFailure(error?.response?.data?.message || "Some Error Occurred While Import Users"));
   }
 };
 
@@ -274,4 +291,5 @@ export {
   resetPasswordAction,
   updateProfileAction,
   getAllUserDetailsAction,
+  importUsersAction,
 };

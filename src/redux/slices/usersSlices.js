@@ -27,6 +27,20 @@ const userSlice = createSlice({
       state.error = action.payload;
     },
 
+    // import users from excel file
+    // ------------------------------
+    importUsersStart(state) {
+      state.loading = true;
+    },
+    importUsersSuccess(state, action) {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+    importUsersFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     // get single user
     getSingleUserStart(state) {
       state.loading = true;
@@ -213,6 +227,10 @@ export const {
   registerStart,
   registerSuccess,
   registerFailure,
+
+  importUsersStart,
+  importUsersSuccess,
+  importUsersFailure,
 
   getSingleUserStart,
   getSingleUserSuccess,
