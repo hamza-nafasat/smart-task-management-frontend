@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 import DateIcon from "../../../../assets/svgs/modal/DateIcon";
 import { createNewTaskAction, getAllTasksAction } from "../../../../redux/actions/tasksActions";
 import FileUpload from "./FileUpload";
@@ -10,6 +11,7 @@ const weeks = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const AddTask = ({ onClose }) => {
   const dispatch = useDispatch();
+  const { message } = useSelector((state) => state.tasks);
   const [isDefault, setIsDefault] = useState(true);
   const [isSchedule, setIsSchedule] = useState(false);
   const [activeWeek, setActiveWeek] = useState(null);
@@ -40,6 +42,10 @@ const AddTask = ({ onClose }) => {
     const assigneeIds = selectedUsers.map((user) => user.value);
     setIsLoading(true);
     try {
+      if (startDate && endDate && startDate > endDate) {
+        setIsLoading(false);
+        return toast.error("Start date cannot be greater than end date");
+      }
       const formData = new FormData();
       if (title) formData.append("title", title);
       if (description) formData.append("description", description);
@@ -59,11 +65,14 @@ const AddTask = ({ onClose }) => {
       await dispatch(createNewTaskAction(formData));
       await dispatch(getAllTasksAction());
       setIsLoading(false);
-      onClose();
     } catch (error) {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (message) onClose();
+  }, [message, dispatch, onClose]);
 
   return (
     <div className="mt-4 xl:mt-8">

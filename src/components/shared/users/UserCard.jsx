@@ -76,7 +76,7 @@ const UserCard = ({ user }) => {
         <div className="mt-3 flex items-center justify-between">
           <div>
             <p className="text-xs md:text-sm text-gray-500 font-light">Email</p>
-            <p className="text-sm md:text-base text-primary">{user?.email}</p>
+            <p className="text-sm md:text-sm text-primary">{user?.email}</p>
           </div>
           <div>
             <p className="text-xs md:text-sm text-gray-500 font-light text-end">In Progress Tasks</p>

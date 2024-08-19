@@ -1,15 +1,18 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "../../../components/auth/Input";
 import profileImg from "../../../assets/images/profile.png";
 import Button from "../../../components/shared/button/Button";
 import { addUserAction, getAllUsersAction } from "../../../redux/actions/usersActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { clearUserError, clearUserMessage } from "../../../redux/slices/usersSlices";
+import toast from "react-hot-toast";
 
 const AddUser = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { message, error } = useSelector((state) => state.users);
   const [imgSrc, setImgSrc] = useState("");
   const [image, setImage] = useState(profileImg);
   const [isLoading, setIsLoading] = useState(false);
@@ -59,8 +62,19 @@ const AddUser = () => {
     await dispatch(addUserAction(formData));
     await dispatch(getAllUsersAction());
     setIsLoading(true);
-    return navigate("/dashboard/users");
   };
+
+  useEffect(() => {
+    if (message) {
+      toast.success(message);
+      dispatch(clearUserMessage());
+      return navigate("/dashboard/users");
+    }
+    if (error) {
+      toast.error(error);
+      dispatch(clearUserError());
+    }
+  }, [message, error, dispatch, navigate]);
   return (
     <div className="md:h-screen p-4">
       <div className="p-4 lg:p-6 rounded-lg bg-[#eef2f56e]">

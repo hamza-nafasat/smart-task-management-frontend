@@ -10,6 +10,7 @@ import {
 import FileUpload from "../addTask/FileUpload";
 import MultiSelectUser from "../addTask/MultiSelectUser";
 import { formatDateForInput } from "../../../../utils/features";
+import toast from "react-hot-toast";
 
 const weeks = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
@@ -17,6 +18,7 @@ const EditTask = ({ onClose, taskId }) => {
   const dispatch = useDispatch();
   const { singleTask } = useSelector((state) => state.tasks);
   const { user: me } = useSelector((state) => state.users);
+  const { message } = useSelector((state) => state.tasks);
   const [isDefault, setIsDefault] = useState(true);
   const [isSchedule, setIsSchedule] = useState(false);
   const [activeWeek, setActiveWeek] = useState(null);
@@ -54,6 +56,11 @@ const EditTask = ({ onClose, taskId }) => {
     const assigneeIds = selectedUsers.map((user) => user.value);
     try {
       e.preventDefault();
+
+      if (startDate && endDate && startDate > endDate) {
+        setIsLoading(false);
+        return toast.error("Start date cannot be greater than end date");
+      }
       const formData = new FormData();
       if (title) formData.append("title", title);
       if (description) formData.append("description", description);
@@ -78,7 +85,6 @@ const EditTask = ({ onClose, taskId }) => {
       await dispatch(getSingleTaskAction(singleTask?._id));
       dispatch(getTaskActivitiesAction(singleTask?._id));
       setIsLoading(false);
-      onClose();
     } catch (error) {
       setIsLoading(false);
     }
@@ -114,6 +120,10 @@ const EditTask = ({ onClose, taskId }) => {
       }
     }
   }, [me?._id, singleTask]);
+
+  useEffect(() => {
+    if (message) onClose();
+  }, [message, onClose]);
 
   return (
     <div className="mt-4 xl:mt-8">
