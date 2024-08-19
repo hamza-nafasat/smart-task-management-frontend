@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import profileImg from "../../../assets/images/tasks/dp.png";
+import profileImg from "../../../assets/images/profile.png";
 import Input from "../../../components/auth/Input";
 import Button from "../../../components/shared/button/Button";
 import {

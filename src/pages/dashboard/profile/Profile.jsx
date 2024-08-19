@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import Input from "../../../components/auth/Input";
-import profileImg from "../../../assets/images/tasks/dp.png";
+import profileImg from "../../../assets/images/profile.png";
 import Button from "../../../components/shared/button/Button";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -171,7 +171,7 @@ const Profile = () => {
             ></Button>
             {isFormEdited && (
               <Button
-              disabled={isUpdateLoading}
+                disabled={isUpdateLoading}
                 click={updateProfileHandler}
                 type="submit"
                 height="h-[40px] md:h-[50px]"
