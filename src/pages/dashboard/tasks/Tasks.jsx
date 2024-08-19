@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -10,15 +11,13 @@ import InprogressCard from "../../../components/shared/tasks/InprogressCard";
 import ScheduleCard from "../../../components/shared/tasks/ScheduleCard";
 import TaskColumn from "../../../components/shared/tasks/TaskColumn";
 import { getAllTasksAction } from "../../../redux/actions/tasksActions";
-import {
-  clearTaskError,
-  clearTaskMessage,
-} from "../../../redux/slices/tasksSlices";
+import { clearTaskError, clearTaskMessage } from "../../../redux/slices/tasksSlices";
 import NoTask from "../../../components/shared/tasks/NoTask";
 
 const Tasks = () => {
   const dispatch = useDispatch();
   const { tasks, message, error } = useSelector((state) => state.tasks);
+  const { user } = useSelector((state) => state.users);
   const [isModal, setIsModal] = useState(false);
   const [activeTab, setActiveTab] = useState("In Progress");
 
@@ -47,7 +46,7 @@ const Tasks = () => {
         <div className="p-4 bg-[#eef2f56e] rounded-[10px] flex items-center justify-between">
           <h2 className="text-md lg:text-xl font-semibold">My Tasks</h2>
           <div className="flex items-center gap-1 md:gap-2">
-            <FeedbackProgressCircle percentage={70} />
+            <FeedbackProgressCircle percentage={user?.efficiency || 0} />
             <div className="cursor-pointer" onClick={handleOpenModal}>
               <AddIcon />
             </div>
@@ -89,18 +88,14 @@ const Tasks = () => {
           {activeTab === "In Progress" && (
             <div className="animate-slideUp">
               <TaskColumn click={handleOpenModal} title="In Progress">
-                {tasks &&
-                tasks.some((task) => task.status === "in-progress") ? (
+                {tasks && tasks.some((task) => task.status === "in-progress") ? (
                   tasks?.map((task) => {
                     if (task.status === "in-progress") {
                       return <InprogressCard key={task._id} task={task} />;
                     }
                   })
                 ) : (
-                  <NoTask
-                    handleOpenModal={handleOpenModal}
-                    status="in-progress"
-                  />
+                  <NoTask handleOpenModal={handleOpenModal} status="in-progress" />
                 )}
               </TaskColumn>
             </div>
@@ -149,10 +144,7 @@ const Tasks = () => {
                   }
                 })
               ) : (
-                <NoTask
-                  handleOpenModal={handleOpenModal}
-                  status="in-progress"
-                />
+                <NoTask handleOpenModal={handleOpenModal} status="in-progress" />
               )}
             </TaskColumn>
           )}
@@ -191,21 +183,14 @@ const Tasks = () => {
 
 export default Tasks;
 
-const FeedbackProgressCircle = ({percentage}) => {
+const FeedbackProgressCircle = ({ percentage }) => {
   const radius = 50;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (percentage / 100) * circumference;
 
   return (
-    <div
-      className={`relative flex items-center justify-center w-[36px] h-[36px]`}
-    >
-      <svg
-        className="transform rotate-[-90deg]"
-        width="100%"
-        height="100%"
-        viewBox="0 0 120 120"
-      >
+    <div className={`relative flex items-center justify-center w-[36px] h-[36px]`}>
+      <svg className="transform rotate-[-90deg]" width="100%" height="100%" viewBox="0 0 120 120">
         <circle
           className="text-[#ffffff4f]"
           strokeWidth="15"

@@ -9,6 +9,7 @@ import {
 } from "../../../../redux/actions/tasksActions";
 import FileUpload from "../addTask/FileUpload";
 import MultiSelectUser from "../addTask/MultiSelectUser";
+import { formatDateForInput } from "../../../../utils/features";
 
 const weeks = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
@@ -93,8 +94,8 @@ const EditTask = ({ onClose, taskId }) => {
     if (singleTask) {
       setTitle(singleTask?.title);
       setDescription(singleTask?.description);
-      setStartDate(singleTask?.startDate);
-      setEndDate(singleTask?.endDate);
+      setStartDate(formatDateForInput(singleTask?.startDate));
+      setEndDate(formatDateForInput(singleTask?.endDate));
       if (singleTask?.onDay) {
         setActiveWeek(singleTask?.onDay);
         setIsSchedule(true);

@@ -21,6 +21,9 @@ import {
   getCommentRepliesFailure,
   getCommentRepliesStart,
   getCommentRepliesSuccess,
+  getFilteredTasksFailure,
+  getFilteredTasksStart,
+  getFilteredTasksSuccess,
   getSingleTaskCommentsFailure,
   getSingleTaskCommentsStart,
   getSingleTaskCommentsSuccess,
@@ -263,6 +266,28 @@ const addCommentReplyAction = (commentId, content) => async (dispatch) => {
   }
 };
 
+// get all filtered tasks action
+// ----------------------
+const getFilteredTasksAction = ({ status, startDate, endDate, creatorName }) => {
+  return async (dispatch) => {
+    try {
+      dispatch(getFilteredTasksStart());
+      const response = await customAxios.get(`tasks/filter/all`, {
+        params: { status, startDate, endDate, creatorName },
+      });
+      console.log("success while get filtered tasks", response);
+      dispatch(getFilteredTasksSuccess(response.data));
+    } catch (error) {
+      console.log("error while get filtered tasks", error);
+      dispatch(
+        getFilteredTasksFailure(
+          error?.response?.data?.message || "Some Error Occurred While Get Filtered Tasks"
+        )
+      );
+    }
+  };
+};
+
 export {
   createNewTaskAction,
   getSingleTaskAction,
@@ -277,4 +302,5 @@ export {
   getCommentRepliesAction,
   addCommentReplyAction,
   getTaskActivitiesAction,
+  getFilteredTasksAction,
 };

@@ -9,6 +9,7 @@ const initialState = {
   loading: false,
   error: null,
   taskActivities: [],
+  filteredTasks: [],
 };
 
 const tasksSlices = createSlice({
@@ -186,6 +187,19 @@ const tasksSlices = createSlice({
       state.error = action.payload;
     },
 
+    // get all filtered tasks
+    getFilteredTasksStart(state) {
+      state.loading = true;
+    },
+    getFilteredTasksSuccess(state, action) {
+      state.loading = false;
+      state.filteredTasks = action.payload.data;
+    },
+    getFilteredTasksFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     // clear error and message
     clearTaskError(state) {
       state.error = null;
@@ -261,6 +275,11 @@ export const {
   addCommentReplyStart,
   addCommentReplySuccess,
   addCommentReplyFailure,
+
+  // get all filtered tasks
+  getFilteredTasksStart,
+  getFilteredTasksSuccess,
+  getFilteredTasksFailure,
 
   // clear error and message
   clearTaskError,

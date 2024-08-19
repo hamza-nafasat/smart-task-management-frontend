@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import DetailsIcon from "../../../assets/svgs/reports/DetailsIcon";
 import CompletedIcon from "../../../assets/svgs/reports/CompletedIcon.jsx";
@@ -6,245 +6,139 @@ import InprogressIcon from "../../../assets/svgs/reports/InprogressIcon.jsx";
 import ScheduleIcon from "../../../assets/svgs/reports/ScheduleIcon.jsx";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getFilteredTasksAction } from "../../../redux/actions/tasksActions.js";
+import { isToday } from "../../../utils/features.js";
+import { Link } from "react-router-dom";
 
 const columns = [
   {
-    name: "User",
-    selector: (row) => row.user,
+    name: "Creator",
+    selector: (row) => row?.creatorName,
     width: "12%",
   },
   {
-    name: "Task",
-    selector: (row) => row.task,
-    width: "15%",
+    name: "Title",
+    selector: (row) => row.title,
+    width: "18%",
   },
   {
     name: "Date",
-    width: "24%",
+    width: "18%",
     cell: (row) => (
       <div className="flex items-center gap-1">
         <div>
-          {row.status === "Completed" ? (
+          {row?.status === "completed" ? (
             <CompletedIcon />
-          ) : row.status === "In Progress" ? (
+          ) : row.status === "in-progress" ? (
             <InprogressIcon />
           ) : (
             <ScheduleIcon />
           )}
         </div>
         <div className="flex flex-col">
-          <p className="text-[12px] font-semibold text-[#17a2b8]">
-            {row.startDate}
-          </p>
-          <p
-            className={`text-[12px] font-semibold ${
-              row.status === "Completed"
-                ? "text-[#87d10f]"
-                : row.status === "In Progress"
-                ? "text-[#fb9e32]"
-                : row.status === "Schedule"
-                ? "text-[#92a3ff]"
-                : "text-[#eb4e1c]"
-            }`}
-          >
-            {row.endDate}
-          </p>
+          {row.status !== "scheduled" ? (
+            <>
+              <p className="text-[12px] font-semibold text-[#17a2b8]">{row.startDate}</p>
+              <p
+                className={`text-[12px] font-semibold ${
+                  row.status === "completed"
+                    ? "text-[#87d10f]"
+                    : row.status === "in-progress"
+                    ? "text-[#fb9e32]"
+                    : row.status === "scheduled"
+                    ? "text-[#92a3ff]"
+                    : "text-[#eb4e1c]"
+                }`}
+              >
+                {row.endDate}
+              </p>
+            </>
+          ) : (
+            <>
+              {" "}
+              <p className="text-[12px] font-semibold text-[#17a2b8]">From day start to end</p>
+              <p
+                className={`text-[12px] font-semibold ${
+                  row.status === "completed"
+                    ? "text-[#87d10f]"
+                    : row.status === "in-progress"
+                    ? "text-[#fb9e32]"
+                    : row.status === "scheduled"
+                    ? "text-[#92a3ff]"
+                    : "text-[#eb4e1c]"
+                }`}
+              >
+                of every {isToday(row.onDay, true)?.toUpperCase()}
+              </p>
+            </>
+          )}
         </div>
       </div>
     ),
   },
   {
     name: "Status",
-    width: "21%",
+    width: "14%",
     cell: (row) =>
-      row.status === "Completed" ? (
-        <p className="bg-[#87d10f] rounded-[12px] text-white text-sm font-medium p-2 w-[99px] text-center">
+      row.status === "completed" ? (
+        <p className="bg-[#87d10f] rounded-[12px] text-white text-sm font-medium p-2 w-[110px] text-center">
           {row.status}
         </p>
-      ) : row.status === "In Progress" ? (
-        <p className="bg-[#fb9e32] rounded-[12px] text-white text-sm font-medium p-2 w-[99px] text-center">
+      ) : row.status === "in-progress" ? (
+        <p className="bg-[#fb9e32] rounded-[12px] text-white text-sm font-medium p-2 w-[110px] text-center">
           {row.status}
         </p>
       ) : (
-        <p className="bg-[#92a3ff] rounded-[12px] text-white text-sm font-medium p-2 w-[99px] text-center text-white">
+        <p className="bg-[#92a3ff] rounded-[12px] text-white text-sm font-medium p-2 w-[110px] text-center">
           {row.status}
         </p>
       ),
   },
   {
-    name: "Feedback",
-    width: "15%",
-    cell: (row) =>
-      row.feedback === 5 ? (
-        <div className="flex items-center flex-col w-14">
-          <p className="text-[20px]">😊</p>
-          <p className="text-xs text-[#292d32cc] font-medium">Excellent</p>
-        </div>
-      ) : row.feedback === 4 ? (
-        <div className="flex items-center flex-col w-14">
-          <p className="text-[20px]">🙂</p>
-          <p className="text-xs text-[#292d32cc] font-medium">Good</p>
-        </div>
-      ) : row.feedback === 3 ? (
-        <div className="flex items-center flex-col w-14">
-          <p className="text-[20px]">😐</p>
-          <p className="text-xs text-[#292d32cc] font-medium">Average</p>
-        </div>
-      ) : row.feedback === 2 ? (
-        <div className="flex items-center flex-col w-14">
-          <p className="text-[20px]">😶</p>
-          <p className="text-xs text-[#292d32cc] font-medium">Bad</p>
-        </div>
-      ) : (
-        <div className="flex items-center flex-col w-14">
-          <p className="text-[20px]">🙁</p>
-          <p className="text-xs text-[#292d32cc] font-medium">Very Bad</p>
-        </div>
-      ),
+    name: "Assignees",
+    cell: (row) => <div>{row?.assignee?.length || 0}</div>,
+    width: "12%",
+  },
+  {
+    name: "Attachments",
+    cell: (row) => <div>{row?.attachments?.length || 0}</div>,
+    width: "12%",
   },
   {
     name: "Details",
-    selector: () => (
-      <div className="cursor-pointer">
+    cell: (row) => (
+      <Link to={`/dashboard/tasks/${row._id}`} className="cursor-pointer">
         <DetailsIcon />
-      </div>
+      </Link>
     ),
     width: "13%",
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    user: "John Smith",
-    task: "Website Seo",
-    startDate: "02-Aug-2024",
-    endDate: "22-Aug-2024",
-    status: "Completed",
-    feedback: 5,
-    details: "",
-  },
-  {
-    id: 2,
-    user: "Jane Doe",
-    task: "Social Media Campaign",
-    startDate: "01-Jul-2024",
-    endDate: "15-Jul-2024",
-    status: "In Progress",
-    feedback: 4,
-    details: "",
-  },
-  {
-    id: 3,
-    user: "Michael Johnson",
-    task: "Email Marketing",
-    startDate: "10-Jun-2024",
-    endDate: "20-Jun-2024",
-    status: "Completed",
-    feedback: 5,
-    details: "",
-  },
-  {
-    id: 4,
-    user: "Emily Davis",
-    task: "Content Creation",
-    startDate: "12-May-2024",
-    endDate: "30-May-2024",
-    status: "Completed",
-    feedback: 4,
-    details: "",
-  },
-  {
-    id: 5,
-    user: "David Wilson",
-    task: "PPC Advertising",
-    startDate: "01-Aug-2024",
-    endDate: "15-Aug-2024",
-    status: "In Progress",
-    feedback: 3,
-    details: "",
-  },
-  {
-    id: 6,
-    user: "Sophia Brown",
-    task: "Graphic Design",
-    startDate: "20-Apr-2024",
-    endDate: "30-Apr-2024",
-    status: "Completed",
-    feedback: 5,
-    details: "",
-  },
-  {
-    id: 7,
-    user: "James White",
-    task: "App Development",
-    startDate: "05-Sep-2024",
-    endDate: "25-Sep-2024",
-    status: "In Progress",
-    feedback: 4,
-    details: "",
-  },
-  {
-    id: 8,
-    user: "Olivia Martinez",
-    task: "Market Research",
-    startDate: "15-Mar-2024",
-    endDate: "25-Mar-2024",
-    status: "Completed",
-    feedback: 5,
-    details: "",
-  },
-  {
-    id: 9,
-    user: "Liam Harris",
-    task: "Brand Strategy",
-    startDate: "10-Oct-2024",
-    endDate: "20-Oct-2024",
-    status: "Schedule",
-    feedback: 4,
-    details: "",
-  },
-  {
-    id: 10,
-    user: "Emma Clark",
-    task: "SEO Audit",
-    startDate: "02-Nov-2024",
-    endDate: "12-Nov-2024",
-    status: "Schedule",
-    feedback: 5,
-    details: "",
-  },
-  {
-    id: 11,
-    user: "Noah King",
-    task: "Video Production",
-    startDate: "20-Dec-2024",
-    endDate: "30-Dec-2024",
-    status: "Schedule",
-    feedback: 3,
-    details: "",
-  },
-];
-
 const Reports = () => {
+  const dispatch = useDispatch();
+  const { filteredTasks } = useSelector((state) => state.tasks);
   const [filterName, setFilterName] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
   const [filterStartDate, setFilterStartDate] = useState(null);
   const [filterEndDate, setFilterEndDate] = useState(null);
+  const [rows, setRows] = useState([]);
 
-  const filteredRows = rows.filter((row) => {
-    const isNameMatch = row.user
-      .toLowerCase()
-      .includes(filterName.toLowerCase());
-    const isStatusMatch = filterStatus ? row.status === filterStatus : true;
-    const isStartDateMatch = filterStartDate
-      ? new Date(row.startDate) >= new Date(filterStartDate)
-      : true;
-    const isEndDateMatch = filterEndDate
-      ? new Date(row.endDate) <= new Date(filterEndDate)
-      : true;
-    return isNameMatch && isStatusMatch && isStartDateMatch && isEndDateMatch;
-  });
+  useEffect(() => {
+    dispatch(
+      getFilteredTasksAction({
+        creatorName: filterName,
+        status: filterStatus,
+        startDate: filterStartDate,
+        endDate: filterEndDate,
+      })
+    );
+  }, [filterStartDate, filterEndDate, dispatch, filterStatus, filterName]);
+
+  useEffect(() => {
+    if (filteredTasks) setRows(filteredTasks);
+  }, [filteredTasks]);
 
   return (
     <div className="h-screen p-4">
@@ -265,9 +159,9 @@ const Reports = () => {
               className="border p-2 rounded-lg focus:outline-none text-sm text-[#101010]"
             >
               <option value="">All Statuses</option>
-              <option value="Completed">Completed</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Schedule">Schedule</option>
+              <option value="completed">Completed</option>
+              <option value="in-progress">In Progress</option>
+              <option value="scheduled">Schedule</option>
             </select>
             <DatePicker
               selected={filterStartDate}
@@ -286,7 +180,7 @@ const Reports = () => {
         <div className="mt-4 report-table">
           <DataTable
             columns={columns}
-            data={filteredRows}
+            data={rows}
             customStyles={customStyles}
             pagination
             fixedHeader

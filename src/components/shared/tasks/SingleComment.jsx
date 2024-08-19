@@ -2,7 +2,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { addCommentReplyAction } from "../../../redux/actions/tasksActions";
+import { addCommentReplyAction, getTaskActivitiesAction } from "../../../redux/actions/tasksActions";
 import { customAxios } from "../../../utils/customAxios";
 import { getTimeAgo } from "../../../utils/formatting";
 
@@ -49,6 +49,7 @@ const SingleComment = ({ comment }) => {
         return toast.error("You can't send empty Reply");
       }
       await dispatch(addCommentReplyAction(comment?._id, replyContent));
+      await dispatch(getTaskActivitiesAction(comment?.task?._id));
       await getCommentReplies(comment?._id);
       setReplyContent("");
       setIsReplyLoading(false);

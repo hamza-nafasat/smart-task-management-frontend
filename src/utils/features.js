@@ -55,8 +55,14 @@ const isToday = (day, isReturn = false) => {
 const formatDateForInput = (dateString) => {
   if (!dateString) return "";
   const date = new Date(dateString);
-  const isoString = date.toISOString();
-  return isoString.slice(0, 16);
+  const localDate = new Date(date.toLocaleString("en-US", { timeZone: "Asia/Karachi" }));
+  const year = localDate.getFullYear();
+  const month = String(localDate.getMonth() + 1).padStart(2, "0");
+  const day = String(localDate.getDate()).padStart(2, "0");
+  const hours = String(localDate.getHours()).padStart(2, "0");
+  const minutes = String(localDate.getMinutes()).padStart(2, "0");
+  const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
+  return formattedDate;
 };
 
 // how much time left for this task
