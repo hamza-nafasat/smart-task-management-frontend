@@ -39,7 +39,9 @@ const TaskDetail = () => {
 
   const isMeCreator = String(user._id) === String(singleTask?.creator?._id);
   const isSubmitButtonDisable =
-    (singleTask?.isSubmitted && !isMeCreator) || (!singleTask?.isSubmitted && isMeCreator);
+    (singleTask?.isSubmitted && !isMeCreator) ||
+    (!singleTask?.isSubmitted && isMeCreator) ||
+    (singleTask?.isCompleted && isMeCreator);
 
   const handleOpenModal = () => setIsModal(true);
   const handleOpenFeedbackModal = () => setIsFeedbackModalOpen(true);

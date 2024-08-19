@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import DateIcon from "../../../../assets/svgs/modal/DateIcon";
 import {
@@ -7,10 +8,9 @@ import {
   getTaskActivitiesAction,
   updateSingleTaskAction,
 } from "../../../../redux/actions/tasksActions";
+import { formatDateForInput } from "../../../../utils/features";
 import FileUpload from "../addTask/FileUpload";
 import MultiSelectUser from "../addTask/MultiSelectUser";
-import { formatDateForInput } from "../../../../utils/features";
-import toast from "react-hot-toast";
 
 const weeks = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
@@ -83,7 +83,7 @@ const EditTask = ({ onClose, taskId }) => {
       }
       await dispatch(updateSingleTaskAction(singleTask?._id, formData));
       await dispatch(getSingleTaskAction(singleTask?._id));
-      dispatch(getTaskActivitiesAction(singleTask?._id));
+      await dispatch(getTaskActivitiesAction(singleTask?._id));
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -122,8 +122,8 @@ const EditTask = ({ onClose, taskId }) => {
   }, [me?._id, singleTask]);
 
   useEffect(() => {
-    if (message) onClose();
-  }, [message, onClose]);
+    if (message) return onClose();
+  }, [dispatch, message, onClose]);
 
   return (
     <div className="mt-4 xl:mt-8">
