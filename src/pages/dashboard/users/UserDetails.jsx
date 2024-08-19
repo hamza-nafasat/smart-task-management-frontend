@@ -93,7 +93,7 @@ const UserDetails = () => {
           />
         </div>
         <div className="mt-4 bg-white rounded-lg p-4">
-          <UserReport tasks={userDetails?.tasks} />
+          <UserReport userDetails={userDetails} />
         </div>
       </div>
     </div>
