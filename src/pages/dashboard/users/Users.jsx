@@ -7,7 +7,7 @@ import { getAllUsersAction } from "../../../redux/actions/usersActions";
 
 const Users = () => {
   const dispatch = useDispatch();
-  const { users, user:my } = useSelector((state) => state.users);
+  const { users, user: my } = useSelector((state) => state.users);
   useEffect(() => {
     dispatch(getAllUsersAction());
   }, [dispatch]);
@@ -22,8 +22,8 @@ const Users = () => {
         </div>
         <div className="mt-[5rem] grid lg:grid-cols-12 gap-4" style={{ rowGap: "4rem" }}>
           {users?.map((user) => {
-            if (String(user._id)!==String(my._id)){
-             return <UserCard key={user?._id} user={user} />
+            if (String(user._id) !== String(my._id)) {
+              return <UserCard key={user?._id} user={user} />;
             }
           })}
         </div>

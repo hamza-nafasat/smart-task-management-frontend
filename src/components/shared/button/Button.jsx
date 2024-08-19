@@ -13,6 +13,7 @@ const Button = ({
   size,
   weight,
   disabled,
+  className = "",
 }) => {
   const style = {
     backgroundColor: bg,
@@ -27,7 +28,7 @@ const Button = ({
       style={style}
       className={`flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed ${
         width ? width : "w-full"
-      } ${height ? height : "h-50px md:h-[60px]"} ${size ? size : "text-sm md:text-md"}`}
+      } ${height ? height : "h-50px md:h-[60px]"} ${size ? size : "text-sm md:text-md"} ${className}`}
       onChange={change}
       onClick={click}
       disabled={disabled}

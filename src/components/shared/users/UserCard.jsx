@@ -3,7 +3,7 @@ import Button from "../button/Button";
 import { IoMdMale } from "react-icons/io";
 import { IoMdFemale } from "react-icons/io";
 import { FaStar } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { deleteUserByAdminAction, getAllUsersAction } from "../../../redux/actions/usersActions";
@@ -12,6 +12,7 @@ import { BsFillInfoSquareFill } from "react-icons/bs";
 import { confirmAlert } from "react-confirm-alert";
 
 const UserCard = ({ user }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -28,6 +29,7 @@ const UserCard = ({ user }) => {
             await dispatch(deleteUserByAdminAction(id));
             await dispatch(getAllUsersAction());
             setLoading(false);
+            return navigate("/dashboard/users");
           },
         },
         {

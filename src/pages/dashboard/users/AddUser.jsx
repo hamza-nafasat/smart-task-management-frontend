@@ -1,21 +1,22 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import Input from "../../../components/auth/Input";
-import profileImg from "../../../assets/images/profile.png";
-import Button from "../../../components/shared/button/Button";
-import { addUserAction, getAllUsersAction } from "../../../redux/actions/usersActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { clearUserError, clearUserMessage } from "../../../redux/slices/usersSlices";
+import profileImg from "../../../assets/images/profile.png";
+import Input from "../../../components/auth/Input";
+import Button from "../../../components/shared/button/Button";
+import { addUserAction, getAllUsersAction } from "../../../redux/actions/usersActions";
 import toast from "react-hot-toast";
+import FileUpload from "../../../components/shared/tasks/addTask/FileUpload";
 
 const AddUser = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { message, error } = useSelector((state) => state.users);
+  const { message } = useSelector((state) => state.users);
   const [imgSrc, setImgSrc] = useState("");
-  const [image, setImage] = useState(profileImg);
+  const [image, setImage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(true);
   const [formFields, setFormFields] = useState({
     name: "",
     userName: "",
@@ -33,7 +34,6 @@ const AddUser = () => {
       });
     }
   };
-  console.log("form field", formFields);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -48,33 +48,32 @@ const AddUser = () => {
   };
 
   const submitHandler = async (e) => {
-    setIsLoading(true);
-    console.log("form field", formFields);
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("name", formFields.name);
-    formData.append("username", formFields.userName);
-    formData.append("email", formFields.email);
-    formData.append("position", formFields.position);
-    formData.append("gender", formFields.gender);
-    formData.append("file", image);
-    formData.append("password", "12345678");
-    await dispatch(addUserAction(formData));
-    await dispatch(getAllUsersAction());
     setIsLoading(true);
+    try {
+      if (!image) {
+        setIsLoading(false);
+        return toast.error("Please Select an Image");
+      }
+      const formData = new FormData();
+      formData.append("name", formFields.name);
+      formData.append("username", formFields.userName);
+      formData.append("email", formFields.email);
+      formData.append("position", formFields.position);
+      formData.append("gender", formFields.gender);
+      formData.append("file", image);
+      formData.append("password", "12345678");
+      await dispatch(addUserAction(formData));
+      await dispatch(getAllUsersAction());
+      setIsLoading(true);
+    } catch (error) {
+      setIsLoading(true);
+    }
   };
 
   useEffect(() => {
-    if (message) {
-      toast.success(message);
-      dispatch(clearUserMessage());
-      return navigate("/dashboard/users");
-    }
-    if (error) {
-      toast.error(error);
-      dispatch(clearUserError());
-    }
-  }, [message, error, dispatch, navigate]);
+    if (message) return navigate("/dashboard/users");
+  }, [message, dispatch, navigate]);
   return (
     <div className="md:h-screen p-4">
       <div className="p-4 lg:p-6 rounded-lg bg-[#eef2f56e]">
@@ -161,12 +160,14 @@ const AddUser = () => {
             ></Button>
           </div>
         </form>
+        {isModalOpen && <AddExcelFileModal />}
       </div>
     </div>
   );
 };
 
 export default AddUser;
+import excelImg from "../../../assets/images/tasks/xl.png";
 
 const ChangeButton = ({ onChange }) => {
   return (
@@ -174,5 +175,39 @@ const ChangeButton = ({ onChange }) => {
       Change
       <input type="file" className="absolute inset-0 cursor-pointer opacity-0" onChange={onChange} />
     </button>
+  );
+};
+
+// add excel file modal
+const AddExcelFileModal = ({ onclose }) => {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+  };
+  return (
+    <div
+      className="fixed inset-0 backdrop-blur-sm drop-shadow-2xl w-full p-4 flex items-center justify-center z-[999] transition-all duration-500"
+      onClick={onclose}
+    >
+      <div
+        className="p-4 bg-white rounded-md w-full md:w-[400px] overflow-y-scroll scrollbar-0"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="bg-white my-4 xl:my-6 rounded-lg p-4 xl:p-6">
+          {selectedFile && <img className="h-20 mb-2 mx-auto" src={excelImg} alt="selected" />}
+          <div className="border-dashed border-primary border rounded-md py-4 text-center bg-[#f2f2f2]">
+            <input type="file" multiple onChange={handleFileChange} className="hidden" id="file-upload" />
+            <label
+              htmlFor="file-upload"
+              className="cursor-pointer text-xs sm:text-sm md:text-base text-[#828282]"
+            >
+              <span className="text-primary font-bold">Choose a file</span> or drag it here
+            </label>
+          </div>
+        </div>
+        <Button text="Submit" height="h-[40px]" />
+      </div>
+    </div>
   );
 };
