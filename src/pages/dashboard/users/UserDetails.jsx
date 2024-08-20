@@ -6,6 +6,7 @@ import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import dp from "../../../assets/images/profile.png";
 import UserReport from "../../../components/shared/users/UserReport";
 import { getAllUserDetailsAction } from "../../../redux/actions/usersActions";
+import html2canvas from "html2canvas";
 
 const UserDetails = () => {
   const params = useParams();
@@ -18,6 +19,14 @@ const UserDetails = () => {
     { ratingName: "Bad", ratings: 0, ratingEmoji: "😶" },
     { ratingName: "Very Bad", ratings: 0, ratingEmoji: "🙁" },
   ]);
+
+  const captureAndReturnImage = async () => {
+    // const userProfileElement = document.getElementById("userProfileSection");
+    const userPerformanceElement = document.getElementById("userPerformanceSection");
+    // const userProfileCanvas = await html2canvas(userProfileElement);
+    const userPerformanceCanvas = await html2canvas(userPerformanceElement);
+    return userPerformanceCanvas;
+  };
 
   useEffect(() => {
     if (params.userId) {
@@ -85,15 +94,19 @@ const UserDetails = () => {
           </select>
         </div>
         <div className="mt-4 grid lg:grid-cols-2 gap-4">
-          <UserProfileSection user={userDetails} userImg={dp} />
-          <UserPerformanceSec
-            UserPerformance={UserPerformance}
-            chartData={userDetails?.chartData}
-            ratingPercent={userDetails?.ratingEfficiency}
-          />
+          <div id="userProfileSection">
+            <UserProfileSection user={userDetails} userImg={dp} />
+          </div>
+          <div id="userPerformanceSection">
+            <UserPerformanceSec
+              UserPerformance={UserPerformance}
+              chartData={userDetails?.chartData}
+              ratingPercent={userDetails?.ratingEfficiency}
+            />
+          </div>
         </div>
         <div className="mt-4 bg-white rounded-lg p-4">
-          <UserReport userDetails={userDetails} />
+          <UserReport captureAndReturnImage={captureAndReturnImage} userDetails={userDetails} />
         </div>
       </div>
     </div>
@@ -150,7 +163,7 @@ const UserProfileSection = ({ user }) => {
       </div>
       <div className="flex-1 w-full">
         <table className="w-full">
-          <tbody>
+          <tbody className="w-full flex flex-col gap-2">
             <tr className="flex items-center justify-between gap-4">
               <td className="basis-[40%]">
                 <p className="text-xs sm:text-sm text-[#41414199]">Name:</p>
@@ -168,16 +181,6 @@ const UserProfileSection = ({ user }) => {
               <td className="basis-[60%]">
                 <p className="text-xs sm:text-sm font-medium sm:font-semibold text-[#242222cc]">
                   {user?.username}
-                </p>
-              </td>
-            </tr>
-            <tr className="flex items-center justify-between gap-4">
-              <td className="basis-[40%]">
-                <p className="text-xs sm:text-sm text-[#41414199]">Gender:</p>
-              </td>
-              <td className="basis-[60%]">
-                <p className="text-xs sm:text-sm font-medium sm:font-semibold text-[#242222cc]">
-                  {user?.gender}
                 </p>
               </td>
             </tr>

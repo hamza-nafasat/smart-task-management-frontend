@@ -75,10 +75,37 @@ function getPercentTimeCompleted(startDate, endDate) {
   const percentTimeCompleted = (timePassed / totalTime) * 100;
   return Math.max(0, Math.min(100, percentTimeCompleted));
 }
+
+const getRatingEmoji = (rating) => {
+  switch (Number(rating)) {
+    case 5:
+      return "Excellent";
+    case 4:
+      return "Good";
+    case 3:
+      return "Average";
+    case 2:
+      return "Bad";
+    case 1:
+      return "Very Bad";
+    default:
+      return rating;
+  }
+};
+
+const getStatusColor = (status) => {
+  if (status === "completed") return [135, 209, 15]; // Green
+  if (status === "in-progress") return [251, 158, 50]; // Orange
+  if (status === "scheduled") return [146, 163, 255]; // Blue
+  return [235, 78, 28]; // Red (default for other statuses)
+};
+
 export {
   generateCloudinaryDownloadUrl,
   handleDownloadAll,
   isToday,
   formatDateForInput,
   getPercentTimeCompleted,
+  getRatingEmoji,
+  getStatusColor,
 };

@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import jsPDF from "jspdf";
+import "jspdf-autotable";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import CompletedIcon from "../../../assets/svgs/reports/CompletedIcon";
@@ -7,7 +8,8 @@ import DetailsIcon from "../../../assets/svgs/reports/DetailsIcon";
 import InprogressIcon from "../../../assets/svgs/reports/InprogressIcon";
 import ScheduleIcon from "../../../assets/svgs/reports/ScheduleIcon";
 import Button from "../../../components/shared/button/Button";
-import { isToday } from "../../../utils/features";
+import { getRatingEmoji, getStatusColor, isToday } from "../../../utils/features";
+import profileImage from "../../../assets/images/profile.png";
 
 const columns = [
   {
@@ -139,96 +141,136 @@ const columns = [
   },
 ];
 
-const UserReport = ({ userDetails }) => {
-  console.log(userDetails);
-  const downloadPDF = (userDetails) => {
+const UserReport = ({ userDetails, captureAndReturnImage }) => {
+  const downloadPDF = async (userDetails) => {
+    // Capture the chart image
+    const chartSectionImage = await captureAndReturnImage();
     const doc = new jsPDF();
-    let yOffset = 20;
-
     const pageWidth = doc.internal.pageSize.getWidth();
+    const columnWidth = (pageWidth - 30) / 2; // Reduced the gap between sections
+    let yOffset = 15;
 
-    const centerText = (text, y) => {
+    // Centered Text Function
+    const centerText = (text, y, fontSize = 16, color = [0, 0, 0]) => {
+      doc.setFontSize(fontSize);
+      doc.setTextColor(...color);
       const textWidth = doc.getTextWidth(text);
       const x = (pageWidth - textWidth) / 2;
       doc.text(text, x, y);
     };
-    // Add a title
-    doc.setFontSize(20);
-    centerText(`${userDetails.name}'s Report`, yOffset);
-    yOffset += 10;
-    // Add user basic information with better spacing and layout
-    doc.setFontSize(12);
-    const addUserInfo = () => {
-      doc.text(`Name: ${userDetails.name}`, 10, yOffset);
-      yOffset += 5;
-      doc.text(`Username: ${userDetails.username}`, 10, yOffset);
-      yOffset += 5;
-      doc.text(`Email: ${userDetails.email}`, 10, yOffset);
-      yOffset += 5;
-      doc.text(`Position: ${userDetails.position}`, 10, yOffset);
-      yOffset += 5;
-      doc.text(`Gender: ${userDetails.gender}`, 10, yOffset);
-      yOffset += 5;
-      doc.text(`Role: ${userDetails.role}`, 10, yOffset);
-      yOffset += 5;
-      doc.text(`Rating: ${userDetails.rating}`, 10, yOffset);
+
+    // Add Report Title at the Top
+    centerText(`${userDetails.name}'s Report`, yOffset, 24, [33, 150, 243]);
+    yOffset += 15;
+
+    const sectionHeight = 45; // Set a consistent height for both sections
+
+    // Draw a rectangle around the user details and profile image
+    doc.setDrawColor(63, 81, 181);
+    doc.setFillColor(245, 245, 245);
+    doc.roundedRect(10, yOffset, columnWidth, sectionHeight, 5, 5, "FD");
+
+    // Add User Profile Image
+    const imageXOffset = 15;
+    const imageWidth = 20;
+    const imageHeight = 20;
+    doc.addImage(
+      userDetails?.image?.url || profileImage,
+      "PNG",
+      imageXOffset,
+      yOffset + (sectionHeight - imageHeight) / 2, // Vertically centered
+      imageWidth,
+      imageHeight
+    );
+
+    // Add User Details next to the Image
+    const textXOffset = imageXOffset + imageWidth + 5;
+    doc.setFontSize(10);
+    doc.setTextColor(33, 33, 33);
+    doc.text(`Name: ${userDetails.name}`, textXOffset, yOffset + 10);
+    doc.text(`Position: ${userDetails.position}`, textXOffset, yOffset + 20);
+    doc.text(`Email: ${userDetails.email}`, textXOffset, yOffset + 30);
+    doc.text(`Rating: ${userDetails.rating}`, textXOffset, yOffset + 40);
+
+    // Draw a rectangle around the chart and position it next to the user details
+    doc.setDrawColor(63, 81, 181);
+    doc.roundedRect(columnWidth + 20, yOffset, columnWidth, sectionHeight, 5, 5, "S");
+
+    // Add Chart Image
+    doc.addImage(
+      chartSectionImage,
+      "PNG",
+      columnWidth + 25, // Adjusted to be closer to the user details section
+      yOffset + (sectionHeight - 40) / 2, // Vertically centered
+      columnWidth - 10,
+      40
+    );
+
+    // Adjust yOffset for the next section
+    yOffset += sectionHeight + 10;
+
+    // Add Task Table with Heading
+    const addTaskTable = () => {
+      const taskData = userDetails.tasks.map((task, index) => [
+        index + 1,
+        task.creator,
+        task.title.toUpperCase(),
+        {
+          content: task.status,
+          styles: {
+            fillColor: getStatusColor(task.status),
+            textColor: [255, 255, 255],
+            halign: "center",
+            valign: "middle",
+          },
+        },
+        task.startDate?.split("T")?.[0]?.split("-")?.reverse()?.join("/") || `Start of ${task.onDay}`,
+        task.endDate?.split("T")?.[0]?.split("-")?.reverse()?.join("/") || `End of ${task.onDay}`,
+        getRatingEmoji(task.rattingForMe || 0),
+      ]);
+
+      // Add Table Heading
       yOffset += 10;
-    };
-    // add chart
-    const addChartData = () => {
-      doc.setFontSize(20);
-      centerText(`${userDetails.name}'s Ratting Data`, yOffset);
+      centerText("Reports Table", yOffset, 18, [63, 81, 181]);
       yOffset += 10;
-      doc.setFontSize(12);
-      doc.text(`Total Rating: ${userDetails.rating}`, 10, yOffset);
-      yOffset += 5;
-      userDetails.chartData.forEach((data) => {
-        doc.text(`${data.label}: ${data.value}`, 10, yOffset);
-        yOffset += 5;
-      });
-      yOffset += 10;
-    };
-    // add tasks
-    const addTasks = () => {
-      doc.setFontSize(18);
-      centerText(`Tasks Assigned or Created By ${userDetails.name}`, yOffset);
-      yOffset += 10;
-      doc.setFontSize(12);
-      userDetails.tasks.forEach((task, index) => {
-        const taskInfo = [
-          `${index + 1}. Title: ${task.title}`,
-          `   Description: ${task.description}`,
-          `   Task Status: ${task.status}`,
-          `   Task Creator: ${task.creator}`,
-          `   Start Date: ${task.startDate || `Start of ${task.onDay}`}`,
-          `   End Date: ${task.endDate || `End of ${task.onDay}`}`,
-          `   On Day: ${task.onDay?.toUpperCase()}`,
-          `   My Rating: ${task.rattingForMe || 0}`,
-          `   Submitted: ${task.isSubmitted ? "Yes" : "No"}`,
-          `   Submitted Date: ${task.submittedAt || "N/A"}`,
-          `   Completed: ${task.isCompleted ? "Yes" : "No"}`,
-          `   Completed Date: ${task.completedAt || "N/A"}`,
-          `   Attachments: ${task.attachments?.length || "0"}`,
-          `   Comment Count: ${task.commentCount || "0"}`,
-          `   Updated At: ${task.updatedAt}`,
-          `   Created At: ${task.createdAt}`,
-        ].join("\n");
-        const splitTaskInfo = doc.splitTextToSize(taskInfo, 180);
-        if (yOffset + splitTaskInfo.length * 6 > 280) {
-          doc.addPage();
-          yOffset = 10;
-        }
-        doc.text(splitTaskInfo, 10, yOffset);
-        yOffset += splitTaskInfo.length * 5 + 5;
+
+      doc.autoTable({
+        head: [["#", "User", "Task", "Status", "Start Date", "End Date", "Feedback"]],
+        body: taskData,
+        startY: yOffset,
+        styles: {
+          halign: "center",
+          valign: "middle",
+          fontSize: 10,
+          cellPadding: 4,
+          lineColor: [200, 200, 200],
+          lineWidth: 0.5,
+        },
+        headStyles: {
+          fillColor: [33, 150, 243],
+          textColor: [255, 255, 255],
+        },
+        alternateRowStyles: {
+          fillColor: [240, 240, 240],
+        },
       });
     };
 
-    addUserInfo();
-    addChartData();
-    addTasks();
+    addTaskTable();
+
+    // Add footer
+    doc.setFontSize(10);
+    doc.setTextColor(150, 150, 150);
 
     doc.save("user-details-report.pdf");
   };
+
+  // // Add chart
+  // const addChartData = () => {
+  //   doc.addImage(userDetails.chartImage, "PNG", 10, yOffset, 90, 50);
+  //   yOffset += 60;
+  // };
+  // addChartData();
 
   const rows = userDetails?.tasks;
   return (
