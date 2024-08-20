@@ -1,15 +1,17 @@
+import jsPDF from "jspdf";
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import DetailsIcon from "../../../assets/svgs/reports/DetailsIcon";
-import CompletedIcon from "../../../assets/svgs/reports/CompletedIcon.jsx";
-import InprogressIcon from "../../../assets/svgs/reports/InprogressIcon.jsx";
-import ScheduleIcon from "../../../assets/svgs/reports/ScheduleIcon.jsx";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getFilteredTasksAction } from "../../../redux/actions/tasksActions.js";
-import { isToday } from "../../../utils/features.js";
 import { Link } from "react-router-dom";
+import CompletedIcon from "../../../assets/svgs/reports/CompletedIcon.jsx";
+import DetailsIcon from "../../../assets/svgs/reports/DetailsIcon";
+import InprogressIcon from "../../../assets/svgs/reports/InprogressIcon.jsx";
+import ScheduleIcon from "../../../assets/svgs/reports/ScheduleIcon.jsx";
+import Button from "../../../components/shared/button/Button.jsx";
+import { getFilteredTasksAction } from "../../../redux/actions/tasksActions.js";
+import { getStatusColor, isToday } from "../../../utils/features.js";
 
 const columns = [
   {
@@ -125,6 +127,84 @@ const Reports = () => {
   const [filterEndDate, setFilterEndDate] = useState(null);
   const [rows, setRows] = useState([]);
 
+  const downloadPDF = async (data) => {
+    const doc = new jsPDF();
+    let yOffset = 15;
+
+    // Centered Text Function
+    const centerText = (text, y, fontSize = 16, color = [0, 0, 0]) => {
+      doc.setFontSize(fontSize);
+      doc.setTextColor(...color);
+      const textWidth = doc.getTextWidth(text);
+      const x = (doc.internal.pageSize.getWidth() - textWidth) / 2;
+      doc.text(text, x, y);
+    };
+
+    // Add Date and Time in Upper Left Corner
+    const addDateAndTime = () => {
+      const now = new Date();
+      const formattedDate = now.toLocaleDateString();
+      const formattedTime = now.toLocaleTimeString();
+      doc.setFontSize(8); // Smaller font size
+      doc.setTextColor(150, 150, 150); // Light gray color for the date and time
+      doc.text(`Generated on: ${formattedDate} ${formattedTime}`, 8, 5);
+    };
+
+    // Add Task Table with Heading
+    const addTaskTable = () => {
+      const taskData = data.map((task, index) => [
+        index + 1,
+        task.creator?.name,
+        task.title.toUpperCase(),
+        {
+          content: task.status,
+          styles: {
+            fillColor: getStatusColor(task.status),
+            textColor: [255, 255, 255],
+            halign: "center",
+            valign: "middle",
+          },
+        },
+        task.startDate?.split("T")?.[0]?.split("-")?.reverse()?.join("/") ||
+          `Start of ${isToday(task.onDay, true)}`,
+        task.endDate?.split("T")?.[0]?.split("-")?.reverse()?.join("/") ||
+          `End of ${isToday(task.onDay, true)}`,
+        task.assignee?.length || 0,
+      ]);
+
+      // Add Table Heading
+      centerText("Tasks Report", yOffset, 18, [63, 81, 181]);
+      yOffset += 10;
+
+      // Add Task Table
+      doc.autoTable({
+        head: [["#", "User", "Task", "Status", "Start Date", "End Date", "Assignees"]],
+        body: taskData,
+        startY: yOffset,
+        styles: {
+          halign: "center",
+          valign: "middle",
+          fontSize: 10,
+          cellPadding: 4,
+          lineColor: [200, 200, 200],
+          lineWidth: 0.5,
+        },
+        headStyles: {
+          fillColor: [33, 150, 243],
+          textColor: [255, 255, 255],
+        },
+        alternateRowStyles: {
+          fillColor: [240, 240, 240],
+        },
+      });
+    };
+    addDateAndTime();
+    addTaskTable();
+
+    // Save the PDF
+    doc.save("tasks-report.pdf");
+  };
+
   useEffect(() => {
     dispatch(
       getFilteredTasksAction({
@@ -145,6 +225,7 @@ const Reports = () => {
       <div className="bg-[#fff] backdrop-blur-lg rounded-lg">
         <div className="flex flex-wrap items-center justify-between gap-4 p-4 relative z-50">
           <h2 className="text-base font-medium text-[#414141] text-nowrap">Task Report</h2>
+          <Button click={() => downloadPDF(filteredTasks)} text="Export" width="w-24" height="h-[40px]" />
           <div className="flex items-center flex-wrap gap-4">
             <input
               type="text"

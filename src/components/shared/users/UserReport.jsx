@@ -143,11 +143,10 @@ const columns = [
 
 const UserReport = ({ userDetails, captureAndReturnImage }) => {
   const downloadPDF = async (userDetails) => {
-    // Capture the chart image
     const chartSectionImage = await captureAndReturnImage();
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
-    const columnWidth = (pageWidth - 30) / 2; // Reduced the gap between sections
+    const columnWidth = (pageWidth - 30) / 2;
     let yOffset = 15;
 
     // Centered Text Function
@@ -159,11 +158,21 @@ const UserReport = ({ userDetails, captureAndReturnImage }) => {
       doc.text(text, x, y);
     };
 
+    // Add Date and Time in Upper Left Corner
+    const addDateAndTime = () => {
+      const now = new Date();
+      const formattedDate = now.toLocaleDateString();
+      const formattedTime = now.toLocaleTimeString();
+      doc.setFontSize(8); // Smaller font size
+      doc.setTextColor(150, 150, 150); // Light gray color for the date and time
+      doc.text(`Generated on: ${formattedDate} ${formattedTime}`, 8, 7);
+    };
+
     // Add Report Title at the Top
     centerText(`${userDetails.name}'s Report`, yOffset, 24, [33, 150, 243]);
     yOffset += 15;
 
-    const sectionHeight = 45; // Set a consistent height for both sections
+    const sectionHeight = 45;
 
     // Draw a rectangle around the user details and profile image
     doc.setDrawColor(63, 81, 181);
@@ -224,8 +233,10 @@ const UserReport = ({ userDetails, captureAndReturnImage }) => {
             valign: "middle",
           },
         },
-        task.startDate?.split("T")?.[0]?.split("-")?.reverse()?.join("/") || `Start of ${task.onDay}`,
-        task.endDate?.split("T")?.[0]?.split("-")?.reverse()?.join("/") || `End of ${task.onDay}`,
+        task.startDate?.split("T")?.[0]?.split("-")?.reverse()?.join("/") ||
+          `Start of ${isToday(task.onDay, true)}`,
+        task.endDate?.split("T")?.[0]?.split("-")?.reverse()?.join("/") ||
+          `End of ${isToday(task.onDay, true)}`,
         getRatingEmoji(task.rattingForMe || 0),
       ]);
 
@@ -242,9 +253,9 @@ const UserReport = ({ userDetails, captureAndReturnImage }) => {
           halign: "center",
           valign: "middle",
           fontSize: 10,
-          cellPadding: 4,
+          cellPadding: 3,
           lineColor: [200, 200, 200],
-          lineWidth: 0.5,
+          lineWidth: 0.2,
         },
         headStyles: {
           fillColor: [33, 150, 243],
@@ -255,22 +266,11 @@ const UserReport = ({ userDetails, captureAndReturnImage }) => {
         },
       });
     };
-
+    addDateAndTime();
     addTaskTable();
-
-    // Add footer
-    doc.setFontSize(10);
-    doc.setTextColor(150, 150, 150);
 
     doc.save("user-details-report.pdf");
   };
-
-  // // Add chart
-  // const addChartData = () => {
-  //   doc.addImage(userDetails.chartImage, "PNG", 10, yOffset, 90, 50);
-  //   yOffset += 60;
-  // };
-  // addChartData();
 
   const rows = userDetails?.tasks;
   return (

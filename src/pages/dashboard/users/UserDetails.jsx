@@ -7,6 +7,7 @@ import dp from "../../../assets/images/profile.png";
 import UserReport from "../../../components/shared/users/UserReport";
 import { getAllUserDetailsAction } from "../../../redux/actions/usersActions";
 import html2canvas from "html2canvas";
+import profileImage from "../../../assets/images/profile.png";
 
 const UserDetails = () => {
   const params = useParams();
@@ -152,7 +153,7 @@ const UserProfileSection = ({ user }) => {
     <div className="bg-white p-4 rounded-lg flex flex-col sm:flex-row items-center gap-6">
       <div className="flex flex-col items-center gap-2">
         <img
-          src={user?.image?.url}
+          src={user?.image?.url || profileImage}
           alt="profile"
           className="w-20 h-20 md:w-[160px] md:h-[160px] rounded-full object-cover border-2 border-[#17a2b8]"
         />
