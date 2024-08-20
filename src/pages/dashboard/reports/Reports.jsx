@@ -223,40 +223,40 @@ const Reports = () => {
   return (
     <div className="h-screen p-4">
       <div className="bg-[#fff] backdrop-blur-lg rounded-lg">
-        <div className="flex flex-wrap items-center justify-between gap-4 p-4 relative z-50">
+        <div className="flex items-center justify-between gap-4 p-4 relative z-50 ">
           <h2 className="text-base font-medium text-[#414141] text-nowrap">Task Report</h2>
           <Button click={() => downloadPDF(filteredTasks)} text="Export" width="w-24" height="h-[40px]" />
-          <div className="flex items-center flex-wrap gap-4">
-            <input
-              type="text"
-              placeholder="Search by name"
-              value={filterName}
-              onChange={(e) => setFilterName(e.target.value)}
-              className="border p-2 rounded-lg focus:outline-none text-sm text-[#101010]"
-            />
-            <select
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-              className="border p-2 rounded-lg focus:outline-none text-sm text-[#101010]"
-            >
-              <option value="">All Statuses</option>
-              <option value="completed">Completed</option>
-              <option value="in-progress">In Progress</option>
-              <option value="scheduled">Schedule</option>
-            </select>
-            <DatePicker
-              selected={filterStartDate}
-              onChange={(date) => setFilterStartDate(date)}
-              placeholderText="Start Date"
-              className="border p-2 rounded-lg focus:outline-none text-sm text-[#101010]"
-            />
-            <DatePicker
-              selected={filterEndDate}
-              onChange={(date) => setFilterEndDate(date)}
-              placeholderText="End Date"
-              className="border p-2 rounded-lg focus:outline-none text-sm text-[#101010]"
-            />
-          </div>
+        </div>
+        <div className="flex items-center flex-wrap gap-4 p-4">
+          <input
+            type="text"
+            placeholder="Search by name"
+            value={filterName}
+            onChange={(e) => setFilterName(e.target.value)}
+            className="border p-2 rounded-lg focus:outline-none text-sm text-[#101010]"
+          />
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="border p-2 rounded-lg focus:outline-none text-sm text-[#101010]"
+          >
+            <option value="">All Statuses</option>
+            <option value="completed">Completed</option>
+            <option value="in-progress">In Progress</option>
+            <option value="scheduled">Schedule</option>
+          </select>
+          <DatePicker
+            selected={filterStartDate}
+            onChange={(date) => setFilterStartDate(date)}
+            placeholderText="Start Date"
+            className="border p-2 rounded-lg focus:outline-none text-sm text-[#101010]"
+          />
+          <DatePicker
+            selected={filterEndDate}
+            onChange={(date) => setFilterEndDate(date)}
+            placeholderText="End Date"
+            className="border p-2 rounded-lg focus:outline-none text-sm text-[#101010]"
+          />
         </div>
         <div className="mt-4 report-table">
           <DataTable
