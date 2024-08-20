@@ -25,7 +25,6 @@ const EditUser = () => {
     userName: "",
     email: "",
     position: "",
-    gender: "",
     role: "",
   });
 
@@ -68,7 +67,6 @@ const EditUser = () => {
     formData.append("role", formFields.role);
     formData.append("name", formFields.name);
     formData.append("position", formFields.position);
-    formData.append("gender", formFields.gender);
 
     await dispatch(editUserByAdminAction(singleUser?._id, formData));
     await dispatch(getAllUsersAction());
@@ -88,10 +86,9 @@ const EditUser = () => {
         userName: singleUser?.username,
         email: singleUser?.email,
         position: singleUser?.position,
-        gender: singleUser?.gender,
         role: singleUser?.role,
       });
-      setImgSrc(singleUser?.image.url);
+      setImgSrc(singleUser?.image?.url);
     }
   }, [singleUser]);
   return (
@@ -137,23 +134,7 @@ const EditUser = () => {
                   onChange={handleFormFields}
                 />
               </div>
-              <div className="lg:col-span-6">
-                <label className="text-[#000] text-sm md:text-base mb-2 block">Gender</label>
-                <select
-                  name="gender"
-                  value={formFields.gender}
-                  onChange={handleFormFields}
-                  className="bg-[#f7fbfe] rounded-[10px] border text-sm md:text-base w-full h-[50px] md:h-[60px] focus:outline-none px-4"
-                >
-                  <option className="p-4 h-10" value="male">
-                    Male
-                  </option>
-                  <option className="p-4" value="female">
-                    Female
-                  </option>
-                </select>
-              </div>
-              <div className="lg:col-span-6">
+              <div className="lg:col-span-12">
                 <label className="text-[#000] text-sm md:text-base mb-2 block">Role</label>
                 <select
                   value={formFields.role}

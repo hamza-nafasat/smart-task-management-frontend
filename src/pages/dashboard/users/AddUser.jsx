@@ -22,7 +22,6 @@ const AddUser = () => {
     userName: "",
     email: "",
     position: "",
-    gender: "",
   });
 
   const handleModalClose = () => setIsModalOpen(false);
@@ -63,7 +62,6 @@ const AddUser = () => {
       formData.append("username", formFields.userName);
       formData.append("email", formFields.email);
       formData.append("position", formFields.position);
-      formData.append("gender", formFields.gender);
       formData.append("file", image);
       formData.append("password", "12345678");
       await dispatch(addUserAction(formData));
@@ -127,25 +125,6 @@ const AddUser = () => {
                   value={formFields.position}
                   onChange={handleFormFields}
                 />
-              </div>
-              <div className="lg:col-span-6">
-                <label className="text-[#000] text-sm md:text-base mb-2 block">Gender</label>
-                <select
-                  name="gender"
-                  value={formFields.gender}
-                  onChange={handleFormFields}
-                  className="bg-[#f7fbfe] rounded-[10px] border text-sm md:text-base w-full h-[50px] md:h-[60px] focus:outline-none px-4"
-                >
-                  <option className="p-4 h-10" value="#">
-                    Select gender
-                  </option>
-                  <option className="p-4 h-10" value="male">
-                    Male
-                  </option>
-                  <option className="p-4" value="female">
-                    Female
-                  </option>
-                </select>
               </div>
             </div>
           </div>

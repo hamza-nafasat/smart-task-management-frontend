@@ -1,16 +1,14 @@
 /* eslint-disable react/prop-types */
-import Button from "../button/Button";
-import { IoMdMale } from "react-icons/io";
-import { IoMdFemale } from "react-icons/io";
-import { FaStar } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
-import { deleteUserByAdminAction, getAllUsersAction } from "../../../redux/actions/usersActions";
 import { useState } from "react";
-import { BsFillInfoSquareFill } from "react-icons/bs";
 import { confirmAlert } from "react-confirm-alert";
+import toast from "react-hot-toast";
+import { BsFillInfoSquareFill } from "react-icons/bs";
+import { FaStar } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import profileImage from "../../../assets/images/profile.png";
+import { deleteUserByAdminAction, getAllUsersAction } from "../../../redux/actions/usersActions";
+import Button from "../button/Button";
 
 const UserCard = ({ user }) => {
   const navigate = useNavigate();
@@ -51,16 +49,11 @@ const UserCard = ({ user }) => {
           <img
             alt="profile pic"
             src={user?.image?.url || profileImage}
-            className="w-20 h-20 relative overflow-hidden rounded-full object-cover"
+            className="w-20 h-20  relative overflow-hidden rounded-full object-cover"
           />
         </div>
         <div className="mt-[2.5rem] flex items-center justify-center gap-1">
           <h3 className="text-base md:text-md text-gray-800 font-medium text-center">{user?.username}</h3>•
-          {user?.gender === "male" ? (
-            <IoMdMale fontSize={20} color="rgb(23, 162, 184)" />
-          ) : (
-            <IoMdFemale fontSize={20} color="#ec53ab" />
-          )}
         </div>
         <div className="mt-2 flex justify-center items-center gap-1">
           <FaStar fontSize={20} color="#FFA534" />

@@ -20,7 +20,6 @@ const Profile = () => {
     role: "role",
     email: "email",
     position: "position",
-    gender: "gender",
   });
 
   // handlers
@@ -50,12 +49,11 @@ const Profile = () => {
     try {
       setIsUpdateLoading(true);
       e.preventDefault();
-      const { name, userName, email, gender } = formFields;
+      const { name, userName, email } = formFields;
       const formData = new FormData();
       formData.append("name", name);
       if (userName != user.username) formData.append("username", userName);
       if (email !== user.email) formData.append("email", email);
-      formData.append("gender", gender);
       if (image) formData.append("file", image);
       await dispatch(updateProfileAction(formData));
       await dispatch(getMyProfileAction());
@@ -76,7 +74,6 @@ const Profile = () => {
         role: user.role,
         email: user.email,
         position: user.position,
-        gender: user.gender,
       });
       setImgSrc(user?.image?.url);
     }
@@ -131,7 +128,7 @@ const Profile = () => {
                   readOnly={!isFormEdited}
                 />
               </div>
-              <div className="lg:col-span-6">
+              <div className="lg:col-span-12">
                 <Input
                   label="Position"
                   type="text"
@@ -139,16 +136,6 @@ const Profile = () => {
                   value={formFields.position}
                   onChange={handleFormFields}
                   readOnly={true}
-                />
-              </div>
-              <div className="lg:col-span-6">
-                <Input
-                  label="Gender"
-                  type="text"
-                  name="gender"
-                  value={formFields.gender}
-                  onChange={handleFormFields}
-                  readOnly={!isFormEdited}
                 />
               </div>
             </div>

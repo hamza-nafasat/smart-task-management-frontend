@@ -77,7 +77,7 @@ const InprogressCard = ({ task }) => {
             {task.assignee?.map((assignee, i) => (
               <div
                 key={i}
-                className="w-8 h-8 rounded-full border border-[#fff] bg-[#00569e] text-white text-xs flex items-center justify-center"
+                className="w-8 h-8 rounded-full border border-[#ffffff] bg-[#fff] text-white text-xs flex items-center justify-center"
               >
                 <img className="w-8 h-8 rounded-full" src={assignee?.image?.url} alt={assignee?.username} />
               </div>
