@@ -1,9 +1,13 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { IoStar } from "react-icons/io5";
 import { MdCancel } from "react-icons/md";
 import { MdOutlineTaskAlt } from "react-icons/md";
+import { useSelector } from "react-redux";
 
 const Notifications = () => {
+  const { unreadNotifications } = useSelector((state) => state.notifications);
+  console.log("unread notifications", unreadNotifications);
   return (
     <div className="md:h-[calc(100vh-0px)] p-4">
       <div className="bg-[#eef2f56e] rounded-[10px] h-full p-4">
@@ -11,14 +15,17 @@ const Notifications = () => {
           Notifications List
         </h2>
         <div className="mt-2">
-          <NotificationList iconType="comment" />
-          <NotificationList iconType="task" />
-          <NotificationList iconType="comment" />
-          <NotificationList iconType="task" />
-          <NotificationList iconType="comment" />
-          <NotificationList iconType="task" />
-          <NotificationList iconType="comment" />
-          <NotificationList iconType="task" />
+          {unreadNotifications
+            ? unreadNotifications?.map((notification) => (
+                <NotificationList
+                  key={notification._id}
+                  icon={notification.icon}
+                  comment={notification.comment}
+                  date={notification.date}
+                  iconType={"comment"}
+                />
+              ))
+            : ""}
         </div>
       </div>
     </div>

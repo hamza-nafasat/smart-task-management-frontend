@@ -260,10 +260,12 @@ const changePasswordAction = (oldPassword, newPassword) => async (dispatch) => {
 
 // get all user details actions
 // ----------------------------
-const getAllUserDetailsAction = (userId) => async (dispatch) => {
+const getSingleUserExtraDetails = (userId, userDetailsDate) => async (dispatch) => {
   try {
     dispatch(getAllUserDetailsStart());
-    const response = await customAxios.get(`/users/details/single-user/${userId}`);
+    const response = await customAxios.get(`/users/details/single-user/${userId}`, {
+      params: { userDetailsDate },
+    });
     console.log("success while get all user details", response.data);
     dispatch(getAllUserDetailsSuccess(response.data));
   } catch (error) {
@@ -290,6 +292,6 @@ export {
   logoutAction,
   resetPasswordAction,
   updateProfileAction,
-  getAllUserDetailsAction,
+  getSingleUserExtraDetails,
   importUsersAction,
 };

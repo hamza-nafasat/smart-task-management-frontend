@@ -13,6 +13,7 @@ const Header = () => {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useSelector((state) => state.users);
+  const { unreadNotifications } = useSelector((state) => state.notifications);
 
   // constants
   // ---------
@@ -55,7 +56,11 @@ const Header = () => {
 
   return (
     <>
-      <div className={`pt-6 md:pt-0 h-[80px] flex items-center justify-between px-4 transition-all duration-400 ${isNotificationOpen ? 'z-[999]':'z-0'}`}>
+      <div
+        className={`pt-6 md:pt-0 h-[80px] flex items-center justify-between px-4 transition-all duration-400 ${
+          isNotificationOpen ? "z-[999]" : "z-0"
+        }`}
+      >
         <div className="flex flex-col">
           <p className="text-[11px] md:text-base text-white">{timeString}</p>
           <p className="text-[8px] md:text-xs text-white">{dateString}</p>
@@ -66,7 +71,7 @@ const Header = () => {
         <div className="flex items-center gap-2 md:gap-4">
           <div className="relative">
             <div className="absolute top-[-2px] right-[-3px] bg-red-700 w-3 h-3 rounded-full flex items-center justify-center text-[10px] font-semibold text-white">
-              4
+              {unreadNotifications?.length || 0}
             </div>
             <IoNotifications cursor="pointer" fontSize={20} color="#fff" onClick={handleNotificationOpen} />
             <div

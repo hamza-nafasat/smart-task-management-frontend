@@ -7,7 +7,10 @@ import { Loader } from "./components/shared/loader/Loader";
 import { getMyProfileAction } from "./redux/actions/usersActions";
 import { clearUserError, clearUserMessage } from "./redux/slices/usersSlices";
 import ProtectedRoute from "./utils/ProtectedRoute";
-import 'react-confirm-alert/src/react-confirm-alert.css';
+import "react-confirm-alert/src/react-confirm-alert.css";
+import { socket, socketEvent } from "./utils/constants";
+import { getUnreadNotificationsAction } from "./redux/actions/notificationsAction";
+import { getUnreadNotificationsSuccess } from "./redux/slices/notificationsSlices";
 
 const Login = lazy(() => import("./pages/auth/Login"));
 const Dashboard = lazy(() => import("./pages/dashboard/index"));
@@ -31,7 +34,19 @@ function App() {
   const { message, error, user } = useSelector((state) => state.users);
 
   useEffect(() => {
+    socket.on("connect", () => {
+      console.log(socket.id);
+    });
+
+    socket.on(socketEvent.SEND_NOTIFICATION, (data) => {
+      console.log("notifications received from server", data);
+      dispatch(getUnreadNotificationsSuccess(data));
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
     dispatch(getMyProfileAction());
+    dispatch(getUnreadNotificationsAction());
   }, [dispatch]);
 
   useEffect(() => {

@@ -5,13 +5,14 @@ import { useParams } from "react-router-dom";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import dp from "../../../assets/images/profile.png";
 import UserReport from "../../../components/shared/users/UserReport";
-import { getAllUserDetailsAction } from "../../../redux/actions/usersActions";
+import { getSingleUserExtraDetails } from "../../../redux/actions/usersActions";
 import html2canvas from "html2canvas";
 import profileImage from "../../../assets/images/profile.png";
 
 const UserDetails = () => {
   const params = useParams();
   const dispatch = useDispatch();
+  const [userDetailsData, setUserDetailsData] = useState();
   const { userDetails } = useSelector((state) => state.users);
   const [UserPerformance, setUserPerformance] = useState([
     { ratingName: "Excellent", ratings: 0, ratingEmoji: "😊" },
@@ -31,9 +32,9 @@ const UserDetails = () => {
 
   useEffect(() => {
     if (params.userId) {
-      dispatch(getAllUserDetailsAction(params.userId));
+      dispatch(getSingleUserExtraDetails(params?.userId, userDetailsData));
     }
-  }, [dispatch, params.userId]);
+  }, [dispatch, params.userId, userDetailsData]);
 
   // find data for user efficiency
   useEffect(() => {
@@ -81,15 +82,20 @@ const UserDetails = () => {
         <div className="flex items-center gap-4">
           <h2 className="text-base font-medium text-[#414141] text-nowrap">User Report</h2>
           <div className="h-[1px] bg-[#0000005c] w-full"></div>
-          <select className="text-[#7e7e7e] text-xs py-2 px-3 bg-white focus:outline-none border border-[#0000000f] rounded-full cursor-pointer">
-            <option className="text-[#7e7e7e] text-xs" disabled selected>
-              Week {""}
-              <span className="text-[#414141] font-semibold">Week</span>
+          <select
+            onChange={(e) => setUserDetailsData(e.target.value)}
+            className="text-[#7e7e7e] text-xs py-2 px-3 bg-white focus:outline-none border border-[#0000000f] rounded-full cursor-pointer"
+          >
+            <option className="py-2 px-3" value="">
+              Default
             </option>
-            <option className="py-2 px-3" value="sort-by-user">
+            <option className="text-xs" value="week">
+              Week
+            </option>
+            <option className="py-2 px-3" value="month">
               Month
             </option>
-            <option className="py-2 px-3" value="sort-by-date">
+            <option className="py-2 px-3" value="year">
               Year
             </option>
           </select>
