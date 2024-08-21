@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
+import { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getTimeAgo } from "../../../../utils/formatting";
-import { Fragment } from "react";
 
-const NotificationSlider = ({ openModal }) => {
+const NotificationSlider = ({ openModal, handleNotificationOpen }) => {
   const { unreadNotifications } = useSelector((state) => state.notifications);
 
   return (
@@ -27,12 +27,14 @@ const NotificationSlider = ({ openModal }) => {
             </div>
           ))}
         </div>
-        <Link
-          className="block mt-3 py-2 w-full backdrop-blur-sm font-medium text-center text-sm sticky bottom-0 left-0 text-primary"
-          to="notifications"
-        >
-          See all Notifications
-        </Link>
+        <div onClick={handleNotificationOpen}>
+          <Link
+            className="block mt-3 py-2 w-full backdrop-blur-sm font-medium text-center text-sm sticky bottom-0 left-0 text-primary"
+            to="notifications"
+          >
+            See all Notifications
+          </Link>
+        </div>
       </div>
     </Fragment>
   );

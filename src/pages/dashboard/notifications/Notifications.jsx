@@ -1,31 +1,46 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
 import { IoStar } from "react-icons/io5";
 import { MdCancel } from "react-icons/md";
 import { MdOutlineTaskAlt } from "react-icons/md";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteNotificationAction,
+  getAllNotificationsAction,
+  getUnreadNotificationsAction,
+  readAllNotificationsAction,
+} from "../../../redux/actions/notificationsAction";
+import { getTimeAgo } from "../../../utils/formatting";
 
 const Notifications = () => {
-  const { unreadNotifications } = useSelector((state) => state.notifications);
-  console.log("unread notifications", unreadNotifications);
+  const dispatch = useDispatch();
+  const { unreadNotifications, allNotifications } = useSelector((state) => state.notifications);
+  const [allNotificationsData, setAllNotificationsData] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      await dispatch(readAllNotificationsAction());
+      await dispatch(getUnreadNotificationsAction());
+      await dispatch(getAllNotificationsAction());
+    })();
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (allNotifications) {
+      setAllNotificationsData(allNotifications);
+    }
+  }, [allNotifications]);
   return (
     <div className="md:h-[calc(100vh-0px)] p-4 ">
-      <div className="bg-[#eef2f56e] rounded-[10px] h-full p-4 overflow-y-auto">
+      <div className="bg-[#eef2f56e] rounded-[10px] h-full p-4 overflow-y-auto notification-scroll">
         <h2 className="text-md lg:text-xl font-semibold border-b border-[#00000010] pb-2">
           Notifications List
         </h2>
         <div className="mt-2">
-          {unreadNotifications
-            ? unreadNotifications?.map((notification) => (
-                <NotificationList
-                  key={notification._id}
-                  icon={notification.icon}
-                  comment={notification.comment}
-                  date={notification.date}
-                  iconType={"comment"}
-                />
-              ))
-            : ""}
+          {allNotificationsData?.map((notification) => (
+            <NotificationList key={notification._id} notification={notification} />
+          ))}
         </div>
       </div>
     </div>
@@ -34,27 +49,35 @@ const Notifications = () => {
 
 export default Notifications;
 
-const NotificationList = ({ icon, comment, date, iconType }) => {
+const NotificationList = ({ notification }) => {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+  const deleteNotificationHandler = async () => {
+    try {
+      setLoading(true);
+      await dispatch(deleteNotificationAction(notification._id));
+      await dispatch(getAllNotificationsAction());
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex items-center justify-between border-b border-[#00000010] py-2">
       <div className="flex items-center gap-2">
-        <div className="bg-[#eef2f56e] rounded-full p-1">
-          {iconType === "comment" ? (
-            <IoStar color="orangered" fontSize={20} />
-          ) : (
-            <MdOutlineTaskAlt color="green" fontSize={20} />
-          )}
-        </div>
+        <img src={notification?.from?.image?.url} className="bg-[#eef2f56e] h-10 w-10 rounded-full"></img>
         <div>
-          <p className="text-sm">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione ullam ea aliquam architecto
-            facilis laboriosam debitis dicta rerum accusantium nesciunt.
-          </p>
-          <p className="text-[10px] text-gray-600">Mar 15</p>
+          <p className="text-sm">{notification?.description}</p>
+          <p className="text-[10px] text-gray-600">{getTimeAgo(notification?.createdAt)}</p>
         </div>
       </div>
-      <div className="cursor-pointer">
-        <MdCancel fontSize={22} color="#a30000" />
+      <div
+        onClick={!loading ? deleteNotificationHandler : () => {}}
+        className={`${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+      >
+        <MdCancel fontSize={22} color="#a30000" opacity={loading ? 0.5 : 1} />
       </div>
     </div>
   );

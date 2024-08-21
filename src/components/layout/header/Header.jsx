@@ -27,7 +27,6 @@ const Header = () => {
   const handleCloseModal = () => setIsModalOpen(false);
   const handleNotificationOpen = (e) => {
     e.stopPropagation();
-
     setIsNotificationOpen(!isNotificationOpen);
   };
 
@@ -70,9 +69,11 @@ const Header = () => {
         </h3>
         <div className="flex items-center gap-2 md:gap-4">
           <div className="relative">
-            <div className="absolute top-[-2px] right-[-3px] bg-red-700 w-3 h-3 rounded-full flex items-center justify-center text-[10px] font-semibold text-white">
-              {unreadNotifications?.length || 0}
-            </div>
+            {unreadNotifications.length > 0 && (
+              <div className="absolute top-[-2px] right-[-3px] bg-red-700 w-3 h-3 rounded-full flex items-center justify-center text-[10px] font-semibold text-white">
+                {unreadNotifications?.length}
+              </div>
+            )}
             <IoNotifications cursor="pointer" fontSize={20} color="#fff" onClick={handleNotificationOpen} />
             <div
               className={`absolute top-[160%] right-[-35%] bg-white rounded-lg drop-shadow-md w-[250px] transition-all duration-400 ${
@@ -80,7 +81,10 @@ const Header = () => {
               }`}
               onClick={(e) => e.stopPropagation()}
             >
-              <NotificationInner openModal={handleOpenModal} />
+              <NotificationInner
+                openModal={handleOpenModal}
+                handleNotificationOpen={handleNotificationOpen}
+              />
               <div className="absolute top-[-4%] right-[3.5%]">
                 <BiSolidUpArrow color="#fff" />
               </div>
