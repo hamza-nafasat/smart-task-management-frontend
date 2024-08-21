@@ -16,15 +16,15 @@ const Activity = ({ activities }) => {
   };
   return (
     <>
-      <div className="mt-9 bg-white rounded-[4px] p-4">
+      <div className="mt-9 bg-white rounded-[4px] p-4 overflow-y-auto max-h-[25rem] notification-scroll">
         <h4 className="font-semibold text-sm text-[#333333]">Activity</h4>
-        <div className="mt-3 flex flex-col gap-2">
+        <div className="mt-3 flex flex-col gap-2 ">
           {activities.map((activity, i) => (
             <div className="flex gap-2 cursor-pointer" key={i} onClick={() => handleModalOpen(activity)}>
               <img
                 src={activity?.user?.image.url}
                 alt=""
-                className="w-9 h-9 border-[1px] border-blue rounded-full object-contain flex items-center justify-center bg-[#c6f7ff] "
+                className="w-9 h-9 border-[1px] border-blue rounded-full object-contain flex items-center justify-center bg-[#ffffff] "
               />
               <div className="flex flex-col">
                 <p className="text-[12px] text-[#333333]">{activity.title}</p>
