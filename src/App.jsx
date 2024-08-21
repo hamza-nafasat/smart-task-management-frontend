@@ -34,16 +34,18 @@ function App() {
   const { message, error, user } = useSelector((state) => state.users);
 
   useEffect(() => {
-    socket.on("connect", () => {
-      console.log(socket.id);
-    });
+    socket.on("connect", () => {});
 
     socket.on(socketEvent.SEND_NOTIFICATION, (data) => {
       console.log("notifications received from server", data);
       dispatch(getUnreadNotificationsSuccess(data));
     });
-  }, [dispatch]);
 
+    return () => {
+      socket.off("connect");
+      socket.off(socketEvent.SEND_NOTIFICATION);
+    };
+  }, [dispatch]);
   useEffect(() => {
     dispatch(getMyProfileAction());
     dispatch(getUnreadNotificationsAction());
