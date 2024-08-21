@@ -16,11 +16,12 @@ const NotificationSlider = ({ openModal, handleNotificationOpen }) => {
             <div className="flex gap-2 cursor-pointer" key={i} onClick={() => openModal(comment.type)}>
               <img
                 src={comment?.from?.image?.url}
-                className="w-7 h-7 rounded-full object-cover flex items-center justify-center text-[10px] font-semibold"
+                className="w-8 h-8 rounded-full object-cover flex items-center justify-center text-[10px] font-semibold"
               />
               <div className="flex flex-col">
                 <p className="text-[10px] text-[#333333]">
-                  <span className="font-semibold">{comment?.title}</span> {comment.description}
+                  <span className="font-semibold text-[11px]">{comment?.from?.name}: </span>
+                  {comment.title}
                 </p>
                 <span className="text-[8px] text-[#8a3a3a]">{getTimeAgo(comment?.createdAt)}</span>
               </div>

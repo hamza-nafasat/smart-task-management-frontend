@@ -9,6 +9,7 @@ import { loginAction } from "../../redux/actions/usersActions";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { clearUserError } from "../../redux/slices/usersSlices";
+import { getUnreadNotificationsAction } from "../../redux/actions/notificationsAction";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const Login = () => {
         return toast.error("Please Enter Your Email and Password");
       }
       await dispatch(loginAction(email, password));
+      await dispatch(getUnreadNotificationsAction());
       setIsLoginLoading(false);
     } catch (error) {
       setIsLoginLoading(false);
@@ -114,7 +116,7 @@ const Login = () => {
               radius="14px"
               size="20px"
               weight="500"
-              height='h-[60px]'
+              height="h-[60px]"
             />
           </form>
           <div className="mt-4 md:mt-[50px] flex justify-end items-end grow">

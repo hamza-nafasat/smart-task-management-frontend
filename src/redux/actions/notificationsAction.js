@@ -19,7 +19,7 @@ import {
 const getUnreadNotificationsAction = () => async (dispatch) => {
   try {
     dispatch(getUnreadNotificationsStart());
-    const response = await customAxios.get("/tasks/unread-notifications/all");
+    const response = await customAxios.get("/tasks/unread-notifications");
     console.log("success while get unread notifications", response);
     dispatch(getUnreadNotificationsSuccess(response?.data?.data));
   } catch (error) {

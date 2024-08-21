@@ -46,6 +46,7 @@ function App() {
       socket.off(socketEvent.SEND_NOTIFICATION);
     };
   }, [dispatch]);
+
   useEffect(() => {
     dispatch(getMyProfileAction());
     dispatch(getUnreadNotificationsAction());
