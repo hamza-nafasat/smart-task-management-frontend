@@ -9,8 +9,8 @@ const Notifications = () => {
   const { unreadNotifications } = useSelector((state) => state.notifications);
   console.log("unread notifications", unreadNotifications);
   return (
-    <div className="md:h-[calc(100vh-0px)] p-4">
-      <div className="bg-[#eef2f56e] rounded-[10px] h-full p-4">
+    <div className="md:h-[calc(100vh-0px)] p-4 ">
+      <div className="bg-[#eef2f56e] rounded-[10px] h-full p-4 overflow-y-auto">
         <h2 className="text-md lg:text-xl font-semibold border-b border-[#00000010] pb-2">
           Notifications List
         </h2>
