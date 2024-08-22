@@ -23,10 +23,8 @@ const UserDetails = () => {
   ]);
 
   const captureAndReturnImage = async () => {
-    // const userProfileElement = document.getElementById("userProfileSection");
     const userPerformanceElement = document.getElementById("userPerformanceSection");
-    // const userProfileCanvas = await html2canvas(userProfileElement);
-    const userPerformanceCanvas = await html2canvas(userPerformanceElement);
+    const userPerformanceCanvas = await html2canvas(userPerformanceElement, { windowWidth: 1300 });
     return userPerformanceCanvas;
   };
 
@@ -100,11 +98,11 @@ const UserDetails = () => {
             </option>
           </select>
         </div>
-        <div className="mt-4 grid lg:grid-cols-2 gap-4">
+        <div id="mainDivForPic" className="mt-4 grid lg:grid-cols-2 gap-4 ">
           <div id="userProfileSection">
             <UserProfileSection user={userDetails} userImg={dp} />
           </div>
-          <div id="userPerformanceSection">
+          <div className="" id="userPerformanceSection">
             <UserPerformanceSec
               UserPerformance={UserPerformance}
               chartData={userDetails?.chartData}
