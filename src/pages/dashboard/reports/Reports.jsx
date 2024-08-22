@@ -1,4 +1,5 @@
 import jsPDF from "jspdf";
+import "jspdf-autotable";
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import DatePicker from "react-datepicker";
