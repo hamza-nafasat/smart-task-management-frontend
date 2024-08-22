@@ -12,6 +12,8 @@ import {
   readAllNotificationsAction,
 } from "../../../redux/actions/notificationsAction";
 import { getTimeAgo } from "../../../utils/formatting";
+import toast from "react-hot-toast";
+import { confirmAlert } from "react-confirm-alert";
 
 const Notifications = () => {
   const dispatch = useDispatch();
@@ -53,15 +55,25 @@ const NotificationList = ({ notification }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-  const deleteNotificationHandler = async () => {
-    try {
-      setLoading(true);
-      await dispatch(deleteNotificationAction(notification._id));
-      await dispatch(getAllNotificationsAction());
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
+  const deleteNotificationHandler = () => {
+    confirmAlert({
+      title: "Delete User",
+      message: "Are you sure, you want to delete the user?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            setLoading(true);
+            await dispatch(deleteNotificationAction(notification._id));
+            await dispatch(getAllNotificationsAction());
+            setLoading(false);
+          },
+        },
+        {
+          label: "No",
+        },
+      ],
+    });
   };
 
   return (
