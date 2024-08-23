@@ -271,7 +271,6 @@ const UserReport = ({ userDetails, captureAndReturnImage }) => {
 
     doc.save("user-details-report.pdf");
   };
-
   const rows = userDetails?.tasks;
   return (
     <div>
